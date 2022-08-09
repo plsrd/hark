@@ -1,7 +1,7 @@
 const { body } = require('express-validator');
 const User = require('../models/user');
 
-const newUserValidation = [
+exports.newUserValidation = [
   body('name', 'Name is required').escape().trim().isLength(1),
   body('email', 'A valid email is required')
     .escape()
@@ -21,5 +21,3 @@ const newUserValidation = [
         throw new Error('Passwords must match.');
     }),
 ];
-
-module.exports = newUserValidation;
