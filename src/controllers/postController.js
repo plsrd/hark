@@ -42,9 +42,17 @@ exports.post_comments_get = async (req, res, next) => {
 exports.post_comments_post = [...commentValidation, handleCommentInput];
 
 exports.post_comment_get = async (req, res, next) => {
-  await Comment.findById(req.params.commentid).then(comment =>
-    res.json(comment)
-  );
+  await Comment.findById(req.params.commentid)
+    .then(comment => res.json(comment))
+    .catch(err => next(err));
 };
 
 exports.post_comment_put = [...commentValidation, handleCommentInput];
+
+exports.post_comment_delete = async (req, res, next) => {
+  await Comment.findByIdAndDelete(req.params.commentid)
+    .then(deletedComment =>
+      res.json({ message: `Comment ${deletedComment._id} deleted` })
+    )
+    .catch(err => next(err));
+};

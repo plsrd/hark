@@ -20,6 +20,9 @@ router.get('/:postid/comments/:commentid', postController.post_comment_get);
 
 router.put('/:postid/comments/:commentid', postController.post_comment_put);
 
-router.delete('/:postid/comments/:commentid');
+router.delete(
+  '/:postid/comments/:commentid',
+  postController.post_comment_delete
+);
 
 module.exports = router;
