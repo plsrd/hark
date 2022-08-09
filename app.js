@@ -8,7 +8,6 @@ require('dotenv').config();
 
 const postsRouter = require('./src/routes/posts');
 const usersRouter = require('./src/routes/users');
-const authRouter = require('./src/routes/auth');
 const authStrategies = require('./src/middleware/authStrategies');
 
 const app = express();
@@ -29,7 +28,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 
-app.use('/login', authRouter);
 app.use('/api/posts', postsRouter);
 app.use('/api/users', usersRouter);
 
