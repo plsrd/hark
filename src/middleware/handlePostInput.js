@@ -1,8 +1,6 @@
 const { validationResult } = require('express-validator');
 const Post = require('../models/post');
 
-//user id: 62f1c3b7d1193fff3d00215b
-
 const handlePostInput = (req, res, next) => {
   const errors = validationResult(req);
   const { title, author, content } = req.body;
