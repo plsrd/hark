@@ -1,4 +1,5 @@
 const Post = require('../models/post');
+const Comment = require('../models/comment');
 const postValidation = require('../middleware/postValidation');
 const handlePostInput = require('../middleware/handlePostInput');
 
@@ -25,5 +26,11 @@ exports.post_delete = async (req, res, next) => {
     .then(deletedPost =>
       res.json({ message: `Post ${deletedPost._id} deleted` })
     )
+    .catch(err => next(err));
+};
+
+exports.post_comments_get = async (req, res, next) => {
+  await Comment.find({ post: req.params.postid })
+    .then(comments => res.json({ comments }))
     .catch(err => next(err));
 };

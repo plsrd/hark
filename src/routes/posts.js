@@ -12,4 +12,12 @@ router.put('/:postid', postController.post_put);
 
 router.delete('/:postid', postController.post_delete);
 
+router.get('/:postid/comments', postController.post_comments_get);
+
+router.post('/:postid/comments');
+
+router.put('/:postid/comments/:commentid');
+
+router.delete('/:postid/comments/:commentid');
+
 module.exports = router;
