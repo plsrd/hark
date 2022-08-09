@@ -1,13 +1,15 @@
 const Post = require('../models/post');
+const postValidation = require('../middleware/postValidation');
+const handlePostInput = require('../middleware/handlePostInput');
 
 exports.posts_get = async (req, res, next) => {
-  const posts = await Post.find().populate('author');
-  res.json({ posts });
+  await Post.find()
+    .populate('author')
+    .then(posts => res.json({ posts }))
+    .catch(err => next(err));
 };
 
-exports.posts_post = (req, res, next) => {
-  res.json({ message: 'Post Created' });
-};
+exports.posts_post = [...postValidation, handlePostInput];
 
 exports.post_get = (req, res, next) => {
   res.json({ message: 'Post Found' });

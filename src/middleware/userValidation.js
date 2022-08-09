@@ -1,7 +1,7 @@
 const { body } = require('express-validator');
 const User = require('../models/user');
 
-const validateUser = [
+const userValidation = [
   body('name', 'Name is required').escape().trim().isLength(1),
   body('email', 'A valid email is required')
     .escape()
@@ -23,4 +23,4 @@ const validateUser = [
     }),
 ];
 
-module.exports = validateUser;
+module.exports = userValidation;

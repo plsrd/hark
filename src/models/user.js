@@ -10,8 +10,7 @@ const UserSchema = new Schema({
 });
 
 UserSchema.pre('save', async function (next) {
-  const user = this;
-  this.password = await bcrypt.hash(user.password, 10);
+  this.password = await bcrypt.hash(this.password, 10);
   next();
 });
 
