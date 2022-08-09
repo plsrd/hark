@@ -11,9 +11,17 @@ const UserSchema = new Schema({
 
 UserSchema.pre('save', async function (next) {
   const user = this;
-  const hash = await bcrypt.hash(user.password, 10);
-  this.password = hash;
+  this.password = await bcrypt.hash(user.password, 10);
   next();
 });
+
+UserSchema.pre('findOneAndUpdate', async function (next) {
+  this._update.password = await bcrypt.hash(this._update.password, 10);
+  next();
+});
+
+UserSchema.methods.isValidPassword = async function (password) {
+  return await bcrypt.compare(password, this.password);
+};
 
 module.exports = mongoose.model('User', UserSchema);
