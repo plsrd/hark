@@ -22,6 +22,12 @@ exports.user_get = async (req, res, next) => {
 
 exports.user_put = [...validateUser, updateUser];
 
-exports.user_delete = (req, res, next) => {
-  res.json({ message: 'User Deleted' });
+exports.user_delete = async (req, res, next) => {
+  await User.findByIdAndDelete(req.params.userid)
+    .then(deletedUser =>
+      res.json({
+        message: `User ${deletedUser._id} deleted`,
+      })
+    )
+    .catch(err => next(err));
 };

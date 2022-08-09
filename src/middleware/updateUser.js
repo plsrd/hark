@@ -13,7 +13,7 @@ const updateUser = async (req, res, next) => {
   };
 
   if (!errors.isEmpty()) {
-    res.status(422).send({ errors: errors.array() });
+    res.status(422).send({ errors: errors.array(), updates });
   } else {
     await User.findByIdAndUpdate(req.params.userid, updates, { new: true })
       .then(updatedUser => {
