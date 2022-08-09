@@ -12,4 +12,6 @@ router.put('/:userid', userController.user_put);
 
 router.delete('/:userid', userController.user_delete);
 
+router.get('/:userid/posts', userController.user_posts_get);
+
 module.exports = router;

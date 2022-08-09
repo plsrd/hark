@@ -39,7 +39,10 @@ exports.post_delete = async (req, res, next) => {
 };
 
 exports.post_comments_get = async (req, res, next) => {
-  await Comment.find({ post: req.params.postid })
+  await Comment.find({ post: req.params.postid, ...getFilter(req.query) })
+    .sort(getSort(req.query.sort))
+    .limit(req.query.limit)
+    .skip(req.query.skip)
     .then(comments => res.json(comments))
     .catch(err => next(err));
 };

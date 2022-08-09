@@ -1,10 +1,16 @@
 const userValidation = require('../middleware/userValidation');
 const handleUserInput = require('../middleware/handleUserInput');
+const getSort = require('../../public/javascripts/getSort');
+const getFilter = require('../../public/javascripts/getFilter');
 
 const User = require('../models/user');
+const Post = require('../models/post');
 
 exports.users_get = async (req, res, next) => {
   await User.find()
+    .sort(getSort(req.query.sort))
+    .limit(req.query.limit)
+    .skip(req.query.skip)
     .then(users => res.json(users))
     .catch(err => {
       if (err) next(err);
@@ -28,5 +34,14 @@ exports.user_delete = async (req, res, next) => {
         message: `User ${deletedUser._id} deleted`,
       })
     )
+    .catch(err => next(err));
+};
+
+exports.user_posts_get = async (req, res, next) => {
+  await Post.find({ author: req.params.userid, ...getFilter(req.query) })
+    .sort(getSort(req.query.sort))
+    .limit(req.query.limit)
+    .skip(req.query.skip)
+    .then(userPosts => res.json(userPosts))
     .catch(err => next(err));
 };
