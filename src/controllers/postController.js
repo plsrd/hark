@@ -11,8 +11,11 @@ exports.posts_get = async (req, res, next) => {
 
 exports.posts_post = [...postValidation, handlePostInput];
 
-exports.post_get = (req, res, next) => {
-  res.json({ message: 'Post Found' });
+exports.post_get = async (req, res, next) => {
+  await Post.findById(req.params.postid)
+    .populate('author')
+    .then(post => res.json({ post }))
+    .catch(err => next(err));
 };
 
 exports.post_put = (req, res, next) => {
