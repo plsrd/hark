@@ -1,16 +1,17 @@
 const { body } = require('express-validator');
 const User = require('../models/user');
 
-exports.newUserValidation = [
+const validateUser = [
   body('name', 'Name is required').escape().trim().isLength(1),
   body('email', 'A valid email is required')
     .escape()
     .trim()
     .toLowerCase()
     .isEmail()
-    .custom(async email => {
+    .custom(async (email, { req }) => {
       const existingUser = await User.findOne({ email });
-      if (existingUser) throw new Error('Email is already in use');
+      if (existingUser && existingUser._id != req.params.userid)
+        throw new Error('Email is already in use');
     }),
   body('password', 'Password is required').trim().escape(),
   body('passwordConfirm')
@@ -21,3 +22,5 @@ exports.newUserValidation = [
         throw new Error('Passwords must match.');
     }),
 ];
+
+module.exports = validateUser;

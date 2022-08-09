@@ -1,8 +1,8 @@
-const { validationResult } = require('express-validator');
+const validateUser = require('../middleware/validateUser');
+const createNewUser = require('../middleware/createNewUser');
+const updateUser = require('../middleware/updateUser');
 
 const User = require('../models/user');
-const validation = require('../middleware/validation');
-const createNewUser = require('../middleware/createNewUser');
 
 exports.users_get = async (req, res, next) => {
   await User.find()
@@ -12,7 +12,7 @@ exports.users_get = async (req, res, next) => {
     });
 };
 
-exports.users_post = [...validation.newUserValidation, createNewUser];
+exports.users_post = [...validateUser, createNewUser];
 
 exports.user_get = async (req, res, next) => {
   await User.findById(req.params.userid)
@@ -20,9 +20,7 @@ exports.user_get = async (req, res, next) => {
     .catch(err => next(err));
 };
 
-exports.user_put = (req, res, next) => {
-  res.json({ message: 'User Updated' });
-};
+exports.user_put = [...validateUser, updateUser];
 
 exports.user_delete = (req, res, next) => {
   res.json({ message: 'User Deleted' });
