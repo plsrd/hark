@@ -4,6 +4,7 @@ const Post = require('../models/post');
 const handlePostInput = (req, res, next) => {
   const errors = validationResult(req);
   const { title, author, content } = req.body;
+  console.log(req.user);
 
   const fields = {
     title,

@@ -1,7 +1,8 @@
 const LocalStrategy = require('passport-local').Strategy;
+const JWTstrategy = require('passport-jwt').Strategy;
 const User = require('../models/user');
 
-const loginStrategy = new LocalStrategy(
+const local = new LocalStrategy(
   { usernameField: 'email' },
   async (username, password, done) => {
     await User.findOne({ username: username })
@@ -18,4 +19,22 @@ const loginStrategy = new LocalStrategy(
   }
 );
 
-module.exports = loginStrategy;
+const cookieExtractor = req => {
+  return req && req.cookies ? req.cookies['jwt'] : null;
+};
+
+const jwt = new JWTstrategy(
+  {
+    secretOrKey: process.env.SECRET,
+    jwtFromRequest: cookieExtractor,
+  },
+  async (jwtPayload, done) => {
+    await User.findById(jwtPayload._id)
+      .then(user => {
+        done(null, user);
+      })
+      .catch(err => done(err));
+  }
+);
+
+module.exports = { local, jwt };

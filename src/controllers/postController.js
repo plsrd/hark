@@ -1,3 +1,4 @@
+const passport = require('passport');
 const Post = require('../models/post');
 const Comment = require('../models/comment');
 const postValidation = require('../middleware/postValidation');
@@ -19,7 +20,11 @@ exports.posts_get = async (req, res, next) => {
     .catch(err => next(err));
 };
 
-exports.posts_post = [...postValidation, handlePostInput];
+exports.posts_post = [
+  ...postValidation,
+  passport.authenticate('jwt', { session: false }),
+  handlePostInput,
+];
 
 exports.post_get = async (req, res, next) => {
   await Post.findById(req.params.postid)
