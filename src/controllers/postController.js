@@ -4,12 +4,17 @@ const postValidation = require('../middleware/postValidation');
 const commentValidation = require('../middleware/commentValidation');
 const handlePostInput = require('../middleware/handlePostInput');
 const handleCommentInput = require('../middleware/handleCommentInput');
+const getSort = require('../../public/javascripts/getSort');
+const getFilter = require('../../public/javascripts/getFilter');
 
 //http://localhost:3000/api/posts/62f1cedfa3e4c3d96de46b39/comments/62f295f55e0d3412dc253a91
 
 exports.posts_get = async (req, res, next) => {
-  await Post.find()
+  await Post.find(getFilter(req.query))
     .populate('author')
+    .sort(getSort(req.query.sort))
+    .limit(req.query.limit)
+    .skip(req.query.skip)
     .then(posts => res.json(posts))
     .catch(err => next(err));
 };
