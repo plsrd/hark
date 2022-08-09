@@ -18,9 +18,7 @@ exports.post_get = async (req, res, next) => {
     .catch(err => next(err));
 };
 
-exports.post_put = (req, res, next) => {
-  res.json({ message: 'Post Updated' });
-};
+exports.post_put = [...postValidation, handlePostInput];
 
 exports.post_delete = (req, res, next) => {
   res.json({ message: 'Post Deleted' });

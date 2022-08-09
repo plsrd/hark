@@ -3,7 +3,7 @@ const Post = require('../models/post');
 
 //user id: 62f1c3b7d1193fff3d00215b
 
-const handlePostInput = async (req, res, next) => {
+const handlePostInput = (req, res, next) => {
   const errors = validationResult(req);
   const { title, author, content } = req.body;
 
@@ -14,7 +14,7 @@ const handlePostInput = async (req, res, next) => {
   };
 
   const createNewPost = () => {
-    const newPost = new Post({ ...fields });
+    const newPost = new Post(fields);
     newPost.save((err, createdPost) => {
       if (err) return next(err);
       res.json({
@@ -24,10 +24,22 @@ const handlePostInput = async (req, res, next) => {
     });
   };
 
+  const updatePost = () => {
+    Post.findByIdAndUpdate(req.params.postid, fields, { new: true }).exec(
+      (err, updatedPost) => {
+        if (err) return next(err);
+        res.json({
+          message: 'Post updated',
+          updatedPost,
+        });
+      }
+    );
+  };
+
   if (!errors.isEmpty()) {
     res.status(422).send({ errors: errors.array(), fields });
   } else {
-    createNewPost();
+    req.method == 'POST' ? createNewPost() : updatePost();
   }
 };
 

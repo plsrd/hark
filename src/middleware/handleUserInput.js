@@ -13,7 +13,7 @@ const handleUserInput = async (req, res, next) => {
   };
 
   const createNewUser = () => {
-    const newUser = new User({ ...fields });
+    const newUser = new User(fields);
     newUser.save((err, createdUser) => {
       if (err) return next(err);
 
