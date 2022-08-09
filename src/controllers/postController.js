@@ -33,15 +33,22 @@ exports.post_get = async (req, res, next) => {
     .catch(err => next(err));
 };
 
-exports.post_put = [...postValidation, handlePostInput];
+exports.post_put = [
+  ...postValidation,
+  passport.authenticate('jwt', { session: false }),
+  handlePostInput,
+];
 
-exports.post_delete = async (req, res, next) => {
-  await Post.findByIdAndDelete(req.params.postid)
-    .then(deletedPost =>
-      res.json({ message: `Post ${deletedPost._id} deleted` })
-    )
-    .catch(err => next(err));
-};
+exports.post_delete = [
+  passport.authenticate('jwt', { session: false }),
+  async (req, res, next) => {
+    await Post.findByIdAndDelete(req.params.postid)
+      .then(deletedPost =>
+        res.json({ message: `Post ${deletedPost._id} deleted` })
+      )
+      .catch(err => next(err));
+  },
+];
 
 exports.post_comments_get = async (req, res, next) => {
   await Comment.find({ post: req.params.postid, ...getFilter(req.query) })
@@ -52,7 +59,11 @@ exports.post_comments_get = async (req, res, next) => {
     .catch(err => next(err));
 };
 
-exports.post_comments_post = [...commentValidation, handleCommentInput];
+exports.post_comments_post = [
+  ...commentValidation,
+  passport.authenticate('jwt', { session: false }),
+  handleCommentInput,
+];
 
 exports.post_comment_get = async (req, res, next) => {
   await Comment.findById(req.params.commentid)
@@ -60,12 +71,19 @@ exports.post_comment_get = async (req, res, next) => {
     .catch(err => next(err));
 };
 
-exports.post_comment_put = [...commentValidation, handleCommentInput];
+exports.post_comment_put = [
+  ...commentValidation,
+  passport.authenticate('jwt', { session: false }),
+  handleCommentInput,
+];
 
-exports.post_comment_delete = async (req, res, next) => {
-  await Comment.findByIdAndDelete(req.params.commentid)
-    .then(deletedComment =>
-      res.json({ message: `Comment ${deletedComment._id} deleted` })
-    )
-    .catch(err => next(err));
-};
+exports.post_comment_delete = [
+  passport.authenticate('jwt', { session: false }),
+  async (req, res, next) => {
+    await Comment.findByIdAndDelete(req.params.commentid)
+      .then(deletedComment =>
+        res.json({ message: `Comment ${deletedComment._id} deleted` })
+      )
+      .catch(err => next(err));
+  },
+];
