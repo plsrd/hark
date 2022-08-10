@@ -1,8 +1,16 @@
 const { body } = require('express-validator');
 const Post = require('../models/post');
+const User = require('../models/user');
 
 const commentValidation = [
-  body('author').trim().escape().isLength(3),
+  body('author')
+    .trim()
+    .escape()
+    .custom(async authorId => {
+      const existingUsers = await User.find({}, '_id');
+      if (!existingUsers.find(existingUser => existingUser._id == authorId))
+        throw new Error('You must be an existing user to post a comment');
+    }),
   body('post')
     .trim()
     .custom(async (post, { req }) => {
