@@ -12,7 +12,7 @@ const handlePostInput = (req, res, next) => {
     content,
     isPublished,
   };
-  console.log(req.user);
+
   const createNewPost = () => {
     const newPost = new Post(fields);
     if (role == 'viewer')
