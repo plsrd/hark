@@ -11,6 +11,10 @@ const postValidation = [
       if (!existingUsers.find(user => user._id.toString() == authorId))
         throw new Error('An existing user must be added as author.');
     }),
+  body(
+    'isPublished',
+    'You must indicate whether the post is published'
+  ).isBoolean(),
   body('content').isLength(1),
 ];
 
