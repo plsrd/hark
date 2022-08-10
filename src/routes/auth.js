@@ -10,7 +10,7 @@ router.post('/logout', handleAuth.logout);
 router.get(
   '/user',
   passport.authenticate('jwt', { session: false }),
-  (req, res, next) => {
+  (req, res) => {
     res.json({
       user: req.user,
     });
