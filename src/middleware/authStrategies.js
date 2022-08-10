@@ -31,7 +31,8 @@ const jwt = new JWTstrategy(
   async (jwtPayload, done) => {
     await User.findById(jwtPayload._id)
       .then(user => {
-        done(null, user);
+        const { _id, name, email, role } = user;
+        done(null, { user: { _id, name, email, role } });
       })
       .catch(err => done(err));
   }

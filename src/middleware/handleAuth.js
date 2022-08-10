@@ -5,9 +5,11 @@ const login = (req, res, next) => {
   passport.authenticate('local', { session: false }, (err, user, info) => {
     if (err) return next(err);
 
+    const { _id, email, name, role } = user;
+
     if (!user) return res.status(401).json({ message: info.message });
 
-    req.login(user, { session: false }, err => {
+    req.login({ user: { _id, name, email, role } }, { session: false }, err => {
       if (err) return next(err);
     });
 
@@ -20,6 +22,8 @@ const login = (req, res, next) => {
       sameSite: true,
     });
 
+    console.log(req.user);
+
     res.json({ message: 'Successfully authenticated' });
   })(req, res);
 };
@@ -27,11 +31,11 @@ const login = (req, res, next) => {
 const logout = (req, res) => {
   if (req.cookies['jwt']) {
     res.clearCookie('jwt').status(200).json({
-      message: 'You have logged out',
+      message: 'Logout successful',
     });
   } else {
     res.status(401).json({
-      error: 'Invalid jwt',
+      error: 'Invalid token',
     });
   }
 };
