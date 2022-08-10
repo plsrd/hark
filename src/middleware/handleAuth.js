@@ -22,8 +22,6 @@ const login = (req, res, next) => {
       sameSite: true,
     });
 
-    console.log(req.user);
-
     res.json({ message: 'Successfully authenticated' });
   })(req, res);
 };
