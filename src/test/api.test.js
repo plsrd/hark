@@ -8,7 +8,7 @@ describe('Log in user', () => {
     await request(baseURL).post('/auth/logout');
   });
 
-  it('Should log user in', async () => {
+  it('Should notify successful login', async () => {
     const response = await request(baseURL).post('/auth/login').send(auth);
 
     expect(response.statusCode).toBe(200);
@@ -16,9 +16,35 @@ describe('Log in user', () => {
   });
 
   it('should create a cookie', async () => {
-    const response = await request(baseURL).post('/auth/login').send(auth);
-    const cookie = response.get('Set-Cookie');
-    console.log(cookie);
+    await request(baseURL).post('/auth/login').send(auth);
     expect('set-cookie');
+  });
+});
+
+describe('Log out user', () => {
+  let cookie;
+  beforeAll(async () => {
+    const response = await request(baseURL)
+      .post('/auth/login')
+      .send({ email: 'admin@rd.com', password: 'crumbs' });
+    cookie = response.get('Set-Cookie');
+  });
+
+  it('Should notify successful logout', async () => {
+    const response = await request(baseURL)
+      .post('/auth/logout')
+      .set('Cookie', cookie);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.message).toBe('Logout successful');
+  });
+
+  it('Should remove JWT cookie', async () => {
+    const response = await request(baseURL)
+      .post('/auth/logout')
+      .set('Cookie', cookie);
+
+    expect(response.headers['set-cookie'][0]).toBe(
+      'jwt=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT'
+    );
   });
 });
