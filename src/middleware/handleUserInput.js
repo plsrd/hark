@@ -3,6 +3,7 @@ const User = require('../models/user');
 
 const handleUserInput = async (req, res, next) => {
   const { name, email, password, role } = req.body;
+  const { role: userRole, _id } = req.user;
 
   const errors = validationResult(req);
 
@@ -26,6 +27,11 @@ const handleUserInput = async (req, res, next) => {
   };
 
   const updateUser = () => {
+    if (userRole !== 'admin' && _id.toString() !== req.params.userid) {
+      return res
+        .status(401)
+        .send({ message: 'Users may only edit their own profile' });
+    }
     User.findByIdAndUpdate(req.params.userid, fields, { new: true })
       .select('_id name email role')
       .exec((err, updatedUser) => {
