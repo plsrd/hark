@@ -30,7 +30,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 
-app.use('/api/posts', postsRouter);
+app.use(
+  '/api/posts',
+  passport.authenticate('jwt', { session: false }),
+  postsRouter
+);
 app.use(
   '/api/users',
   passport.authenticate('jwt', { session: false }),
