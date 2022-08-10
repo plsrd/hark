@@ -16,9 +16,7 @@ const handlePostInput = (req, res, next) => {
   const createNewPost = () => {
     const newPost = new Post(fields);
     if (role == 'viewer')
-      return res
-        .status(401)
-        .send({ message: 'You must be an admin or editor to create a post' });
+      return res.status(401).send({ message: 'Viewers may not create posts' });
 
     newPost.save((err, createdPost) => {
       if (err) return next(err);
@@ -31,9 +29,7 @@ const handlePostInput = (req, res, next) => {
 
   const updatePost = () => {
     if (role == 'viewer') {
-      return res
-        .status(401)
-        .send({ message: 'You must be an admin or editor to edit a post' });
+      return res.status(401).send({ message: 'Viewers may not edit posts' });
     } else if (role == 'editor' && author !== _id.toString()) {
       return res
         .status(401)

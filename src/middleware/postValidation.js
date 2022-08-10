@@ -14,12 +14,10 @@ const postValidation = [
         throw new Error('An existing user must be added as author.');
 
       if (existingUser.role == 'viewer')
-        throw new Error('You cannot assign a viewer as author');
+        throw new Error('A viewer cannot be assigned as an author');
 
       if (role !== 'admin' && authorId !== _id.toString())
-        throw new Error(
-          'Only admins can assign an author other than themselves'
-        );
+        throw new Error('Author must be the current logged in user');
     }),
   body(
     'isPublished',
