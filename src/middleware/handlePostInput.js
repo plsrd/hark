@@ -30,19 +30,19 @@ const handlePostInput = (req, res, next) => {
   };
 
   const updatePost = () => {
+    if (role == 'viewer') {
+      return res
+        .status(401)
+        .send({ message: 'You must be an admin or editor to edit a post' });
+    } else if (role == 'editor' && author !== _id.toString()) {
+      return res
+        .status(401)
+        .send({ message: 'Editors may only edit their own content' });
+    }
+
     Post.findByIdAndUpdate(req.params.postid, fields, { new: true }).exec(
       (err, updatedPost) => {
         if (err) return next(err);
-
-        if (role == 'viewer') {
-          return res
-            .status(401)
-            .send({ message: 'You must be an admin or editor to edit a post' });
-        } else if (role == 'editor' && author !== _id.toString()) {
-          return res
-            .status(401)
-            .send({ message: 'Editors may only edit their own content' });
-        }
 
         res.json({
           message: 'Post updated',

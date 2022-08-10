@@ -8,8 +8,6 @@ const handleCommentInput = require('../middleware/handleCommentInput');
 const getSort = require('../../public/javascripts/getSort');
 const getFilter = require('../../public/javascripts/getFilter');
 
-//http://localhost:3000/api/posts/62f1cedfa3e4c3d96de46b39/comments/62f295f55e0d3412dc253a91
-
 exports.posts_get = async (req, res, next) => {
   await Post.find(getFilter(req.query))
     .populate('author')

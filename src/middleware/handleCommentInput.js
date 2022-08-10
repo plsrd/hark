@@ -3,8 +3,8 @@ const Comment = require('../models/comment');
 
 const handleCommentInput = (req, res, next) => {
   const errors = validationResult(req);
-
   const { author, content } = req.body;
+  const { role, _id } = req.user;
 
   const fields = {
     author,
@@ -25,6 +25,11 @@ const handleCommentInput = (req, res, next) => {
   };
 
   const updateComment = () => {
+    if (role !== 'admin' && author !== _id.toString()) {
+      return res
+        .status(401)
+        .send({ message: 'Editors may only edit their own content' });
+    }
     Comment.findByIdAndUpdate(req.params.commentid, fields, { new: true }).exec(
       (err, updatedComment) => {
         if (err) return next(err);

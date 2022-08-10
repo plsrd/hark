@@ -1,5 +1,4 @@
 const { body } = require('express-validator');
-const Post = require('../models/post');
 const User = require('../models/user');
 
 const commentValidation = [
@@ -11,26 +10,11 @@ const commentValidation = [
       const existingUser = await User.findById(authorId);
 
       if (!existingUser) {
-        throw new Error('You must be an existing user to post a comment');
+        throw new Error('Author must be an existing user');
       }
 
       if (role !== 'admin' && authorId !== _id.toString()) {
-        throw new Error(
-          'You cannot assign someone other than yourself as author'
-        );
-      }
-    }),
-  body('post')
-    .trim()
-    .custom(async (postId, { req }) => {
-      const existingPost = await Post.findById(postId);
-
-      if (!existingPost) {
-        throw new Error('Comments can only be added to existing posts');
-      }
-
-      if (postId !== req.params.postid) {
-        throw new Error('Comment can only be added to the current post');
+        throw new Error('Author must be the current logged in user');
       }
     }),
   body('content').isLength(1),
