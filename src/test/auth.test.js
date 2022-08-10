@@ -48,3 +48,29 @@ describe('Log out user', () => {
     );
   });
 });
+
+describe('GET current user', () => {
+  let cookie;
+  beforeAll(async () => {
+    const response = await request(baseURL)
+      .post('/auth/login')
+      .send({ email: 'admin@rd.com', password: 'crumbs' });
+    cookie = response.get('Set-Cookie');
+  });
+  afterAll(async () => {
+    await request(baseURL).post('/auth/logout').set('Cookie', cookie);
+  });
+
+  it('Should respond with current logged in user', async () => {
+    const response = await request(baseURL)
+      .get('/auth/user')
+      .set('Cookie', cookie);
+
+    expect(response.body.user).toEqual({
+      _id: '62f2ffe5a247e46e3885a500',
+      name: 'An Admin',
+      email: 'admin@rd.com',
+      role: 'admin',
+    });
+  });
+});
