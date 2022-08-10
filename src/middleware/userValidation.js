@@ -13,6 +13,7 @@ const userValidation = [
       if (existingUser && existingUser._id != req.params.userid)
         throw new Error('Email is already in use');
     }),
+  body('role').trim().escape().isIn(['admin', 'editor', 'viewer']),
   body('password', 'Password is required').trim().escape(),
   body('passwordConfirm')
     .trim()

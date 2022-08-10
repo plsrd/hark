@@ -2,7 +2,7 @@ const { validationResult } = require('express-validator');
 const User = require('../models/user');
 
 const handleUserInput = async (req, res, next) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body;
 
   const errors = validationResult(req);
 
@@ -10,6 +10,7 @@ const handleUserInput = async (req, res, next) => {
     name,
     email,
     password,
+    role,
   };
 
   const createNewUser = () => {
@@ -25,12 +26,12 @@ const handleUserInput = async (req, res, next) => {
   };
 
   const updateUser = () => {
-    User.findByIdAndUpdate(req.params.userid, fields, { new: true }).exec(
-      (err, updatedUser) => {
+    User.findByIdAndUpdate(req.params.userid, fields, { new: true })
+      .select('_id name email role')
+      .exec((err, updatedUser) => {
         if (err) return next(err);
         res.json({ message: 'User updated', updatedUser });
-      }
-    );
+      });
   };
 
   if (!errors.isEmpty()) {
