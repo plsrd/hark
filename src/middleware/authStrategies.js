@@ -1,11 +1,12 @@
 const LocalStrategy = require('passport-local').Strategy;
 const JWTstrategy = require('passport-jwt').Strategy;
+const ExtractJWT = require('passport-jwt').ExtractJwt;
 const User = require('../models/user');
 
 const local = new LocalStrategy(
   { usernameField: 'email' },
-  async (username, password, done) => {
-    await User.findOne({ username: username })
+  async (email, password, done) => {
+    await User.findOne({ email })
       .then(async user => {
         if (!user) return done(null, false, { message: 'Incorrect username' });
 

@@ -4,6 +4,7 @@ const Post = require('../models/post');
 const handlePostInput = (req, res, next) => {
   const errors = validationResult(req);
   const { title, author, content, isPublished } = req.body;
+  const { role, _id } = req.user;
 
   const fields = {
     title,
@@ -11,11 +12,22 @@ const handlePostInput = (req, res, next) => {
     content,
     isPublished,
   };
-
+  console.log(req.user);
   const createNewPost = () => {
     const newPost = new Post(fields);
+    if (role == 'viewer')
+      return res
+        .status(401)
+        .send({ message: 'You must be an admin or editor to create a post' });
+
     newPost.save((err, createdPost) => {
       if (err) return next(err);
+
+      if (role == 'viewer') {
+        return res
+          .status(401)
+          .send({ message: 'You must be an admin or editor to create a post' });
+      }
       res.json({
         message: 'Post created',
         createdPost,
@@ -27,6 +39,17 @@ const handlePostInput = (req, res, next) => {
     Post.findByIdAndUpdate(req.params.postid, fields, { new: true }).exec(
       (err, updatedPost) => {
         if (err) return next(err);
+
+        if (role == 'viewer') {
+          return res
+            .status(401)
+            .send({ message: 'You must be an admin or editor to edit a post' });
+        } else if (role == 'editor' && author !== _id.toString()) {
+          return res
+            .status(401)
+            .send({ message: 'Editors may only edit their own content' });
+        }
+
         res.json({
           message: 'Post updated',
           updatedPost,
