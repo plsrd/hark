@@ -22,12 +22,6 @@ const handlePostInput = (req, res, next) => {
 
     newPost.save((err, createdPost) => {
       if (err) return next(err);
-
-      if (role == 'viewer') {
-        return res
-          .status(401)
-          .send({ message: 'You must be an admin or editor to create a post' });
-      }
       res.json({
         message: 'Post created',
         createdPost,

@@ -2,7 +2,7 @@ const { body } = require('express-validator');
 const User = require('../models/user');
 
 const postValidation = [
-  body('title', 'A title is required').escape().trim().isLength(1),
+  body('title', 'A title is required').trim().isLength(1),
   body('author')
     .escape()
     .trim()

@@ -6,21 +6,32 @@ const commentValidation = [
   body('author')
     .trim()
     .escape()
-    .custom(async authorId => {
-      const existingUsers = await User.find({}, '_id');
-      if (!existingUsers.find(existingUser => existingUser._id == authorId))
+    .custom(async (authorId, { req }) => {
+      const { role, _id } = req.user;
+      const existingUser = await User.findById(authorId);
+
+      if (!existingUser) {
         throw new Error('You must be an existing user to post a comment');
+      }
+
+      if (role !== 'admin' && authorId !== _id.toString()) {
+        throw new Error(
+          'You cannot assign someone other than yourself as author'
+        );
+      }
     }),
   body('post')
     .trim()
-    .custom(async (post, { req }) => {
-      const existingPosts = await Post.find({}, '_id');
-      if (
-        !existingPosts.find(
-          existingPost => existingPost._id == req.params.postid
-        )
-      )
-        throw new Error('You must attach this comment to an existing post');
+    .custom(async (postId, { req }) => {
+      const existingPost = await Post.findById(postId);
+
+      if (!existingPost) {
+        throw new Error('Comments can only be added to existing posts');
+      }
+
+      if (postId !== req.params.postid) {
+        throw new Error('Comment can only be added to the current post');
+      }
     }),
   body('content').isLength(1),
 ];
