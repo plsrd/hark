@@ -143,8 +143,6 @@ describe('PUT single post', () => {
         content,
       });
 
-    console.log(response.statusCode, response.body.errors);
-
     const { title } = await Post.findById(postId);
 
     expect(title).toBe(newTitle);
