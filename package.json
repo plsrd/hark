@@ -5,7 +5,10 @@
   "scripts": {
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
-    "test": "jest ./src/test/posts.test.js"
+    "test": "jest ./src/test",
+    "testAuth": "jest ./src/test/auth.test.js",
+    "testPosts": "jest ./src/test/posts.test.js",
+    "testUsers": "jest ./src/test/users.test.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

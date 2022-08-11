@@ -2,38 +2,41 @@ const request = require('supertest');
 
 const baseURL = 'http://localhost:3000/api';
 
-describe('Log in user', () => {
-  const auth = { email: 'admin@rd.com', password: 'crumbs' };
-  afterAll(async () => {
-    await request(baseURL).post('/auth/logout');
-  });
+let cookie;
 
+const login = async () => {
+  const auth = { email: 'admin@rd.com', password: 'crumbs' };
+  const response = await request(baseURL).post('/auth/login').send(auth);
+  cookie = response.get('Set-Cookie');
+  return response;
+};
+
+const logout = async () => {
+  const response = await request(baseURL)
+    .post('/auth/logout')
+    .set('Cookie', cookie);
+  return response;
+};
+
+describe('Log in user', () => {
   it('Should notify successful login', async () => {
-    const response = await request(baseURL).post('/auth/login').send(auth);
+    const response = await login();
 
     expect(response.statusCode).toBe(200);
     expect(response.body.message).toBe('Successfully authenticated');
   });
 
   it('should create a cookie', async () => {
-    await request(baseURL).post('/auth/login').send(auth);
+    await login();
     expect('set-cookie');
+
+    await logout();
   });
 });
 
 describe('Log out user', () => {
-  let cookie;
-  beforeAll(async () => {
-    const response = await request(baseURL)
-      .post('/auth/login')
-      .send({ email: 'admin@rd.com', password: 'crumbs' });
-    cookie = response.get('Set-Cookie');
-  });
-
   it('Should notify successful logout', async () => {
-    const response = await request(baseURL)
-      .post('/auth/logout')
-      .set('Cookie', cookie);
+    const response = await logout();
     expect(response.statusCode).toBe(200);
     expect(response.body.message).toBe('Logout successful');
   });
@@ -50,18 +53,8 @@ describe('Log out user', () => {
 });
 
 describe('GET current user', () => {
-  let cookie;
-  beforeAll(async () => {
-    const response = await request(baseURL)
-      .post('/auth/login')
-      .send({ email: 'admin@rd.com', password: 'crumbs' });
-    cookie = response.get('Set-Cookie');
-  });
-  afterAll(async () => {
-    await request(baseURL).post('/auth/logout').set('Cookie', cookie);
-  });
-
   it('Should respond with current logged in user', async () => {
+    await login();
     const response = await request(baseURL)
       .get('/auth/user')
       .set('Cookie', cookie);
@@ -72,5 +65,7 @@ describe('GET current user', () => {
       email: 'admin@rd.com',
       role: 'admin',
     });
+
+    await logout();
   });
 });
