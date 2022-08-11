@@ -51,8 +51,10 @@ describe('POST a new comment to a post', () => {
 
     id = response.body.newComment._id;
 
-    const newComment = await Comment.findById(id);
+    const newComment = await request(baseURL)
+      .get(`/posts/${process.env.TEST_POST_ID}/comments/${id}`)
+      .set('Cookie', cookie);
 
-    expect(newComment.content).toEqual(testComment.content);
+    expect(newComment.body.author).toBe(testComment.author);
   });
 });
