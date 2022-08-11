@@ -13,13 +13,13 @@ beforeAll(async () => {
   cookie = response.get('Set-Cookie');
 });
 
+afterAll(async () => {
+  await request(baseURL).post('/auth/logout').set('Cookie', cookie);
+});
+
 configDB();
 
 describe('GET all posts', () => {
-  afterAll(async () => {
-    await request(baseURL).post('/auth/logout').set('Cookie', cookie);
-  });
-
   it('should return all existing posts', async () => {
     const response = await request(baseURL).get('/posts').set('Cookie', cookie);
     const allPosts = await Post.find();
@@ -30,11 +30,6 @@ describe('GET all posts', () => {
 
 describe('POST /post creates new post', () => {
   let id;
-
-  afterAll(async () => {
-    await Post.findByIdAndDelete(id);
-    await request(baseURL).post('/auth/logout').set('Cookie', cookie);
-  });
 
   it('should validate body before posting', async () => {
     const invalidPost = {
@@ -52,6 +47,8 @@ describe('POST /post creates new post', () => {
     expect(response.body.errors[0].msg).toBe(
       'An existing user must be added as author.'
     );
+
+    await Post.findByIdAndDelete(id);
   });
 
   it('should create a new post', async () => {
@@ -79,10 +76,6 @@ describe('POST /post creates new post', () => {
 });
 
 describe('GET single post', () => {
-  afterAll(async () => {
-    await request(baseURL).post('/auth/logout').set('Cookie', cookie);
-  });
-
   it('should return a given post', async () => {
     const postId = '62f30226d7ad1e225b79a47d';
     const response = await request(baseURL)
@@ -97,11 +90,6 @@ describe('GET single post', () => {
 
 describe('PUT single post', () => {
   const postId = '62f30226d7ad1e225b79a47d';
-
-  afterAll(async () => {
-    await request(baseURL).post('/auth/logout').set('Cookie', cookie);
-    await Post.findByIdAndUpdate(postId, { title: 'A Little Test' });
-  });
 
   it('should edit the given post', async () => {
     const { author, isPublished, content } = await Post.findById(postId);
@@ -118,14 +106,12 @@ describe('PUT single post', () => {
     const { title } = await Post.findById(postId);
 
     expect(title).toBe(newTitle);
+
+    await Post.findByIdAndUpdate(postId, { title: 'A Little Test' });
   });
 });
 
 describe('DELETE single post', () => {
-  afterAll(async () => {
-    await request(baseURL).post('/auth/logout').set('Cookie', cookie);
-  });
-
   it('should delete the specified post', async () => {
     const newPost = await new Post({
       title: 'A little test',
