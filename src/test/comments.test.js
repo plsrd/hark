@@ -67,3 +67,24 @@ describe('GET a single comment for a specified post', () => {
     expect(response.body._id).toMatch(comment._id.toString());
   });
 });
+
+describe('PUT an edit to a specified comment', () => {
+  it('should change the content of the comment', async () => {
+    const { author, post } = comment;
+
+    const editedComment = {
+      author,
+      post,
+      content: [{ else: 'something' }],
+    };
+
+    await request(baseURL)
+      .put(`/posts/${process.env.TEST_POST_ID}/comments/${id}`)
+      .set('Cookie', cookie)
+      .send(editedComment);
+
+    const updatedComment = await Comment.findById(id);
+
+    expect(updatedComment.content[0]).toMatchObject(editedComment.content[0]);
+  });
+});
