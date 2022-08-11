@@ -2,13 +2,14 @@ const { validationResult } = require('express-validator');
 const User = require('../models/user');
 
 const handleUserInput = async (req, res, next) => {
-  const { name, email, password, role } = req.body;
+  const { firstName, lastName, email, password, role } = req.body;
   const { role: userRole, _id } = req.user;
 
   const errors = validationResult(req);
 
   const fields = {
-    name,
+    firstName,
+    lastName,
     email,
     password,
     role,

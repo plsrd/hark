@@ -2,7 +2,8 @@ const { body } = require('express-validator');
 const User = require('../models/user');
 
 const userValidation = [
-  body('name', 'Name is required').escape().trim().isLength(1),
+  body('firstName', 'First name is required').escape().trim().isLength(1),
+  body('lastName', 'Last name is required').escape().trim().isLength(1),
   body('email', 'A valid email is required')
     .escape()
     .trim()
