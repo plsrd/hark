@@ -58,8 +58,8 @@ describe('POST a new comment to a post', () => {
   });
 });
 
-describe('GET a single comment for a specified post', () => {
-  it('should GET a specified comment on a specified post', async () => {
+describe('GET a comment', () => {
+  it('should return the comment from a specified post', async () => {
     const response = await request(baseURL)
       .get(`/posts/${process.env.TEST_POST_ID}/comments/${id}`)
       .set('Cookie', cookie);
@@ -68,7 +68,7 @@ describe('GET a single comment for a specified post', () => {
   });
 });
 
-describe('PUT an edit to a specified comment', () => {
+describe('PUT an edit to a comment', () => {
   it('should change the content of the comment', async () => {
     const { author, post } = comment;
 
@@ -86,5 +86,17 @@ describe('PUT an edit to a specified comment', () => {
     const updatedComment = await Comment.findById(id);
 
     expect(updatedComment.content[0]).toMatchObject(editedComment.content[0]);
+  });
+});
+
+describe('DELETE a comment', () => {
+  it('should delete the specified comment', async () => {
+    await request(baseURL)
+      .delete(`/posts/${process.env.TEST_POST_ID}/comments/${id}`)
+      .set('Cookie', cookie);
+
+    const deletedComment = await Comment.findById(id);
+
+    expect(deletedComment).toBe(null);
   });
 });
