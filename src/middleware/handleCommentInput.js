@@ -14,12 +14,12 @@ const handleCommentInput = (req, res, next) => {
 
   const createNewComment = () => {
     const comment = new Comment(fields);
-    comment.save((err, createdComment) => {
+    comment.save((err, newComment) => {
       if (err) return next(err);
 
       res.json({
         message: 'Comment created',
-        createdComment,
+        newComment,
       });
     });
   };
