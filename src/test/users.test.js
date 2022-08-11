@@ -7,6 +7,7 @@ const baseURL = 'http://localhost:3000/api';
 
 let cookie;
 let id;
+
 const testUser = {
   firstName: 'Atest',
   lastName: 'User',
@@ -25,7 +26,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  await request(baseURL).post('/auth/logout').set('Cookie', cookie);
+  await request(baseURL).post('/auth/logout').set({ Cookie: cookie });
   await Post.findByIdAndDelete(id);
 });
 
@@ -55,5 +56,19 @@ describe('POST new user', () => {
     const newUser = await User.findById(id);
 
     expect(id).toEqual(newUser._id.toString());
+  });
+});
+
+describe('PUT a new user', () => {
+  it('should edit an existing user', async () => {
+    const newName = 'Doodle';
+    await request(baseURL)
+      .put(`/users/${id}`)
+      .set({ Cookie: cookie })
+      .send({ ...testUser, firstName: newName });
+
+    const updatedUser = await User.findById(id);
+
+    expect(updatedUser.firstName).toMatch(newName);
   });
 });

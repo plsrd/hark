@@ -58,8 +58,6 @@ describe('POST /post creates new post', () => {
       author: process.env.TEST_AUTHOR_ID,
     };
 
-    const initialPostCount = await Post.countDocuments();
-
     const response = await request(baseURL)
       .post('/posts')
       .set('Cookie', cookie)
@@ -67,11 +65,9 @@ describe('POST /post creates new post', () => {
 
     id = response.body.createdPost._id;
 
-    const finalPostCount = await Post.countDocuments();
+    const post = await Post.findById(id);
 
-    expect(response.statusCode).toBe(200);
-    expect(response.body.message).toBe('Post created');
-    expect(initialPostCount).toBe(finalPostCount - 1);
+    expect(post._id.toString()).toMatch(id);
   });
 });
 
