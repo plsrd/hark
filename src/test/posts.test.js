@@ -4,18 +4,18 @@ const Post = require('../models/post');
 
 const baseURL = 'http://localhost:3000/api';
 
+let cookie;
+
+beforeAll(async () => {
+  const response = await request(baseURL)
+    .post('/auth/login')
+    .send({ email: 'admin@rd.com', password: 'crumbs' });
+  cookie = response.get('Set-Cookie');
+});
+
 configDB();
 
 describe('GET all posts', () => {
-  let cookie;
-
-  beforeAll(async () => {
-    const response = await request(baseURL)
-      .post('/auth/login')
-      .send({ email: 'admin@rd.com', password: 'crumbs' });
-    cookie = response.get('Set-Cookie');
-  });
-
   afterAll(async () => {
     await request(baseURL).post('/auth/logout').set('Cookie', cookie);
   });
@@ -29,15 +29,7 @@ describe('GET all posts', () => {
 });
 
 describe('POST /post creates new post', () => {
-  let cookie;
   let id;
-
-  beforeAll(async () => {
-    const response = await request(baseURL)
-      .post('/auth/login')
-      .send({ email: 'admin@rd.com', password: 'crumbs' });
-    cookie = response.get('Set-Cookie');
-  });
 
   afterAll(async () => {
     await Post.findByIdAndDelete(id);
@@ -87,15 +79,6 @@ describe('POST /post creates new post', () => {
 });
 
 describe('GET single post', () => {
-  let cookie;
-
-  beforeAll(async () => {
-    const response = await request(baseURL)
-      .post('/auth/login')
-      .send({ email: 'admin@rd.com', password: 'crumbs' });
-    cookie = response.get('Set-Cookie');
-  });
-
   afterAll(async () => {
     await request(baseURL).post('/auth/logout').set('Cookie', cookie);
   });
@@ -113,15 +96,7 @@ describe('GET single post', () => {
 });
 
 describe('PUT single post', () => {
-  let cookie;
   const postId = '62f30226d7ad1e225b79a47d';
-
-  beforeAll(async () => {
-    const response = await request(baseURL)
-      .post('/auth/login')
-      .send({ email: 'admin@rd.com', password: 'crumbs' });
-    cookie = response.get('Set-Cookie');
-  });
 
   afterAll(async () => {
     await request(baseURL).post('/auth/logout').set('Cookie', cookie);
@@ -147,30 +122,20 @@ describe('PUT single post', () => {
 });
 
 describe('DELETE single post', () => {
-  let cookie;
-  let id;
+  afterAll(async () => {
+    await request(baseURL).post('/auth/logout').set('Cookie', cookie);
+  });
 
-  beforeAll(async () => {
-    const response = await request(baseURL)
-      .post('/auth/login')
-      .send({ email: 'admin@rd.com', password: 'crumbs' });
-    cookie = response.get('Set-Cookie');
-
-    const post = await new Post({
+  it('should delete the specified post', async () => {
+    const newPost = await new Post({
       title: 'A little test',
       isPublished: true,
       content: [{ some: 'content' }],
       author: '62f2ffe5a247e46e3885a500',
     }).save();
 
-    id = post._id;
-  });
+    id = newPost._id;
 
-  afterAll(async () => {
-    await request(baseURL).post('/auth/logout').set('Cookie', cookie);
-  });
-
-  it('should delete the specified post', async () => {
     const response = await request(baseURL)
       .delete(`/posts/${id}`)
       .set('Cookie', cookie);
