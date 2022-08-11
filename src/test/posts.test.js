@@ -133,18 +133,51 @@ describe('PUT single post', () => {
 
     const newTitle = 'A new title';
 
-    const response = await request(baseURL)
-      .put(`/posts/${postId}`)
-      .set('Cookie', cookie)
-      .send({
-        title: newTitle,
-        author,
-        isPublished,
-        content,
-      });
+    await request(baseURL).put(`/posts/${postId}`).set('Cookie', cookie).send({
+      title: newTitle,
+      author,
+      isPublished,
+      content,
+    });
 
     const { title } = await Post.findById(postId);
 
     expect(title).toBe(newTitle);
+  });
+});
+
+describe('DELETE single post', () => {
+  let cookie;
+  let id;
+
+  beforeAll(async () => {
+    const response = await request(baseURL)
+      .post('/auth/login')
+      .send({ email: 'admin@rd.com', password: 'crumbs' });
+    cookie = response.get('Set-Cookie');
+
+    const post = await new Post({
+      title: 'A little test',
+      isPublished: true,
+      content: [{ some: 'content' }],
+      author: '62f2ffe5a247e46e3885a500',
+    }).save();
+
+    id = post._id;
+  });
+
+  afterAll(async () => {
+    await request(baseURL).post('/auth/logout').set('Cookie', cookie);
+  });
+
+  it('should delete the specified post', async () => {
+    const response = await request(baseURL)
+      .delete(`/posts/${id}`)
+      .set('Cookie', cookie);
+
+    const post = await Post.findById(id);
+
+    expect(response.body.message).toBe(`Post ${id} deleted`);
+    expect(post).toBe(null);
   });
 });
