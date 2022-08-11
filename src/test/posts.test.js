@@ -2,6 +2,7 @@ const request = require('supertest');
 const configDB = require('./configDB');
 require('dotenv').config();
 const Post = require('../models/post');
+const Comment = require('../models/comment');
 
 const baseURL = 'http://localhost:3000/api';
 
@@ -51,10 +52,10 @@ describe('POST /post creates new post', () => {
 
   it('should create a new post', async () => {
     const newPost = {
-      title: 'A little test',
+      title: 'TEST',
       isPublished: false,
       content: [{ test: 'test' }],
-      author: process.env.TEST_ID,
+      author: process.env.TEST_AUTHOR_ID,
     };
 
     const initialPostCount = await Post.countDocuments();
@@ -95,7 +96,7 @@ describe('PUT single post', () => {
       .set('Cookie', cookie)
       .send({
         title: newTitle,
-        author: process.env.TEST_ID,
+        author: process.env.TEST_AUTHOR_ID,
         isPublished: false,
         content: [{ test: 'test' }],
       });
@@ -116,5 +117,18 @@ describe('DELETE single post', () => {
 
     expect(response.body.message).toBe(`Post ${id} deleted`);
     expect(post).toBe(null);
+  });
+});
+
+describe('GET all post comments', () => {
+  it('should return all comments on a post', async () => {
+    const allPostComments = await Comment.find({
+      post: process.env.TEST_POST_ID,
+    });
+    const response = await request(baseURL)
+      .get(`/posts/${process.env.TEST_POST_ID}/comments`)
+      .set('Cookie', cookie);
+
+    expect(response.body.length).toBe(allPostComments.length);
   });
 });

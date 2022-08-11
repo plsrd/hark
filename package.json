@@ -8,6 +8,7 @@
     "test": "jest ./src/test",
     "testAuth": "jest ./src/test/auth.test.js",
     "testPosts": "jest ./src/test/posts.test.js",
+    "testComments": "jest ./src/test/comments.test.js",
     "testUsers": "jest ./src/test/users.test.js"
   },
   "dependencies": {
