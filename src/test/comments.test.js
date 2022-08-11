@@ -7,6 +7,7 @@ const baseURL = 'http://localhost:3000/api';
 
 let cookie;
 let id;
+let comment;
 
 beforeAll(async () => {
   const response = await request(baseURL).post('/auth/login').send({
@@ -51,10 +52,18 @@ describe('POST a new comment to a post', () => {
 
     id = response.body.newComment._id;
 
-    const newComment = await request(baseURL)
+    comment = await Comment.findById(id);
+
+    expect(comment._id.toString()).toMatch(id);
+  });
+});
+
+describe('GET a single comment for a specified post', () => {
+  it('should GET a specified comment on a specified post', async () => {
+    const response = await request(baseURL)
       .get(`/posts/${process.env.TEST_POST_ID}/comments/${id}`)
       .set('Cookie', cookie);
 
-    expect(newComment.body.author).toBe(testComment.author);
+    expect(response.body._id).toMatch(comment._id.toString());
   });
 });
