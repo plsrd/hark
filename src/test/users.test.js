@@ -6,7 +6,15 @@ const Post = require('../models/user');
 const baseURL = 'http://localhost:3000/api';
 
 let cookie;
-let users;
+let id;
+const testUser = {
+  firstName: 'Atest',
+  lastName: 'User',
+  email: 'test@testaroo.com',
+  password: 'amblegram',
+  passwordConfirm: 'amblegram',
+  role: 'viewer',
+};
 
 beforeAll(async () => {
   const response = await request(baseURL).post('/auth/login').send({
@@ -18,6 +26,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await request(baseURL).post('/auth/logout').set('Cookie', cookie);
+  await Post.findByIdAndDelete(id);
 });
 
 configDB();
@@ -28,8 +37,23 @@ describe('Get all users', () => {
       .get('/users')
       .set({ Cookie: cookie });
 
-    users = await User.find();
+    const users = await User.find();
 
     expect(response.body.length).toEqual(users.length);
+  });
+});
+
+describe('POST new user', () => {
+  it('should create a new user', async () => {
+    const response = await request(baseURL)
+      .post('/users')
+      .set({ Cookie: cookie })
+      .send(testUser);
+
+    id = response.body.newUser._id.toString();
+
+    const newUser = await User.findById(id);
+
+    expect(id).toEqual(newUser._id.toString());
   });
 });

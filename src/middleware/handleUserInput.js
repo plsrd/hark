@@ -16,13 +16,12 @@ const handleUserInput = async (req, res, next) => {
   };
 
   const createNewUser = () => {
-    const newUser = new User(fields);
-    newUser.save((err, createdUser) => {
+    new User(fields).save((err, newUser) => {
       if (err) return next(err);
 
       res.json({
         message: 'User created',
-        createdUser,
+        newUser,
       });
     });
   };
