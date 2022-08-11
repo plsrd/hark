@@ -111,3 +111,42 @@ describe('GET single post', () => {
     expect(response.body.title).toBe(post.title);
   });
 });
+
+describe('PUT single post', () => {
+  let cookie;
+  const postId = '62f30226d7ad1e225b79a47d';
+
+  beforeAll(async () => {
+    const response = await request(baseURL)
+      .post('/auth/login')
+      .send({ email: 'admin@rd.com', password: 'crumbs' });
+    cookie = response.get('Set-Cookie');
+  });
+
+  afterAll(async () => {
+    await request(baseURL).post('/auth/logout').set('Cookie', cookie);
+    await Post.findByIdAndUpdate(postId, { title: 'A Little Test' });
+  });
+
+  it('should edit the given post', async () => {
+    const { author, isPublished, content } = await Post.findById(postId);
+
+    const newTitle = 'A new title';
+
+    const response = await request(baseURL)
+      .put(`/posts/${postId}`)
+      .set('Cookie', cookie)
+      .send({
+        title: newTitle,
+        author,
+        isPublished,
+        content,
+      });
+
+    console.log(response.statusCode, response.body.errors);
+
+    const { title } = await Post.findById(postId);
+
+    expect(title).toBe(newTitle);
+  });
+});
