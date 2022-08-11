@@ -7,8 +7,9 @@ const configDB = () => {
     mongoose.connect(process.env.MONGO_DB_URI, { useNewUrlParser: true });
   });
   // Disconnect Mongoose
-  afterAll(async () => {
-    await mongoose.connection.close();
+  afterAll(done => {
+    mongoose.connection.close();
+    done();
   });
 };
 
