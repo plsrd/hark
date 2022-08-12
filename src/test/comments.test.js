@@ -7,7 +7,12 @@ const baseURL = 'http://localhost:3000/api';
 
 let cookie;
 let id;
-let comment;
+
+const testComment = {
+  author: process.env.TEST_AUTHOR_ID,
+  post: process.env.TEST_POST_ID,
+  content: [{ test: 'test' }],
+};
 
 beforeAll(async () => {
   const response = await request(baseURL).post('/auth/login').send({
@@ -38,6 +43,20 @@ describe('GET all post comments', () => {
 });
 
 describe('POST a new comment to a post', () => {
+  it('should validate body before posting', async () => {
+    const invalidComment = {
+      ...testUser,
+      author: 'God',
+    };
+
+    const response = await request(baseURL)
+      .post(`/posts/${process.env.TEST_POST_ID}/comments`)
+      .set('Cookie', cookie)
+      .send(invalidComment);
+
+    expect(response.body.errors[0].msg).toBe('Invalid value');
+  });
+
   it('should create a new comment on the specified post', async () => {
     const testComment = {
       author: process.env.TEST_AUTHOR_ID,
@@ -52,9 +71,9 @@ describe('POST a new comment to a post', () => {
 
     id = response.body.newComment._id;
 
-    comment = await Comment.findById(id);
+    const newComment = await Comment.findById(id);
 
-    expect(comment._id.toString()).toMatch(id);
+    expect(newComment._id.toString()).toMatch(id);
   });
 });
 
@@ -70,11 +89,8 @@ describe('GET a comment', () => {
 
 describe('PUT an edit to a comment', () => {
   it('should change the content of the comment', async () => {
-    const { author, post } = comment;
-
     const editedComment = {
-      author,
-      post,
+      ...testComment,
       content: [{ else: 'something' }],
     };
 
