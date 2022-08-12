@@ -1,7 +1,7 @@
 const request = require('supertest');
 const configDB = require('./configDB');
 const User = require('../models/user');
-const Post = require('../models/user');
+const Post = require('../models/post');
 
 const baseURL = 'http://localhost:3000/api';
 
@@ -27,7 +27,6 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await request(baseURL).post('/auth/logout').set({ Cookie: cookie });
-  await Post.findByIdAndDelete(id);
 });
 
 configDB();
@@ -70,5 +69,26 @@ describe('PUT a new user', () => {
     const updatedUser = await User.findById(id);
 
     expect(updatedUser.firstName).toMatch(newName);
+  });
+});
+
+describe("GET all user's posts", () => {
+  it('should return all user post', async () => {
+    const response = await request(baseURL)
+      .get(`/users/${process.env.TEST_AUTHOR_ID}/posts`)
+      .set({ Cookie: cookie });
+
+    const posts = await Post.find({ author: process.env.TEST_AUTHOR_ID });
+    expect(response.body.length).toEqual(posts.length);
+  });
+});
+
+describe('DELETE a new user', () => {
+  it('should delete an existing user', async () => {
+    await request(baseURL).delete(`/users/${id}`).set({ Cookie: cookie });
+
+    const deletedUser = await User.findById(id);
+
+    expect(deletedUser).toBe(null);
   });
 });
