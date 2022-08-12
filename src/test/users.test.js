@@ -44,6 +44,20 @@ describe('Get all users', () => {
 });
 
 describe('POST new user', () => {
+  it('should validate body before posting', async () => {
+    const invalidUser = {
+      ...testUser,
+      role: 'God',
+    };
+
+    const response = await request(baseURL)
+      .post('/users')
+      .set('Cookie', cookie)
+      .send(invalidUser);
+
+    expect(response.body.errors[0].msg).toBe('Invalid value');
+  });
+
   it('should create a new user', async () => {
     const response = await request(baseURL)
       .post('/users')
