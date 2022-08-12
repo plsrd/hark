@@ -45,8 +45,8 @@ describe('GET all post comments', () => {
 describe('POST a new comment to a post', () => {
   it('should validate body before posting', async () => {
     const invalidComment = {
-      ...testUser,
-      author: 'God',
+      ...testComment,
+      author: '62f558c0a3659c531e20816d',
     };
 
     const response = await request(baseURL)
@@ -54,7 +54,7 @@ describe('POST a new comment to a post', () => {
       .set('Cookie', cookie)
       .send(invalidComment);
 
-    expect(response.body.errors[0].msg).toBe('Invalid value');
+    expect(response.body.errors[0].msg).toBe('Author must be an existing user');
   });
 
   it('should create a new comment on the specified post', async () => {
@@ -83,7 +83,7 @@ describe('GET a comment', () => {
       .get(`/posts/${process.env.TEST_POST_ID}/comments/${id}`)
       .set('Cookie', cookie);
 
-    expect(response.body._id).toMatch(comment._id.toString());
+    expect(response.body._id).toMatch(id);
   });
 });
 
