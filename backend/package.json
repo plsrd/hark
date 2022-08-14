@@ -1,0 +1,34 @@
+{
+  "name": "hark",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "dev": "nodemon ./bin/www",
+    "test": "jest ./src/test",
+    "testAuth": "jest ./src/test/auth.test.js",
+    "testPosts": "jest ./src/test/posts.test.js",
+    "testComments": "jest ./src/test/comments.test.js",
+    "testUsers": "jest ./src/test/users.test.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "dotenv": "^16.0.1",
+    "express": "~4.16.1",
+    "express-validator": "^6.14.2",
+    "jest": "^28.1.3",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.4",
+    "mongoose": "^6.5.1",
+    "morgan": "~1.9.1",
+    "passport": "^0.6.0",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
+    "supertest": "^6.2.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
+}
