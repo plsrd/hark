@@ -66,3 +66,19 @@ describe('GET a specific image', () => {
     expect(response.body.filename).toEqual(image.filename);
   });
 });
+
+describe('PUT an edit to a post', () => {
+  it('should push edits to an Image document', async () => {
+    const response = await request(baseURL)
+      .put(`/images/${id}`)
+      .set('Cookie', cookie)
+      .send({
+        alt: 'alt',
+        caption: 'caption',
+      });
+
+    const updatedImage = await Image.findById(id);
+
+    expect(response.body.image.alt).toEqual(updatedImage.alt);
+  });
+});

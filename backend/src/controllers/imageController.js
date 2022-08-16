@@ -35,8 +35,23 @@ exports.image_get = async (req, res, next) => {
     .catch(err => next(err));
 };
 
-exports.image_put = (req, res, next) => {
-  res.json({ message: 'Update an image' });
+exports.image_put = async (req, res, next) => {
+  const { alt, caption } = req.body;
+
+  const imageFields = {
+    alt,
+    caption,
+  };
+
+  Object.keys(imageFields).forEach(key =>
+    imageFields[key] === '' ? delete imageFields[key] : {}
+  );
+
+  const image = await Image.findByIdAndUpdate(req.params.imageid, imageFields, {
+    new: true,
+  }).catch(err => next(err));
+
+  res.json({ message: 'Image updated', image });
 };
 
 exports.image_delete = (req, res, next) => {
