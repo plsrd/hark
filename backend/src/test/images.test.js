@@ -67,7 +67,7 @@ describe('GET a specific image', () => {
   });
 });
 
-describe('PUT an edit to a post', () => {
+describe('PUT an edit to an image', () => {
   it('should push edits to an Image document', async () => {
     const response = await request(baseURL)
       .put(`/images/${id}`)
@@ -80,5 +80,18 @@ describe('PUT an edit to a post', () => {
     const updatedImage = await Image.findById(id);
 
     expect(response.body.image.alt).toEqual(updatedImage.alt);
+  });
+});
+
+describe('DELETE an image', () => {
+  it('should delete an image', async () => {
+    const response = await request(baseURL)
+      .delete(`/images/${id}`)
+      .set('Cookie', cookie);
+
+    const deletedImage = await Image.findById(id);
+
+    expect(response.body.message).toEqual('Image deleted');
+    expect(deletedImage).toBe(null);
   });
 });

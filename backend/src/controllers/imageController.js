@@ -1,7 +1,7 @@
 const Image = require('../models/image');
 const getFilter = require('../middleware/getFilter');
 const getSort = require('../middleware/getSort');
-const parser = require('../middleware/parser');
+const cloudinary = require('../middleware/cloudinary');
 
 exports.images_get = async (req, res, next) => {
   await Image.find(getFilter(req.query))
@@ -13,7 +13,7 @@ exports.images_get = async (req, res, next) => {
 };
 
 exports.images_post = [
-  parser.single('image'),
+  cloudinary.parser.single('image'),
   (req, res, next) => {
     const { filename, path } = req.file;
     const { alt, caption } = req.body;
@@ -47,13 +47,18 @@ exports.image_put = async (req, res, next) => {
     imageFields[key] === '' ? delete imageFields[key] : {}
   );
 
-  const image = await Image.findByIdAndUpdate(req.params.imageid, imageFields, {
+  await Image.findByIdAndUpdate(req.params.imageid, imageFields, {
     new: true,
-  }).catch(err => next(err));
-
-  res.json({ message: 'Image updated', image });
+  })
+    .then(image => res.json({ message: 'Image updated', image }))
+    .catch(err => next(err));
 };
 
-exports.image_delete = (req, res, next) => {
-  res.json({ message: 'delete an image' });
+exports.image_delete = async (req, res, next) => {
+  const image = await Image.findById(req.params.imageid);
+  await cloudinary
+    .destroy(image.filename)
+    .then(() => image.delete())
+    .then(deletedImage => res.json({ message: 'Image deleted', deletedImage }))
+    .catch(err => next(err));
 };

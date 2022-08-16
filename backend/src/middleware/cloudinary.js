@@ -18,4 +18,6 @@ const storage = new CloudinaryStorage({
 
 const parser = multer({ storage: storage });
 
-module.exports = parser;
+const destroy = filename => cloudinary.uploader.destroy(filename);
+
+module.exports = { parser, destroy };
