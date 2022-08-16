@@ -1,46 +1,35 @@
-import React, { useEffect, useState } from 'react';
-import Head from 'next/head';
-import Image from 'next/image';
+import React, { useMemo, useState } from 'react';
+import { UserProvider } from '../components/userContext';
+import decode from 'jwt-decode'
+import client from '../src/client';
 import Login from '../components/Login';
 
-export default function Home({ posts }) {
-  // const handleSubmit = async e => {
-  //   e.preventDefault();
-  //   const res = await fetch(`http://localhost:3000/api/auth/login`, {
-  //     method: 'POST',
-  //     credentials: 'include',
-  //     headers: {
-  //       'Accept': 'application/json',
-  //       'Content-Type': 'application/json'
-  //     },
-  //     body: JSON.stringify({
-  //       "email": "test@email.com",
-  //       "password": "testtesttesttestes"
-  //     })
-  //   }).then(res => res.json());
+export default function Home({ existingUser }) {
+  const [user, setUser] = useState(existingUser) 
+  const value = useMemo(() =>({ user, setUser}), [user])
 
-  //   console.log(res)
-  // };
 
   return (
-    <Login />
+    <UserProvider value={value}>
+      {
+        !user ? 
+          <Login setUser={setUser}/>
+          : 
+          <button  onClick={() => {client.logout() 
+            setUser()}}> Log Out</button>
+      }
+    </UserProvider>
+
+
   );
 }
 
 export const getServerSideProps = async ctx => {
-  console.log(ctx.req.headers.cookie);
-  const posts = await fetch(`http://localhost:3000/api/posts`, {
-    credentials: 'include',
-    headers: {
-      Cookie: ctx.req.headers?.cookie,
-    },
-  }).then(res => res.status);
+  const cookie = ctx.req.headers?.cookie
 
-  console.log(posts);
-
-  return {
-    props: {
-
-    },
-  };
+    return {
+      props: {
+        ...(cookie && {existingUser: decode(cookie)})
+      }
+    }
 };
