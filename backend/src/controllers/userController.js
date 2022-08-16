@@ -1,7 +1,7 @@
 const userValidation = require('../middleware/userValidation');
 const handleUserInput = require('../middleware/handleUserInput');
-const getSort = require('../../public/javascripts/getSort');
-const getFilter = require('../../public/javascripts/getFilter');
+const getSort = require('../middleware/getSort');
+const getFilter = require('../middleware/getFilter');
 
 const User = require('../models/user');
 const Post = require('../models/post');

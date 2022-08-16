@@ -10,6 +10,7 @@ require('dotenv').config();
 const postsRouter = require('./src/routes/posts');
 const usersRouter = require('./src/routes/users');
 const authRouter = require('./src/routes/auth');
+const imagesRouter = require('./src/routes/images');
 
 const authStrategies = require('./src/middleware/authStrategies');
 
@@ -57,10 +58,17 @@ app.use(
   passport.authenticate('jwt', { session: false }),
   postsRouter
 );
+
 app.use(
   '/api/users',
   passport.authenticate('jwt', { session: false }),
   usersRouter
+);
+
+app.use(
+  '/api/images',
+  passport.authenticate('jwt', { session: false }),
+  imagesRouter
 );
 
 app.use('/api/auth', authRouter);

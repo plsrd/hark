@@ -5,8 +5,8 @@ const postValidation = require('../middleware/postValidation');
 const commentValidation = require('../middleware/commentValidation');
 const handlePostInput = require('../middleware/handlePostInput');
 const handleCommentInput = require('../middleware/handleCommentInput');
-const getSort = require('../../public/javascripts/getSort');
-const getFilter = require('../../public/javascripts/getFilter');
+const getSort = require('../middleware/getSort');
+const getFilter = require('../middleware/getFilter');
 
 exports.posts_get = async (req, res, next) => {
   await Post.find(getFilter(req.query))
@@ -85,4 +85,3 @@ exports.post_comment_delete = [
       .catch(err => next(err));
   },
 ];
-
