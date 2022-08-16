@@ -2,6 +2,7 @@ const request = require('supertest');
 const configDB = require('./configDB');
 const Post = require('../models/post');
 const Comment = require('../models/comment');
+jest.setTimeout(6000)
 
 const baseURL = 'http://localhost:3000/api';
 

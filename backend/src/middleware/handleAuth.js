@@ -18,8 +18,7 @@ const login = (req, res, next) => {
     });
 
     res.cookie('jwt', token, {
-      httpOnly: true,
-      sameSite: true,
+      httpOnly: false,
     });
 
     res.json({ message: 'Successfully authenticated' });
