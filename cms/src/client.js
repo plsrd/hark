@@ -5,15 +5,12 @@ const instance = axios.create({
 });
 
 export default {
-  login: async () => await instance({
+  login: async (data) => await instance({
     method: 'post',
     url: '/auth/login',
     withCredentials: true,
     headers: {'Content-Type': 'application/json'},
-    data: {
-      email: 'test@email.com',
-      password: 'testtesttesttestes',
-    }
+    data
   }).then(res => res),
 
   logout: async () => await instance({

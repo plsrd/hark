@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { useForm } from "react-hook-form";
 import client from '../src/client';
-import Head from 'next/head';
 
 const Login = ({  }) => {
-  const handleLogin = async e => {
-    e.preventDefault();
-    const result = await client.login()
+  const { register, handleSubmit } = useForm()
+
+  const handleLogin = async data => {
+    const result = await client.login(data)
   };
 
   const handleLogout = async e => {
@@ -15,22 +16,22 @@ const Login = ({  }) => {
 
   return (
     <div>
-      <form>
-        <label>
+      <form onSubmit={handleSubmit(handleLogin)}>
+        <label htmlFor='email'>
           {' '}
           Email
-          <input type='email' />
+          <input type='email' {...register('email')}/>
         </label>
-        <label>
+        <label htmlFor='password'>
           {' '}
           Password
-          <input type='password' />
+          <input type='password'  {...register('password')}/>
         </label>
-        <button  onClick={e => handleLogin(e)}>
-          Log In
-        </button>
-        <button  onClick={e => handleLogout(e)}> Log Out</button>
+        <input type='submit' value='Log In' />
+       
       </form>
+
+      <button  onClick={e => handleLogout(e)}> Log Out</button>
     </div>
   );
 };
