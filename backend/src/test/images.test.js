@@ -47,8 +47,22 @@ describe('POST a new image', () => {
       .set('content-type', 'multipart/form-data')
       .attach('image', testImage);
 
-    const uploadedImage = Image.find(response._id);
+    id = response.body.image._id;
 
-    expect(response.filename).toEqual(uploadedImage.filename);
+    const uploadedImage = await Image.findById(id);
+
+    expect(response.body.image.filename).toBe(uploadedImage.filename);
+  });
+});
+
+describe('GET a specific image', () => {
+  it('should return the image specified in params', async () => {
+    const response = await request(baseURL)
+      .get(`/images/${id}`)
+      .set('Cookie', cookie);
+
+    const image = await Image.findById(id);
+
+    expect(response.body.filename).toEqual(image.filename);
   });
 });

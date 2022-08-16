@@ -23,15 +23,16 @@ exports.images_post = [
       ...(alt && { alt }),
       ...(caption && { caption }),
     }).save((err, image) => {
-      console.log(image);
       if (err) return next(err);
-      res.json({ image });
+      res.json({ message: 'Image created', image });
     });
   },
 ];
 
-exports.image_get = (req, res, next) => {
-  res.json({ message: 'Get an image' });
+exports.image_get = async (req, res, next) => {
+  await Image.findById(req.params.imageid)
+    .then(image => res.json(image))
+    .catch(err => next(err));
 };
 
 exports.image_put = (req, res, next) => {
