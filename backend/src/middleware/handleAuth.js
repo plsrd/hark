@@ -21,7 +21,7 @@ const login = (req, res, next) => {
       httpOnly: false,
     });
 
-    res.json({ message: 'Successfully authenticated' });
+    res.json({ message: 'Successfully authenticated', user: req.user });
   })(req, res);
 };
 

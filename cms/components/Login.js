@@ -1,23 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import client from '../src/client';
 import Head from 'next/head';
 
-const Login = ({ children }) => {
-  const handleSubmit = async e => {
+const Login = ({  }) => {
+  const handleLogin = async e => {
     e.preventDefault();
-    const result = await fetch('http://localhost:3000/api/auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        credentials: 'same-origin',
-      },
-      body: JSON.stringify({
-        email: 'test@email.com',
-        password: 'testtesttesttestes',
-      }),
-    }).then(res => res.json());
-
-    console.log(result);
+    const result = await client.login()
   };
+
+  const handleLogout = async e => {
+    e.preventDefault();
+    const result = await client.logout()
+  }
 
   return (
     <div>
@@ -32,9 +26,10 @@ const Login = ({ children }) => {
           Password
           <input type='password' />
         </label>
-        <button type='submit' onClick={e => handleSubmit(e)}>
+        <button  onClick={e => handleLogin(e)}>
           Log In
         </button>
+        <button  onClick={e => handleLogout(e)}> Log Out</button>
       </form>
     </div>
   );
