@@ -3,6 +3,7 @@ import { UserProvider } from '../src/userContext';
 import decode from 'jwt-decode';
 import client from '../src/client';
 import Layout from '../components/Layout';
+import LoginForm from '../components/LoginForm';
 
 export default function Home({ existingUser }) {
   const [user, setUser] = useState(existingUser);
@@ -10,7 +11,7 @@ export default function Home({ existingUser }) {
 
   return (
     <UserProvider value={value}>
-      <Layout></Layout>
+      <Layout>{!user ? <LoginForm /> : <></>}</Layout>
     </UserProvider>
   );
 }

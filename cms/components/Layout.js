@@ -1,38 +1,56 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Head from 'next/head';
 import UserContext from '../src/userContext';
 
-import LoginForm from './LoginForm';
-import LogoutButton from './LogoutButton';
+import Nav from './Nav';
+import Drawer from './Drawer';
 
 const Layout = ({ children }) => {
   const { user } = useContext(UserContext);
+  const [drawerToggled, setDrawerToggled] = useState(false);
+
+  const handleToggle = () => {
+    setDrawerToggled(!drawerToggled);
+  };
 
   return (
     <>
-      <Head>
-        <meta charSet='utf-8' />
-        <meta name='viewport' content='initial-scale=1.0, width=device-width' />
-        <title>Hark!</title>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+        }}
+      >
+        <Head>
+          <meta charSet='utf-8' />
+          <meta
+            name='viewport'
+            content='initial-scale=1.0, width=device-width'
+          />
+          <title>Hark!</title>
 
-        <meta name='author' content='RD Pennell' />
-        <meta
-          name='description'
-          content='Hark is a tiny CMS for authoring blog content'
-        />
-        <meta
-          property='og:image'
-          content='https://developer.cdn.mozilla.net/static/img/opengraph-logo.dc4e08e2f6af.png'
-        />
-        <meta
-          property='og:description'
-          content='Hark is a tiny CMS for authoring blog content.'
-        />
-        <meta property='og:title' content='Hark' />
-        <link rel='Shortcut Icon' href='favicon.ico' type='image/x-icon' />
-      </Head>
-      <nav>{user ? <LogoutButton /> : <LoginForm />}</nav>
-      <div>{children}</div>
+          <meta name='author' content='RD Pennell' />
+          <meta
+            name='description'
+            content='Hark is a tiny CMS for authoring blog content'
+          />
+          <meta
+            property='og:image'
+            content='https://developer.cdn.mozilla.net/static/img/opengraph-logo.dc4e08e2f6af.png'
+          />
+          <meta
+            property='og:description'
+            content='Hark is a tiny CMS for authoring blog content.'
+          />
+          <meta property='og:title' content='Hark' />
+          <link rel='Shortcut Icon' href='favicon.ico' type='image/x-icon' />
+        </Head>
+        {drawerToggled && <Drawer />}
+        <div>
+          <Nav handleToggle={handleToggle} />
+          {children}
+        </div>
+      </div>
     </>
   );
 };
