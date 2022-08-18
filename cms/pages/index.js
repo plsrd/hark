@@ -10,21 +10,7 @@ export default function Home({ existingUser }) {
 
   return (
     <UserProvider value={value}>
-      <Layout>
-        {!user ? (
-          <Login setUser={setUser} />
-        ) : (
-          <button
-            onClick={() => {
-              client.logout();
-              setUser();
-            }}
-          >
-            {' '}
-            Log Out
-          </button>
-        )}
-      </Layout>
+      <Layout></Layout>
     </UserProvider>
   );
 }
