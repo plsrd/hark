@@ -4,6 +4,7 @@ import UserContext from '../src/userContext';
 
 const Nav = ({ handleToggle }) => {
   const { user } = useContext(UserContext);
+  console.log(user);
   return (
     <nav
       style={{
@@ -13,6 +14,8 @@ const Nav = ({ handleToggle }) => {
         margin: '0 1rem',
         borderBottom: '1px solid grey',
         paddingBottom: '1rem',
+        flexBasis: 0,
+        flexGrow: 1,
       }}
     >
       <div
@@ -32,7 +35,7 @@ const Nav = ({ handleToggle }) => {
             flexDirection: 'row',
           }}
         >
-          <p>{user.firstName.slice(0, 1) + user.lastName.slice(0, 1)}</p>
+          <p>{user.firstName?.slice(0, 1) + user.lastName?.slice(0, 1)}</p>
           <LogoutButton />
         </div>
       )}
