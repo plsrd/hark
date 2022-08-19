@@ -3,7 +3,6 @@ const path = require('path');
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const cors = require('cors');
 const mongoose = require('mongoose');
 require('dotenv').config();
 
@@ -13,6 +12,7 @@ const authRouter = require('./src/routes/auth');
 const imagesRouter = require('./src/routes/images');
 
 const authStrategies = require('./src/middleware/authStrategies');
+const getAllContent = require('./src/middleware/getAllContent')
 
 const app = express();
 
@@ -52,6 +52,12 @@ app.use(function (req, res, next) {
   // Pass to next layer of middleware
   next();
 });
+
+app.use(
+  '/api/all',
+  passport.authenticate('jwt', { session: false }),
+  getAllContent
+);
 
 app.use(
   '/api/posts',

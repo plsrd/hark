@@ -1,10 +1,10 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import LogoutButton from './LogoutButton';
 import UserContext from '../src/userContext';
 
 const Nav = ({ handleToggle }) => {
   const { user } = useContext(UserContext);
-  console.log(user);
+
   return (
     <nav
       style={{
