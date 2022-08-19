@@ -14,8 +14,6 @@ const Nav = ({ handleToggle }) => {
         margin: '0 1rem',
         borderBottom: '1px solid grey',
         paddingBottom: '1rem',
-        flexBasis: 0,
-        flexGrow: 1,
       }}
     >
       <div
