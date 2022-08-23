@@ -23,7 +23,7 @@ const Nav = () => {
       }}
     >
       <Link href='/'>
-        <a><img src='letter-h.png' style={{width: '50px'}}/></a>
+        <a><img src='/letter-h.png' style={{width: '50px'}}/></a>
       </Link>
     { 
       user &&

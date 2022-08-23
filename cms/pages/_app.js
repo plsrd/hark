@@ -16,7 +16,7 @@ const  App = ({ Component, pageProps, existingUser }) => {
 }
 
 App.getInitialProps = async ({ctx}) => {
-  const cookie = ctx.req.headers?.cookie;
+  const cookie = ctx?.req?.headers?.cookie;
 
   return {
       ...(cookie && { existingUser: decode(cookie) }),
