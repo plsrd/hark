@@ -2,6 +2,7 @@ const request = require('supertest');
 const configDB = require('./configDB');
 const User = require('../models/user');
 const Post = require('../models/post');
+jest.setTimeout(7000);
 
 const baseURL = 'http://localhost:3000/api';
 
@@ -33,9 +34,7 @@ configDB();
 
 describe('Get all users', () => {
   it('should return all users', async () => {
-    const response = await request(baseURL)
-      .get('/users')
-      .set({ Cookie: cookie });
+    const response = await request(baseURL).get('/users');
 
     const users = await User.find();
 

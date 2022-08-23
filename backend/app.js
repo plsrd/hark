@@ -14,7 +14,6 @@ const imagesRouter = require('./src/routes/images');
 const commentsRouter = require('./src/routes/comments');
 
 const authStrategies = require('./src/middleware/authStrategies');
-const getAllContent = require('./src/middleware/getAllContent');
 const setHeaders = require('./src/middleware/setHeaders');
 
 const app = express();
@@ -37,35 +36,13 @@ app.use(passport.initialize());
 
 app.use(setHeaders);
 
-// app.use(
-//   '/api/all',
-//   passport.authenticate('jwt', { session: false }),
-//   getAllContent
-// );
+app.use('/api/posts', postsRouter);
 
-app.use(
-  '/api/posts',
-  passport.authenticate('jwt', { session: false }),
-  postsRouter
-);
+app.use('/api/users', usersRouter);
 
-app.use(
-  '/api/users',
-  passport.authenticate('jwt', { session: false }),
-  usersRouter
-);
+app.use('/api/images', imagesRouter);
 
-app.use(
-  '/api/images',
-  passport.authenticate('jwt', { session: false }),
-  imagesRouter
-);
-
-app.use(
-  '/api/comments',
-  passport.authenticate('jwt', { session: false }),
-  commentsRouter
-);
+app.use('/api/comments', commentsRouter);
 
 app.use('/api/auth', authRouter);
 

@@ -1,4 +1,3 @@
-const passport = require('passport');
 const Post = require('../models/post');
 const Comment = require('../models/comment');
 const postValidation = require('../middleware/postValidation');

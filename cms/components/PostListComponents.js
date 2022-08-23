@@ -9,6 +9,7 @@ const PostListComponent = ({ post }) => {
     author: { fullName },
     createdAt,
   } = post;
+
   return (
     <li key={_id}>
       <Link href={`/posts/${_id}`}>

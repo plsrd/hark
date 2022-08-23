@@ -3,7 +3,7 @@ const configDB = require('./configDB');
 const Post = require('../models/post');
 const Comment = require('../models/comment');
 
-jest.setTimeout(6000)
+jest.setTimeout(6000);
 
 const baseURL = 'http://localhost:3000/api';
 
@@ -14,6 +14,7 @@ const testComment = {
   author: process.env.TEST_AUTHOR_ID,
   post: process.env.TEST_POST_ID,
   content: [{ test: 'test' }],
+  isApproved: false,
 };
 
 beforeAll(async () => {
@@ -60,12 +61,6 @@ describe('POST a new comment to a post', () => {
   });
 
   it('should create a new comment on the specified post', async () => {
-    const testComment = {
-      author: process.env.TEST_AUTHOR_ID,
-      post: process.env.TEST_POST_ID,
-      content: [{ test: 'test' }],
-    };
-
     const response = await request(baseURL)
       .post(`/posts/${process.env.TEST_POST_ID}/comments`)
       .set('Cookie', cookie)

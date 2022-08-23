@@ -26,7 +26,7 @@ configDB();
 
 describe('GET all posts', () => {
   it('should return all existing posts', async () => {
-    const response = await request(baseURL).get('/posts').set('Cookie', cookie);
+    const response = await request(baseURL).get('/posts');
     const allPosts = await Post.find();
     expect(response.body.length).toEqual(allPosts.length);
   });
@@ -63,7 +63,6 @@ describe('POST /post creates new post', () => {
       .post('/posts')
       .set('Cookie', cookie)
       .send(newPost);
-
     id = response.body.createdPost._id;
 
     const post = await Post.findById(id);
@@ -74,9 +73,7 @@ describe('POST /post creates new post', () => {
 
 describe('GET single post', () => {
   it('should return a given post', async () => {
-    const response = await request(baseURL)
-      .get(`/posts/${id}`)
-      .set('Cookie', cookie);
+    const response = await request(baseURL).get(`/posts/${id}`);
 
     const post = await Post.findById(id);
 
@@ -122,9 +119,9 @@ describe('GET all post comments', () => {
     const allPostComments = await Comment.find({
       post: process.env.TEST_POST_ID,
     });
-    const response = await request(baseURL)
-      .get(`/posts/${process.env.TEST_POST_ID}/comments`)
-      .set('Cookie', cookie);
+    const response = await request(baseURL).get(
+      `/posts/${process.env.TEST_POST_ID}/comments`
+    );
 
     expect(response.body.length).toBe(allPostComments.length);
   });
