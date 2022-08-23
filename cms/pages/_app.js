@@ -1,5 +1,6 @@
 import React, { useMemo, useState }  from "react";
 import { UserProvider } from '../src/userContext';
+import client from "../src/client";
 import decode from 'jwt-decode';
 
 import '../styles/reset.css'
@@ -17,6 +18,7 @@ const  App = ({ Component, pageProps, existingUser }) => {
 
 App.getInitialProps = async ({ctx}) => {
   const cookie = ctx?.req?.headers?.cookie;
+  client.setCookie(cookie)
 
   return {
       ...(cookie && { existingUser: decode(cookie) }),

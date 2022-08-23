@@ -1,11 +1,19 @@
 import axios from 'axios'
 
-const instance = axios.create({
+let instance
+
+const config ={
   baseURL: 'http://localhost:3000/api',
   withCredentials: true,
-});
+}
 
 export default {
+  setCookie: (cookie) => {
+    const cookieHeader = { 'Cookie': cookie}
+    Object.assign(config, { headers: cookieHeader })
+    instance = axios.create(config)
+  },
+
   login: async (data) => await instance({
     method: 'post',
     url: '/auth/login',
@@ -19,8 +27,9 @@ export default {
     headers: {'Content-Type': 'application/json'},
   }),
 
-  getAllContent: async () => await instance({
+  get: async (type, filter) => await instance({
     method: 'get',
-    url: '/all',
-  }),
+    url: `/${type}`,
+  }).catch(err => console.log(err)),
+
 }
