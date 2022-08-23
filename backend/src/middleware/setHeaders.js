@@ -9,7 +9,7 @@ module.exports = function (req, res, next) {
   // Request headers you wish to allow
   res.setHeader(
     'Access-Control-Allow-Headers',
-    'Origin,X-Requested-With,content-type,set-cookie'
+    'Origin, X-Requested-With, Content-Type, Accept, Authorization,  X-PINGOTHER, set-cookie'
   );
   // Set to true if you need the website to include cookies in the requests sent
   // to the API (e.g. in case you use sessions)
@@ -17,4 +17,4 @@ module.exports = function (req, res, next) {
 
   // Pass to next layer of middleware
   next();
-}
+};
