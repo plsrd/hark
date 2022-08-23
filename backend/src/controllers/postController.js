@@ -10,7 +10,7 @@ const getFilter = require('../middleware/getFilter');
 
 exports.posts_get = async (req, res, next) => {
   await Post.find(getFilter(req.query))
-    .populate('author')
+    .populate('author', 'firstName lastName fullName email role')
     .sort(getSort(req.query.sort))
     .limit(req.query.limit)
     .skip(req.query.skip)
@@ -22,7 +22,7 @@ exports.posts_post = [...postValidation, handlePostInput];
 
 exports.post_get = async (req, res, next) => {
   await Post.findById(req.params.postid)
-    .populate('author')
+    .populate('author', 'firstName lastName fullName email role')
     .then(post => res.json(post))
     .catch(err => next(err));
 };

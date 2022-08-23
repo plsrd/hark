@@ -11,7 +11,10 @@ const UserSchema = new Schema({
   role: { type: String, enum: ['admin', 'editor', 'viewer'] },
 });
 
-UserSchema.virtual('name').get(function () {
+UserSchema.set('toObject', { virtuals: true });
+UserSchema.set('toJSON', { virtuals: true });
+
+UserSchema.virtual('fullName').get(function () {
   return this.firstName + ' ' + this.lastName;
 });
 
