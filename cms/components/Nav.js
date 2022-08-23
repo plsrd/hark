@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import LogoutButton from './LogoutButton';
 import UserContext from '../src/userContext';
 import Avatar from './Avatar';
-import List from './List';
+import TypesList from './TypesList';
 import Link from 'next/link';
 
 const Nav = () => {
@@ -28,7 +28,10 @@ const Nav = () => {
     { 
       user &&
       <>
-        <List />
+        <Link href='/content'>
+          <a>dashboard</a>
+        </Link>
+        <TypesList />
         <div>
           <Avatar user={user} />
           <LogoutButton />

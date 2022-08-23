@@ -5,9 +5,9 @@ import client from '../src/client';
 import UserContext from '../src/userContext';
 
 const LoginForm = () => {
-  const router = useRouter()
   const { register, handleSubmit } = useForm();
   const { setUser } = useContext(UserContext);
+  const router = useRouter()
 
   const handleLogin = async data =>
     await client.login(data).then(res => setUser(res.data.user)).then(() => router.push('/content'))
