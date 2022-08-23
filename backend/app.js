@@ -11,6 +11,7 @@ const postsRouter = require('./src/routes/posts');
 const usersRouter = require('./src/routes/users');
 const authRouter = require('./src/routes/auth');
 const imagesRouter = require('./src/routes/images');
+const commentsRouter = require('./src/routes/comments');
 
 const authStrategies = require('./src/middleware/authStrategies');
 const getAllContent = require('./src/middleware/getAllContent');
@@ -36,11 +37,11 @@ app.use(passport.initialize());
 
 app.use(setHeaders);
 
-app.use(
-  '/api/all',
-  passport.authenticate('jwt', { session: false }),
-  getAllContent
-);
+// app.use(
+//   '/api/all',
+//   passport.authenticate('jwt', { session: false }),
+//   getAllContent
+// );
 
 app.use(
   '/api/posts',
@@ -60,7 +61,11 @@ app.use(
   imagesRouter
 );
 
-//implement /api/comments
+app.use(
+  '/api/comments',
+  passport.authenticate('jwt', { session: false }),
+  commentsRouter
+);
 
 app.use('/api/auth', authRouter);
 
