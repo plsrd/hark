@@ -2,7 +2,7 @@ import React from 'react';
 import { format } from 'date-fns';
 import Link from 'next/link';
 
-const PostListComponent = ({ post }) => {
+const PostListComponents = ({ post }) => {
   const {
     _id,
     title,
@@ -12,7 +12,7 @@ const PostListComponent = ({ post }) => {
 
   return (
     <li key={_id}>
-      <Link href={`/posts/${_id}`}>
+      <Link href={`/content/posts/${_id}`}>
         <a>
           <p>{title}</p>
           <p>{fullName}</p>
@@ -23,4 +23,4 @@ const PostListComponent = ({ post }) => {
   );
 };
 
-export default PostListComponent;
+export default PostListComponents;

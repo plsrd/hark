@@ -29,9 +29,9 @@ export default {
       headers: { 'Content-Type': 'application/json' },
     }),
 
-  get: async (type, filter) =>
+  get: async (type, id) =>
     await instance({
       method: 'get',
-      url: `/${type}`,
+      url: `/${type}${id ? `/${id}` : ''}`,
     }).catch(err => console.log(err)),
 };

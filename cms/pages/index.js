@@ -7,7 +7,7 @@ const LandingPage = () => {
 
 export default LandingPage;
 
-export const getStaticProps = async ctx => {
+export const getServerSideProps = async ctx => {
   const cookie = ctx.req?.headers?.cookie;
 
   if (cookie) {

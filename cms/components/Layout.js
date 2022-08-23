@@ -1,8 +1,9 @@
 import React from 'react';
 import Head from 'next/head';
 import Nav from './Nav';
+import PostListComponents from './PostListComponents';
 
-const Layout = ({ children }) => {
+const Layout = ({ children, activeType }) => {
   return (
     <div
       style={{
@@ -41,6 +42,21 @@ const Layout = ({ children }) => {
             flexGrow: 1,
           }}
         >
+          {activeType && (
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                borderRight: '1px solid grey',
+                boxSizing: 'border-box',
+                height: '100vh',
+                width: '80px',
+                padding: '5px',
+              }}
+            ></div>
+          )}
           {children}
         </div>
       </div>
