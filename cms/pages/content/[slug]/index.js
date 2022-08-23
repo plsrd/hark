@@ -1,23 +1,18 @@
 import React from 'react';
 import client from '../../../src/client';
 import Layout from '../../../components/Layout';
+import PostListComponent from '../../../components/PostListComponents';
 
 const ContentType = ({ type, data }) => {
-  const documentPreviews = data.map(document => {
+  const documentListComponents = data.map(document => {
     switch (type) {
       case 'posts':
-        console.log(document.author);
-        return (
-          <div key={document._id}>
-            <p>{document.title}</p>
-            <p>{document.author.name}</p>
-          </div>
-        );
+        return <PostListComponent post={document} />;
     }
   });
   return (
     <Layout>
-      <div>{documentPreviews}</div>
+      <ul>{documentListComponents}</ul>
     </Layout>
   );
 };

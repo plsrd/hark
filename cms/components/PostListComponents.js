@@ -1,20 +1,25 @@
 import React from 'react';
-import { format } from 'date-fns'
+import { format } from 'date-fns';
+import Link from 'next/link';
 
-const PostListComponents = ({posts}) => {
+const PostListComponent = ({ post }) => {
+  const {
+    _id,
+    title,
+    author: { fullName },
+    createdAt,
+  } = post;
   return (
-    <ul> Posts
-      {
-        posts &&
-        posts.map(post => (<li key={post._id}>
-            <p>{post.title}</p>
-            <p>{post.author && `${post.author.firstName} ${post.author.lastName}`}</p>
-            <p>{format(new Date(post.createdAt), 'MMM d yyyy')}</p>
-          </li>)
-        )
-      }
-    </ul>
-  )
-}
+    <li key={_id}>
+      <Link href={`/posts/${_id}`}>
+        <a>
+          <p>{title}</p>
+          <p>{fullName}</p>
+          <p>{format(new Date(createdAt), 'MMM d yyyy')}</p>
+        </a>
+      </Link>
+    </li>
+  );
+};
 
-export default PostListComponents;
+export default PostListComponent;
