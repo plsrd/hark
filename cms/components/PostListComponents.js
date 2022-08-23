@@ -6,13 +6,12 @@ const PostListComponents = ({posts}) => {
     <ul> Posts
       {
         posts &&
-        posts.map(post => {
-          return (<li key={post._id}>
+        posts.map(post => (<li key={post._id}>
             <p>{post.title}</p>
             <p>{post.author && `${post.author.firstName} ${post.author.lastName}`}</p>
-            <p>{format(new Date(post.createdAt), 'MM/dd/yyyy')}</p>
+            <p>{format(new Date(post.createdAt), 'MMM d yyyy')}</p>
           </li>)
-        })
+        )
       }
     </ul>
   )

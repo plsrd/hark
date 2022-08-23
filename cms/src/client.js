@@ -22,6 +22,5 @@ export default {
   getAllContent: async () => await instance({
     method: 'get',
     url: '/all',
-    headers: {'Content-Type': 'application/json'},
   }),
 }

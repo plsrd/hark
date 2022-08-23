@@ -1,42 +1,40 @@
 import React, { useContext } from 'react';
 import LogoutButton from './LogoutButton';
 import UserContext from '../src/userContext';
+import Avatar from './Avatar';
+import List from './List';
+import Link from 'next/link';
 
-const Nav = ({ handleToggle }) => {
+const Nav = () => {
   const { user } = useContext(UserContext);
 
   return (
     <nav
       style={{
         display: 'flex',
-        flexDirection: 'row',
+        flexDirection: 'column',
         justifyContent: 'space-between',
-        margin: '0 1rem',
-        borderBottom: '1px solid grey',
-        paddingBottom: '1rem',
+        alignItems: 'center',
+        borderRight: '1px solid grey',
+        boxSizing: 'border-box',
+        height: '100%',
+        width: '80px',
+        padding: '5px'      
       }}
     >
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-        }}
-      >
-        <button onClick={handleToggle}>toggle</button>
-        <h1>hark</h1>
-      </div>
-
-      {user && (
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-          }}
-        >
-          <p>{user.firstName?.slice(0, 1) + user.lastName?.slice(0, 1)}</p>
+      <Link href='/'>
+        <a><img src='letter-h.png' style={{width: '50px'}}/></a>
+      </Link>
+    { 
+      user &&
+      <>
+        <List />
+        <div>
+          <Avatar user={user} />
           <LogoutButton />
         </div>
-      )}
+      </>
+    }
     </nav>
   );
 };
