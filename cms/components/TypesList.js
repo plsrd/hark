@@ -1,27 +1,32 @@
 import React, { useContext } from 'react';
-import Link from 'next/link'
-import UserContext from '../src/userContext';
+import { useRouter } from 'next/router';
+import ContentContext from '../src/contentContext';
+import contentTypes from '../src/contentTypes';
 
 const List = () => {
-  const { user } = useContext(UserContext);
+  const { activeDocument, setActiveDocument } = useContext(ContentContext);
+  const router = useRouter();
+
+  const handleClick = type => {
+    router.push(`/content/${type}`, undefined, { shallow: true });
+    setActiveDocument({ type });
+  };
 
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-    }}>
-      <Link href='/content/posts'>
-        <a>Posts</a>
-      </Link>
-      <Link href='/content/users'>
-        <a>Users</a>
-      </Link>
-      <Link href='/content/images'>
-        <a>Images</a>
-      </Link>
-      <Link href='/content/comments'>
-        <a>Comments</a>
-      </Link>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
+      {contentTypes.map(type => (
+        <button
+          onClick={() => handleClick(type)}
+          disabled={activeDocument?.type == type}
+        >
+          {type.slice(0, 1).toUpperCase().concat(type.slice(1))}
+        </button>
+      ))}
     </div>
   );
 };

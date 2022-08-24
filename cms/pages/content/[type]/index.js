@@ -1,27 +1,25 @@
-import React from 'react';
-import client from '../../../src/client';
+import React, { useContext, useEffect } from 'react';
 import Layout from '../../../components/Layout';
-import PostListComponent from '../../../components/PostListComponents';
+import ContentContext from '../../../src/contentContext';
 
-const ContentType = ({ type, data }) => {
-  const documentListComponents = data?.map(document => {
-    switch (type) {
-      case 'posts':
-        return <PostListComponent post={document} key={document._id} />;
-    }
-  });
-  return <Layout activeType={type}>{<ul>{documentListComponents}</ul>}</Layout>;
+const ContentType = ({ type }) => {
+  const { activeDocument, setActiveDocument } = useContext(ContentContext);
+
+  useEffect(() => {
+    setActiveDocument({
+      type,
+    });
+  }, []);
+
+  return <Layout></Layout>;
 };
 
 export default ContentType;
 
 export const getServerSideProps = async ({ params: { type } }) => {
-  const { data } = await client.get(type);
-
   return {
     props: {
       type,
-      data,
     },
   };
 };

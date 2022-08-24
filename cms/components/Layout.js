@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import ContentContext from '../src/contentContext';
 import Head from 'next/head';
 import Nav from './Nav';
-import PostListComponents from './PostListComponents';
+import PostListComponents from './PostListComponent';
 
-const Layout = ({ children, activeType }) => {
+const Layout = ({ children }) => {
+  const { activeDocument } = useContext(ContentContext);
+  console.log(activeDocument);
+
   return (
     <div
       style={{
@@ -42,7 +46,7 @@ const Layout = ({ children, activeType }) => {
             flexGrow: 1,
           }}
         >
-          {activeType && (
+          {activeDocument && (
             <div
               style={{
                 display: 'flex',
@@ -55,7 +59,9 @@ const Layout = ({ children, activeType }) => {
                 width: '80px',
                 padding: '5px',
               }}
-            ></div>
+            >
+              {activeDocument.type == 'posts' && <PostListComponents />}
+            </div>
           )}
           {children}
         </div>

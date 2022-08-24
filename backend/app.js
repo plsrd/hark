@@ -15,6 +15,7 @@ const commentsRouter = require('./src/routes/comments');
 
 const authStrategies = require('./src/middleware/authStrategies');
 const setHeaders = require('./src/middleware/setHeaders');
+const getAllContent = require('./src/middleware/getAllContent');
 
 const app = express();
 
@@ -45,5 +46,7 @@ app.use('/api/images', imagesRouter);
 app.use('/api/comments', commentsRouter);
 
 app.use('/api/auth', authRouter);
+
+app.use('/api/*', getAllContent);
 
 module.exports = app;
