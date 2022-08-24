@@ -6,7 +6,6 @@ import ListComponents from './ListComponents';
 
 const Layout = ({ children }) => {
   const { activeDocument } = useContext(ContentContext);
-  console.log(activeDocument);
 
   return (
     <div
@@ -39,11 +38,13 @@ const Layout = ({ children }) => {
         <link rel='Shortcut Icon' href='/favicon.ico' type='image/x-icon' />
       </Head>
       <Nav />
-      <div style={{}}>
+      <div style={{ width: '100%' }}>
         <div
           style={{
             flexBasis: 0,
             flexGrow: 1,
+            display: 'flex',
+            flexDirection: 'row',
           }}
         >
           {activeDocument && (

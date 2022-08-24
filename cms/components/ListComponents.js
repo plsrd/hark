@@ -7,13 +7,11 @@ const ListComponents = () => {
   const { content, activeDocument, setActiveDocument } =
     useContext(ContentContext);
 
-  console.log(content[activeDocument?.type]);
-
   return (
     <ul>
       {content[activeDocument?.type] &&
         content[activeDocument.type].map(document => (
-          <li key={document._id}>
+          <li key={document._id} style={{ borderBottom: '1px solid black' }}>
             <Link href={`/content/${activeDocument?.type}/${document._id}`}>
               <a
                 onClick={() =>
@@ -32,6 +30,17 @@ const ListComponents = () => {
                   <>
                     <p>{document.fullName}</p>
                     <p>{document.role}</p>
+                  </>
+                )}
+                {activeDocument.type == 'images' && (
+                  <>
+                    <p>{document._id}</p>
+                  </>
+                )}
+                {activeDocument.type == 'comments' && (
+                  <>
+                    <p>{document.author.fullName} on</p>
+                    <p>{document.post.title}</p>
                   </>
                 )}
               </a>

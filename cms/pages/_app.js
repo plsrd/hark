@@ -27,14 +27,19 @@ const App = ({ Component, pageProps, existingUser, allContent }) => {
 
 App.getInitialProps = async ({ ctx }) => {
   const cookie = ctx?.req?.headers?.cookie;
-  client.setCookie(cookie);
 
-  const { data: allContent } = await client.get('*');
+  if (!cookie) {
+    return {};
+  } else {
+    client.setCookie(cookie);
 
-  return {
-    ...(cookie && { existingUser: decode(cookie) }),
-    allContent,
-  };
+    const { data: allContent } = await client.get('*');
+
+    return {
+      ...(cookie && { existingUser: decode(cookie) }),
+      allContent,
+    };
+  }
 };
 
 export default App;
