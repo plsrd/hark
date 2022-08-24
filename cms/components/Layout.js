@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import ContentContext from '../src/contentContext';
 import Head from 'next/head';
 import Nav from './Nav';
-import PostListComponents from './PostListComponent';
+import ListComponents from './ListComponents';
 
 const Layout = ({ children }) => {
   const { activeDocument } = useContext(ContentContext);
@@ -60,7 +60,7 @@ const Layout = ({ children }) => {
                 padding: '5px',
               }}
             >
-              {activeDocument.type == 'posts' && <PostListComponents />}
+              <ListComponents />
             </div>
           )}
           {children}

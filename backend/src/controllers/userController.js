@@ -7,7 +7,8 @@ const User = require('../models/user');
 const Post = require('../models/post');
 
 exports.users_get = async (req, res, next) => {
-  await User.find({}, 'firstName lastName fullName email role')
+  await User.find()
+    .select('firstName lastName fullName email role')
     .sort(getSort(req.query.sort))
     .limit(req.query.limit)
     .skip(req.query.skip)
@@ -20,10 +21,8 @@ exports.users_get = async (req, res, next) => {
 exports.users_post = [...userValidation, handleUserInput];
 
 exports.user_get = async (req, res, next) => {
-  await User.findById(
-    req.params.userid,
-    'firstName lastName fullName email role'
-  )
+  await User.findById(req.params.userid)
+    .select('firstName lastName fullName email role')
     .then(user => res.json(user))
     .catch(err => next(err));
 };
