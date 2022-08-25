@@ -14,4 +14,18 @@ const CommentSchema = new Schema(
   }
 );
 
+CommentSchema.set('toObject', { virtuals: true });
+CommentSchema.set('toJSON', { virtuals: true });
+
+CommentSchema.virtual('formattedDates').get(function () {
+  return {
+    ...(this.createdAt
+      ? { createdAt: format(new Date(this.createdAt), 'MMM d yyyy') }
+      : {}),
+    ...(this.updatedAt
+      ? { updatedAt: format(new Date(this.updatedAt), 'MMM d yyyy') }
+      : {}),
+  };
+});
+
 module.exports = mongoose.model('Comment', CommentSchema);

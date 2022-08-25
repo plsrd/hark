@@ -3,6 +3,9 @@ import ContentContext from '../src/contentContext';
 import { format } from 'date-fns';
 import Link from 'next/link';
 import PostListItem from './PostListItem';
+import UserListItem from './UserListItem';
+import ImageListItem from './ImageListItem';
+import CommentListItem from './CommentListItem';
 
 const ListComponents = () => {
   const { content, activeDocument, setActiveDocument } =
@@ -10,12 +13,15 @@ const ListComponents = () => {
 
   return (
     <ul>
+      <li>
+        {' '}
+        <Link href={`/content/${activeDocument?.type}/new`}>
+          <a>Create new</a>
+        </Link>
+      </li>
       {content[activeDocument?.type] &&
         content[activeDocument.type].map(document => (
           <li key={document._id} style={{ borderBottom: '1px solid black' }}>
-            <Link href={`/content/${activeDocument?.type}/${document._id}`}>
-              <a>Create new</a>
-            </Link>
             <Link href={`/content/${activeDocument?.type}/${document._id}`}>
               <a
                 onClick={() =>
@@ -25,25 +31,13 @@ const ListComponents = () => {
                 {(() => {
                   switch (activeDocument.type) {
                     case 'posts':
-                      return <PostListItem document={document} />;
+                      return <PostListItem post={document} />;
                     case 'users':
-                      return (
-                        <>
-                          <p>{document.fullName}</p>
-                          <p>{document.role}</p>
-                        </>
-                      );
+                      return <UserListItem user={document} />;
                     case 'images':
-                      return (
-                        <>
-                          <p>{document._id}</p>
-                        </>
-                      );
+                      return <ImageListItem image={document} />;
                     case 'comments':
-                      <>
-                        <p>{document.author.fullName} on</p>
-                        <p>{document.post.title}</p>
-                      </>;
+                      return <CommentListItem comment={document} />;
                     default:
                       return null;
                   }

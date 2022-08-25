@@ -1,8 +1,9 @@
 import React from 'react';
 import { format } from 'date-fns';
 
-const PostListItem = ({ document }) => {
-  const { title, fullName, createdAt } = document;
+const PostListItem = ({ post }) => {
+  const { title, fullName, createdAt } = post;
+  console.log(post);
 
   return (
     <div>
