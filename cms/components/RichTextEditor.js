@@ -9,8 +9,10 @@ const ReactQuill = dynamic(
   { ssr: false }
 );
 
-const RichTextEditor = ({ value, onChange }) => {
-  return <ReactQuill theme='snow' value={value} onChange={onChange} />;
-};
+const RichTextEditor = React.forwardRef(({ value, onChange }, ref) => {
+  return (
+    <ReactQuill theme='snow' value={value} onChange={onChange} ref={ref} />
+  );
+});
 
 export default RichTextEditor;
