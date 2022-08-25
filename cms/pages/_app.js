@@ -3,7 +3,7 @@ import { UserProvider } from '../src/userContext';
 import client from '../src/client';
 import decode from 'jwt-decode';
 import { ContentProvider } from '../src/contentContext';
-import '../styles/reset.css';
+import 'tailwindcss/tailwind.css';
 
 const App = ({ Component, pageProps, existingUser, allContent }) => {
   const [user, setUser] = useState(existingUser);
@@ -17,7 +17,7 @@ const App = ({ Component, pageProps, existingUser, allContent }) => {
   );
 
   return (
-    <UserProvider value={userValue}>
+    <UserProvider value={userValue} data-theme='cmyk'>
       <ContentProvider value={contentValue}>
         <Component {...pageProps} />
       </ContentProvider>

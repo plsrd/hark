@@ -13,6 +13,7 @@
     "@sanity/block-tools": "^2.31.0",
     "@sanity/schema": "^2.31.0",
     "axios": "^0.27.2",
+    "daisyui": "^2.24.0",
     "date-fns": "^2.29.2",
     "jwt-decode": "^3.1.2",
     "next": "12.2.5",
@@ -23,7 +24,10 @@
     "react-quill": "^2.0.0"
   },
   "devDependencies": {
+    "autoprefixer": "^10.4.8",
     "eslint": "8.22.0",
-    "eslint-config-next": "12.2.5"
+    "eslint-config-next": "12.2.5",
+    "postcss": "^8.4.16",
+    "tailwindcss": "^3.1.8"
   }
 }

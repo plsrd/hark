@@ -3,7 +3,6 @@ import { format } from 'date-fns';
 
 const PostListItem = ({ post }) => {
   const { title, fullName, createdAt } = post;
-  console.log(post);
 
   return (
     <div>
