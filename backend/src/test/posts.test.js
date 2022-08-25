@@ -37,7 +37,7 @@ describe('POST /post creates new post', () => {
     const invalidPost = {
       title: 'This is invalid',
       isPublished: false,
-      content: [{ some: 'content' }],
+      content: '<p>/<p>',
       author: '62f2ffe5a247e46e3885a501',
     };
 
@@ -55,7 +55,7 @@ describe('POST /post creates new post', () => {
     const newPost = {
       title: 'TEST',
       isPublished: false,
-      content: [{ test: 'test' }],
+      content: '<p>/<p>',
       author: process.env.TEST_AUTHOR_ID,
     };
 
@@ -85,15 +85,12 @@ describe('PUT single post', () => {
   it('should edit the given post', async () => {
     const newTitle = 'A new test title';
 
-    await request(baseURL)
-      .put(`/posts/${id}`)
-      .set('Cookie', cookie)
-      .send({
-        title: newTitle,
-        author: process.env.TEST_AUTHOR_ID,
-        isPublished: false,
-        content: [{ test: 'test' }],
-      });
+    await request(baseURL).put(`/posts/${id}`).set('Cookie', cookie).send({
+      title: newTitle,
+      author: process.env.TEST_AUTHOR_ID,
+      isPublished: false,
+      content: '<p>/<p>',
+    });
 
     const { title } = await Post.findById(id);
 

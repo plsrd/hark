@@ -3,12 +3,19 @@ import { useForm } from 'react-hook-form';
 import ContentContext from '../../../src/contentContext';
 import client from '../../../src/client';
 import Layout from '../../../components/Layout';
-import hiddenFields from '../../../src/hiddenFields';
-import AuthorSelect from '../../../components/AuthorSelect';
 import PostFields from '../../../components/PostFields';
+import { blockContentType } from '../../../src/blockTools';
+import blockTools from '@sanity/block-tools';
 
-const DocumentEditor = ({ type, id, data }) => {
-  const { register, handleSubmit } = useForm();
+const EditorNode = ({ type, id, data }) => {
+  const { register, handleSubmit, control } = useForm({
+    defaultValues: {
+      title: data.title,
+      author: data.author._id,
+      content: '<em>MAGIC</em>',
+    },
+  });
+
   const { activeDocument, setActiveDocument } = useContext(ContentContext);
 
   useEffect(() => {
@@ -16,6 +23,15 @@ const DocumentEditor = ({ type, id, data }) => {
       setActiveDocument({ type, id });
     }
   }, []);
+
+  const onSubmit = data => {
+    const blocks = blockTools.htmlToBlocks(data.content, blockContentType);
+
+    console.log({
+      ...data,
+      content: blocks,
+    });
+  };
 
   return (
     <Layout>
@@ -39,8 +55,8 @@ const DocumentEditor = ({ type, id, data }) => {
           <p>Updated:{data.updatedAt}</p>
           <p>{data.isPublished ? 'Published!' : 'Draft'}</p>
         </div>
-        <form onSubmit={handleSubmit(data => console.log('data', data))}>
-          <PostFields register={register} post={data} />
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <PostFields register={register} post={data} control={control} />
           <input type='submit' value='Publish' />
         </form>
       </div>
@@ -48,7 +64,7 @@ const DocumentEditor = ({ type, id, data }) => {
   );
 };
 
-export default DocumentEditor;
+export default EditorNode;
 
 export const getServerSideProps = async ({ params }) => {
   const { type, id } = params;

@@ -6,7 +6,7 @@ const CommentSchema = new Schema(
   {
     author: { type: Schema.Types.ObjectId, ref: 'User' },
     post: { type: Schema.Types.ObjectId, ref: 'Post' },
-    content: [{ type: Object }],
+    content: { type: String },
     isApproved: { type: Boolean },
   },
   {

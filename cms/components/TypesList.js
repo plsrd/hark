@@ -21,6 +21,7 @@ const List = () => {
     >
       {contentTypes.map(type => (
         <button
+          key={type}
           onClick={() => handleClick(type)}
           disabled={activeDocument?.type == type}
         >
