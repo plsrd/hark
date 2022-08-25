@@ -77,7 +77,7 @@ describe('PUT a new user', () => {
     await request(baseURL)
       .put(`/users/${id}`)
       .set({ Cookie: cookie })
-      .send({ ...testUser, firstName: newName });
+      .send({ password: testUser.password, firstName: newName });
 
     const updatedUser = await User.findById(id);
 

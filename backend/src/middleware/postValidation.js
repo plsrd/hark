@@ -2,28 +2,39 @@ const { body } = require('express-validator');
 const User = require('../models/user');
 
 const postValidation = [
-  body('title', 'A title is required').trim().isLength(1),
+  body('title').custom(async (title, { req }) => {
+    if (req.method != 'PUT' && !title.length)
+      throw new Error('A title is required');
+  }),
   body('author')
     .escape()
     .trim()
     .custom(async (authorId, { req }) => {
-      const { role, _id } = req.user;
-      const existingUser = await User.findById(authorId);
+      if (req.method != 'PUT') {
+        const { role, _id } = req.user;
+        const existingUser = await User.findById(authorId);
 
-      if (!existingUser)
-        throw new Error('An existing user must be added as author.');
+        if (!existingUser)
+          throw new Error('An existing user must be added as author.');
 
-      if (existingUser.role == 'viewer')
-        throw new Error('A viewer cannot be assigned as an author');
+        if (existingUser.role == 'viewer')
+          throw new Error('A viewer cannot be assigned as an author');
 
-      if (role !== 'admin' && authorId !== _id.toString())
-        throw new Error('Author must be the current logged in user');
+        if (role !== 'admin' && authorId !== _id.toString())
+          throw new Error('Author must be the current logged in user');
+      }
     }),
-  body(
-    'isPublished',
-    'You must indicate whether the post is published'
-  ).isBoolean(),
-  body('content').isLength(1),
+  body('isPublished').custom(async (isPublished, { req }) => {
+    if (req.method != 'PUT') {
+      if (typeof isPublished !== 'boolean')
+        throw new Error('You must indicate whether the post is published');
+    }
+  }),
+  body('content').custom(async (content, { req }) => {
+    if (req.method != 'PUT') {
+      if (!content.length >= 1) throw new Error('Content is required');
+    }
+  }),
 ];
 
 module.exports = postValidation;

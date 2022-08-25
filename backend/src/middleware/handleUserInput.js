@@ -31,6 +31,8 @@ const handleUserInput = async (req, res, next) => {
       userFields[key] === '' ? delete userFields[key] : {}
     );
 
+    console.log(userFields);
+
     if (currentUserRole !== 'admin' && _id.toString() !== req.params.userid) {
       return res
         .status(401)
@@ -45,7 +47,10 @@ const handleUserInput = async (req, res, next) => {
   };
 
   if (!errors.isEmpty()) {
-    res.status(422).send({ errors: errors.array(), userFields });
+    res.status(422).send({
+      errors: errors.array(),
+      fields: { firstName, lastName, email, password, role },
+    });
   } else {
     req.method == 'POST' ? createNewUser() : updateUser();
   }

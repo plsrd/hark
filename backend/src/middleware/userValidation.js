@@ -22,7 +22,6 @@ const userValidation = [
     .escape()
     .trim()
     .toLowerCase()
-    .isEmail()
     .custom(async (email, { req }) => {
       if (req.method != 'PUT') {
         const existingUser = await User.findOne({ email });

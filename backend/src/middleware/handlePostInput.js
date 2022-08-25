@@ -6,7 +6,7 @@ const handlePostInput = (req, res, next) => {
   const { title, author, content, isPublished } = req.body;
   const { role, _id } = req.user;
 
-  const fields = {
+  const postFields = {
     title,
     author,
     content,
@@ -14,7 +14,7 @@ const handlePostInput = (req, res, next) => {
   };
 
   const createNewPost = () => {
-    const newPost = new Post(fields);
+    const newPost = new Post(postFields);
     if (role == 'viewer')
       return res.status(401).send({ message: 'Viewers may not create posts' });
 
@@ -28,6 +28,10 @@ const handlePostInput = (req, res, next) => {
   };
 
   const updatePost = () => {
+    Object.keys(postFields).forEach(key =>
+      postFields[key] === '' ? delete postFields[key] : {}
+    );
+
     if (role == 'viewer') {
       return res.status(401).send({ message: 'Viewers may not edit posts' });
     } else if (role == 'editor' && author !== _id.toString()) {
@@ -36,7 +40,7 @@ const handlePostInput = (req, res, next) => {
         .send({ message: 'Editors may only edit their own content' });
     }
 
-    Post.findByIdAndUpdate(req.params.postid, fields, { new: true }).exec(
+    Post.findByIdAndUpdate(req.params.postid, postFields, { new: true }).exec(
       (err, updatedPost) => {
         if (err) return next(err);
 
@@ -49,7 +53,10 @@ const handlePostInput = (req, res, next) => {
   };
 
   if (!errors.isEmpty()) {
-    res.status(422).send({ errors: errors.array(), fields });
+    res.status(422).send({
+      errors: errors.array(),
+      fields: { title, author, content, isPublished },
+    });
   } else {
     req.method == 'POST' ? createNewPost() : updatePost();
   }

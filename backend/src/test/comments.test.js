@@ -3,7 +3,7 @@ const configDB = require('./configDB');
 const Post = require('../models/post');
 const Comment = require('../models/comment');
 
-jest.setTimeout(10000);
+jest.setTimeout(6000);
 
 const baseURL = 'http://localhost:3000/api';
 
@@ -13,7 +13,7 @@ let id;
 const testComment = {
   author: process.env.TEST_AUTHOR_ID,
   post: process.env.TEST_POST_ID,
-  content: '<p>peepee</p>',
+  content: [{ test: 'test' }],
   isApproved: false,
 };
 
@@ -88,7 +88,7 @@ describe('PUT an edit to a comment', () => {
   it('should change the content of the comment', async () => {
     const editedComment = {
       ...testComment,
-      content: '<p>/<p>',
+      content: [{ else: 'something' }],
     };
 
     await request(baseURL)
@@ -98,7 +98,7 @@ describe('PUT an edit to a comment', () => {
 
     const updatedComment = await Comment.findById(id);
 
-    expect(updatedComment.content).toBe(editedComment.content);
+    expect(updatedComment.content[0]).toMatchObject(editedComment.content[0]);
   });
 });
 
