@@ -34,4 +34,12 @@ export default {
       method: 'get',
       url: `/${type}${id ? `/${id}` : ''}`,
     }).catch(err => console.log(err)),
+
+  put: async (type, id, data) =>
+    await instance({
+      headers: { 'Content-Type': 'application/json' },
+      method: 'put',
+      url: `/${type}${id ? `/${id}` : ''}`,
+      data,
+    }).catch(err => console.log(err)),
 };

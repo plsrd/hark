@@ -1,5 +1,5 @@
-import React, { useContext, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import React, { useContext, useEffect, useState } from 'react';
+import { useForm, useFormState } from 'react-hook-form';
 import ContentContext from '../../../src/contentContext';
 import client from '../../../src/client';
 import Layout from '../../../components/Layout';
@@ -8,13 +8,22 @@ import { blockContentType } from '../../../src/blockTools';
 import blockTools from '@sanity/block-tools';
 
 const EditorNode = ({ type, id, data }) => {
-  const { register, handleSubmit, control } = useForm({
+  const [draft, setDraft] = useState(data.isPublished);
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { dirtyFields },
+  } = useForm({
     defaultValues: {
       title: data.title,
       author: data.author._id,
       content: '<em>MAGIC</em>',
     },
   });
+
+  console.log(draft);
 
   const { activeDocument, setActiveDocument } = useContext(ContentContext);
 
@@ -24,13 +33,21 @@ const EditorNode = ({ type, id, data }) => {
     }
   }, []);
 
-  const onSubmit = data => {
+  useEffect(() => {
+    if (dirtyFields && !draft) setDraft(true);
+  }, [dirtyFields]);
+
+  const onSubmit = async data => {
     const blocks = blockTools.htmlToBlocks(data.content, blockContentType);
 
-    console.log({
+    const document = {
       ...data,
       content: blocks,
-    });
+      isPublished: true,
+    };
+
+    await client.put(type, id, document);
+    setDraft(false);
   };
 
   return (
@@ -53,7 +70,7 @@ const EditorNode = ({ type, id, data }) => {
           <h1>{data.title}</h1>
           <p>Created:{data.createdAt}</p>
           <p>Updated:{data.updatedAt}</p>
-          <p>{data.isPublished ? 'Published!' : 'Draft'}</p>
+          <p>{!draft ? 'Published!' : 'Draft'}</p>
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <PostFields register={register} post={data} control={control} />
