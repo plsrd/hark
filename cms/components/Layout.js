@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import ContentContext from '../src/contentContext';
 import Head from 'next/head';
 import Nav from './Nav';
-import ListComponents from './ListComponents';
+import SingleTypeList from './SingleTypeList';
 
 const Layout = ({ children }) => {
   const { activeDocument } = useContext(ContentContext);
@@ -61,7 +61,7 @@ const Layout = ({ children }) => {
                 padding: '5px',
               }}
             >
-              <ListComponents />
+              <SingleTypeList />
             </div>
           )}
           {children}

@@ -9,8 +9,7 @@ let instance = axios.create(config);
 
 export default {
   setCookie: cookie => {
-    const cookieHeader = { Cookie: cookie };
-    Object.assign(config, { headers: cookieHeader });
+    Object.assign(config, { headers: { Cookie: cookie } });
     instance = axios.create(config);
   },
 

@@ -9,7 +9,7 @@ import Layout from '../../../components/Layout';
 import PostFields from '../../../components/PostFields';
 
 const EditorNode = ({ type, id, data }) => {
-  const [draft, setDraft] = useState(data.isPublished);
+  const [draft, setDraft] = useState(data?.isPublished);
   const { activeDocument, setActiveDocument } = useContext(ContentContext);
 
   const {
@@ -19,9 +19,9 @@ const EditorNode = ({ type, id, data }) => {
     formState: { dirtyFields },
   } = useForm({
     defaultValues: {
-      title: data.title,
-      author: data.author._id,
-      content: toHTML(data?.content),
+      title: data?.title,
+      author: data?.author._id,
+      content: data && toHTML(data?.content),
     },
   });
 
@@ -35,11 +35,11 @@ const EditorNode = ({ type, id, data }) => {
     if (dirtyFields && !draft) setDraft(true);
   }, [dirtyFields]);
 
-  const onSubmit = async data => {
-    const blocks = blockTools.htmlToBlocks(data.content, blockContentType);
+  const onSubmit = async fields => {
+    const blocks = blockTools.htmlToBlocks(fields.content, blockContentType);
 
     const document = {
-      ...data,
+      ...fields,
       content: blocks,
       isPublished: true,
     };
@@ -65,9 +65,9 @@ const EditorNode = ({ type, id, data }) => {
             margin: '1rem 0',
           }}
         >
-          <h1>{data.title}</h1>
-          <p>Created:{data.createdAt}</p>
-          <p>Updated:{data.updatedAt}</p>
+          <h1>{data?.title}</h1>
+          <p>Created:{data?.createdAt}</p>
+          <p>Updated:{data?.updatedAt}</p>
           <p>{!draft ? 'Published!' : 'Draft'}</p>
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -83,13 +83,13 @@ export default EditorNode;
 
 export const getServerSideProps = async ({ params }) => {
   const { type, id } = params;
-  const { data } = await client.get(type, id);
+  const response = await client.get(type, id);
 
   return {
     props: {
       type,
       id,
-      data,
+      ...(response?.data ? { data: response.data } : {}),
     },
   };
 };
