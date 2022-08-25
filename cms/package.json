@@ -12,6 +12,7 @@
     "@emotion/css": "^11.10.0",
     "@lexical/react": "^0.3.11",
     "@lexical/utils": "^0.3.11",
+    "@portabletext/to-html": "^1.0.3",
     "@sanity/block-tools": "^2.31.0",
     "@sanity/schema": "^2.31.0",
     "axios": "^0.27.2",

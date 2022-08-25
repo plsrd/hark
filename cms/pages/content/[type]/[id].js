@@ -1,14 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useForm, useFormState } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
+import blockTools from '@sanity/block-tools';
+import { toHTML } from '@portabletext/to-html';
 import ContentContext from '../../../src/contentContext';
 import client from '../../../src/client';
+import { blockContentType } from '../../../src/blockTools';
 import Layout from '../../../components/Layout';
 import PostFields from '../../../components/PostFields';
-import { blockContentType } from '../../../src/blockTools';
-import blockTools from '@sanity/block-tools';
 
 const EditorNode = ({ type, id, data }) => {
   const [draft, setDraft] = useState(data.isPublished);
+  const { activeDocument, setActiveDocument } = useContext(ContentContext);
 
   const {
     register,
@@ -19,13 +21,9 @@ const EditorNode = ({ type, id, data }) => {
     defaultValues: {
       title: data.title,
       author: data.author._id,
-      content: '<em>MAGIC</em>',
+      content: toHTML(data?.content),
     },
   });
-
-  console.log(draft);
-
-  const { activeDocument, setActiveDocument } = useContext(ContentContext);
 
   useEffect(() => {
     if (!activeDocument) {
