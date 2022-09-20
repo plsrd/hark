@@ -12,6 +12,8 @@ const EditorNode = ({ type, id, data }) => {
   const [draft, setDraft] = useState(data?.isPublished);
   const { activeDocument, setActiveDocument } = useContext(ContentContext);
 
+  console.log(id);
+
   const {
     register,
     handleSubmit,
@@ -46,7 +48,10 @@ const EditorNode = ({ type, id, data }) => {
       isPublished: true,
     };
 
-    await client.put(type, id, document);
+    id == 'new'
+      ? await client.post(type, document)
+      : await client.put(type, id, document);
+
     setDraft(false);
   };
 
@@ -91,13 +96,22 @@ export default EditorNode;
 
 export const getServerSideProps = async ({ params }) => {
   const { type, id } = params;
-  const response = await client.get(type, id);
 
-  return {
-    props: {
-      type,
-      id,
-      ...(response?.data ? { data: response.data } : {}),
-    },
-  };
+  if (id !== 'new') {
+    const response = await client.get(type, id);
+    return {
+      props: {
+        type,
+        id,
+        ...(response?.data ? { data: response.data } : {}),
+      },
+    };
+  } else {
+    return {
+      props: {
+        type,
+        id,
+      },
+    };
+  }
 };
