@@ -56,6 +56,7 @@ describe('POST /post creates new post', () => {
       title: 'TEST',
       isPublished: false,
       content: [{ test: 'test' }],
+      slug: 'this-is-a-test',
       author: process.env.TEST_AUTHOR_ID,
     };
 

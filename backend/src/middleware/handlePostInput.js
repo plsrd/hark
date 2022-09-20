@@ -3,15 +3,17 @@ const Post = require('../models/post');
 
 const handlePostInput = (req, res, next) => {
   const errors = validationResult(req);
-  const { title, author, content, isPublished } = req.body;
+  const { title, author, content, isPublished, slug } = req.body;
   const { role, _id } = req.user;
+
+  console.log(errors.array());
 
   const postFields = {
     title,
     author,
     content,
     isPublished,
-    mainImage,
+    slug,
   };
 
   const createNewPost = () => {
@@ -30,7 +32,7 @@ const handlePostInput = (req, res, next) => {
 
   const updatePost = () => {
     Object.keys(postFields).forEach(key =>
-      postFields[key] === '' ? delete postFields[key] : {}
+      !postFields[key] || postFields[key] == '' ? delete postFields[key] : {}
     );
 
     if (role == 'viewer') {

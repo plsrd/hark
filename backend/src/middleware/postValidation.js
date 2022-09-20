@@ -2,10 +2,13 @@ const { body } = require('express-validator');
 const User = require('../models/user');
 
 const postValidation = [
-  body('title').custom(async (title, { req }) => {
-    if (req.method != 'PUT' && !title.length)
-      throw new Error('A title is required');
-  }),
+  body('title')
+    .trim()
+    .escape()
+    .custom(async (title, { req }) => {
+      if (req.method != 'PUT' && !title.length)
+        throw new Error('A title is required');
+    }),
   body('author')
     .escape()
     .trim()
@@ -30,6 +33,15 @@ const postValidation = [
         throw new Error('You must indicate whether the post is published');
     }
   }),
+  body('slug')
+    .trim()
+    .escape()
+    .custom(async (slug, { req }) => {
+      console.log('SLUG', slug);
+      if (req.method != 'PUT') {
+        if (!slug.length >= 1) throw new Error('Slug is required');
+      }
+    }),
   body('content').custom(async (content, { req }) => {
     if (req.method != 'PUT') {
       if (!content.length >= 1) throw new Error('Content is required');
