@@ -41,6 +41,7 @@ export default {
       url: `/${type}${id ? `/${id}` : ''}`,
       data,
     }).catch(err => console.log(err)),
+
   post: async (type, data) =>
     await instance({
       headers: { 'Content-Type': 'application/json' },

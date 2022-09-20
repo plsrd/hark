@@ -6,8 +6,6 @@ const handlePostInput = (req, res, next) => {
   const { title, author, content, isPublished, slug } = req.body;
   const { role, _id } = req.user;
 
-  console.log(errors.array());
-
   const postFields = {
     title,
     author,

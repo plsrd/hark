@@ -12,8 +12,6 @@ const EditorNode = ({ type, id, data }) => {
   const [draft, setDraft] = useState(data?.isPublished);
   const { activeDocument, setActiveDocument } = useContext(ContentContext);
 
-  console.log(id);
-
   const {
     register,
     handleSubmit,
@@ -24,6 +22,7 @@ const EditorNode = ({ type, id, data }) => {
   } = useForm({
     defaultValues: {
       title: data?.title,
+      slug: data?.slug,
       author: data?.author._id,
       content: data && toHTML(data?.content),
     },

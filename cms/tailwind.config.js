@@ -5,10 +5,14 @@ module.exports = {
     './components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        metal: ['Grenze Gotisch', 'cursive'],
+      },
+    },
   },
   plugins: [require('daisyui')],
   daisyui: {
-    themes: ['cmyk'],
+    themes: ['luxury'],
   },
 };
