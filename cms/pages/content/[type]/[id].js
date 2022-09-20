@@ -17,6 +17,8 @@ const EditorNode = ({ type, id, data }) => {
     handleSubmit,
     control,
     formState: { dirtyFields },
+    getValues,
+    setValue,
   } = useForm({
     defaultValues: {
       title: data?.title,
@@ -71,7 +73,13 @@ const EditorNode = ({ type, id, data }) => {
           <p>{!draft ? 'Published!' : 'Draft'}</p>
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <PostFields register={register} post={data} control={control} />
+          <PostFields
+            register={register}
+            post={data}
+            control={control}
+            getValues={getValues}
+            setValue={setValue}
+          />
           <input type='submit' value='Publish' />
         </form>
       </div>

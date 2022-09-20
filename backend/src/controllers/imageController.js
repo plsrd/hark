@@ -8,7 +8,7 @@ exports.images_get = async (req, res, next) => {
     .sort(getSort(req.query.sort))
     .limit(req.query.limit)
     .skip(req.query.skip)
-    .then(posts => res.json(posts))
+    .then(images => res.json(images))
     .catch(err => next(err));
 };
 

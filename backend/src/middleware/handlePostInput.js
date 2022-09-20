@@ -11,6 +11,7 @@ const handlePostInput = (req, res, next) => {
     author,
     content,
     isPublished,
+    mainImage,
   };
 
   const createNewPost = () => {
