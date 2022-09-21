@@ -21,7 +21,7 @@ const LoginForm = () => {
 
   return (
     <div className='card w-fit'>
-      <div className='car-title font-metal text-9xl text-center mt-2 tracking-wider'>
+      <div className='car-title font-metal text-9xl text-center mt-2 tracking-wider text-white'>
         hark
       </div>
       <div className='card-body'>
@@ -32,6 +32,7 @@ const LoginForm = () => {
           <label className='input-group'>
             <span className={errors.email ? 'text-error' : ''}>Email</span>
             <input
+              type='email'
               className={`input input-bordered w-full ${
                 errors.email && 'border-error border-2'
               }`}
@@ -51,6 +52,7 @@ const LoginForm = () => {
               Password
             </span>
             <input
+              type='password'
               className={`input input-bordered w-full ${
                 errors.password && 'border-error border-2'
               }`}

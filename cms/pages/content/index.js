@@ -4,9 +4,25 @@ import Layout from '../../components/Layout';
 const Content = () => {
   return (
     <Layout>
-      <h1>Content</h1>
+      <div>content</div>
     </Layout>
   );
 };
 
 export default Content;
+
+export const getServerSideProps = async ctx => {
+  const cookie = ctx.req?.headers?.cookie;
+
+  if (!cookie) {
+    return {
+      redirect: {
+        destination: '/',
+      },
+    };
+  } else {
+    return {
+      props: {},
+    };
+  }
+};
