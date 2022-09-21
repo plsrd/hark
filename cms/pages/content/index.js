@@ -1,12 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Layout from '../../components/Layout';
 
 const Content = () => {
-  return (
-    <Layout>
-      <div>content</div>
-    </Layout>
-  );
+  return <Layout></Layout>;
 };
 
 export default Content;

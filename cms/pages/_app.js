@@ -5,9 +5,9 @@ import decode from 'jwt-decode';
 import { ContentProvider } from '../src/contentContext';
 import 'tailwindcss/tailwind.css';
 
-const App = ({ Component, pageProps, existingUser, allContent }) => {
+const App = ({ Component, pageProps, existingUser, posts, authors }) => {
   const [user, setUser] = useState(existingUser);
-  const [content, setContent] = useState(allContent);
+  const [content, setContent] = useState({ posts, authors });
   const [activeDocument, setActiveDocument] = useState();
 
   const userValue = useMemo(() => ({ user, setUser }), [user]);
@@ -33,11 +33,15 @@ App.getInitialProps = async ({ ctx }) => {
   } else {
     client.setCookie(cookie);
 
-    const { data: allContent } = await client.get('*');
+    const { data: posts } = await client.get('posts');
+    const { data: users } = await client.get('users');
+
+    const authors = users.filter(user => user.role != 'viewer');
 
     return {
       ...(cookie && { existingUser: decode(cookie) }),
-      allContent,
+      posts,
+      authors,
     };
   }
 };

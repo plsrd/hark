@@ -37,11 +37,11 @@ const Layout = ({ children }) => {
         <link rel='Shortcut Icon' href='/favicon.ico' type='image/x-icon' />
       </Head>
       <div className='bg-base-200 drawer drawer-mobile'>
-        <input id='my-drawer-2' type='checkbox' class='drawer-toggle' />
-        <div class='bg-base-100 drawer-content flex flex-col items-center justify-center'>
+        <input id='my-drawer-2' type='checkbox' className='drawer-toggle' />
+        <div className='bg-base-100 drawer-content flex flex-col'>
           <div
             className='
-  sticky top-0 z-30 flex h-16 w-full justify-center bg-opacity-90 backdrop-blur transition-all duration-100 
+  sticky top-0 z-30 flex h-16 w-full bg-opacity-90 backdrop-blur transition-all duration-100 
   bg-base-100 text-base-content
   '
           >
@@ -49,8 +49,8 @@ const Layout = ({ children }) => {
           </div>
           {children}
           <label
-            for='my-drawer-2'
-            class='btn btn-primary drawer-button lg:hidden'
+            htmlFor='my-drawer-2'
+            className='btn btn-primary drawer-button lg:hidden'
           >
             Open drawer
           </label>
