@@ -10,7 +10,7 @@ import PostFields from '../../../components/PostFields';
 
 const DocumentEditor = ({ type, id, data }) => {
   const [draft, setDraft] = useState(data?.isPublished);
-
+  console.log(data);
   const {
     register,
     handleSubmit,
@@ -18,18 +18,16 @@ const DocumentEditor = ({ type, id, data }) => {
     formState: { dirtyFields },
     getValues,
     setValue,
-  } = useForm({
-    defaultValues: {
-      title: data?.title,
-      slug: data?.slug,
-      author: data?.author._id,
-      content: data && toHTML(data?.content),
-    },
-  });
+    reset,
+  } = useForm();
 
   useEffect(() => {
     if (dirtyFields && !draft) setDraft(true);
   }, [dirtyFields]);
+
+  useEffect(() => {
+    reset({ ...data, author: data.author._id, content: toHTML(data.content) });
+  }, [id]);
 
   const onSubmit = async fields => {
     const blocks = blockTools.htmlToBlocks(fields.content, blockContentType);

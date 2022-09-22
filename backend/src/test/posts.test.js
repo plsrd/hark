@@ -46,6 +46,8 @@ describe('POST /post creates new post', () => {
       .set('Cookie', cookie)
       .send(invalidPost);
 
+    console.log(response);
+
     expect(response.body.errors[0].msg).toBe(
       'An existing user must be added as author.'
     );
@@ -64,6 +66,7 @@ describe('POST /post creates new post', () => {
       .post('/posts')
       .set('Cookie', cookie)
       .send(newPost);
+    console.log(response.body);
     id = response.body.createdPost._id;
 
     const post = await Post.findById(id);

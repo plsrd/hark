@@ -37,7 +37,6 @@ const postValidation = [
     .trim()
     .escape()
     .custom(async (slug, { req }) => {
-      console.log('SLUG', slug);
       if (req.method != 'PUT') {
         if (!slug.length >= 1) throw new Error('Slug is required');
       }
