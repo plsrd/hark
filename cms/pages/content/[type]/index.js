@@ -1,25 +1,40 @@
-import React, { useContext, useEffect } from 'react';
+import React from 'react';
+import DocumentTable from '../../../components/DocumentTable';
 import Layout from '../../../components/Layout';
-import ContentContext from '../../../src/contentContext';
+import client from '../../../src/client';
 
-const ContentType = ({ type }) => {
-  const { activeDocument, setActiveDocument } = useContext(ContentContext);
-
-  useEffect(() => {
-    setActiveDocument({
-      type,
-    });
-  }, []);
-
-  return <Layout></Layout>;
+const ContentType = ({ type, data }) => {
+  return (
+    <Layout>
+      <div className='w-9/12'>
+        <div className='tab tab-lifted bg-base-200 border-b-0 text-base-content'>
+          {`All ${type.slice(0, 1).toUpperCase() + type.slice(1)}`}
+        </div>
+        <div
+          className='preview bg-base-200 rounded-b-box rounded-tr-box flex flex-wrap items-center justify-center gap-2 overflow-x-hidden bg-cover bg-top p-4'
+          style={{
+            backgroundImage:
+              'radial-gradient(hsla(37 67% 58%/.2) 1px, hsla(270 4% 9%) 1px)',
+            backgroundSize: '5px 5px',
+            backgroundPosition: '-19px -19px',
+          }}
+        >
+          <DocumentTable data={data} type={type} />
+        </div>
+      </div>
+    </Layout>
+  );
 };
 
 export default ContentType;
 
 export const getServerSideProps = async ({ params: { type } }) => {
+  const { data } = await client.get(type);
+  console.log(data);
   return {
     props: {
       type,
+      data,
     },
   };
 };

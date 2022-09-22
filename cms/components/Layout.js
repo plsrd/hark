@@ -47,7 +47,7 @@ const Layout = ({ children }) => {
           >
             <Nav />
           </div>
-          {children}
+          <div className='flex flex-col items-center'>{children}</div>
           <label
             htmlFor='my-drawer-2'
             className='btn btn-primary drawer-button lg:hidden'
