@@ -8,9 +8,8 @@ import { blockContentType } from '../../../src/blockTools';
 import Layout from '../../../components/Layout';
 import PostFields from '../../../components/PostFields';
 
-const EditorNode = ({ type, id, data }) => {
+const DocumentEditor = ({ type, id, data }) => {
   const [draft, setDraft] = useState(data?.isPublished);
-  const { activeDocument, setActiveDocument } = useContext(ContentContext);
 
   const {
     register,
@@ -27,12 +26,6 @@ const EditorNode = ({ type, id, data }) => {
       content: data && toHTML(data?.content),
     },
   });
-
-  useEffect(() => {
-    if (!activeDocument) {
-      setActiveDocument({ type, id });
-    }
-  }, []);
 
   useEffect(() => {
     if (dirtyFields && !draft) setDraft(true);
@@ -55,43 +48,22 @@ const EditorNode = ({ type, id, data }) => {
   };
 
   return (
-    <Layout>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          height: '100vh',
-          flexGrow: 1,
-        }}
-      >
-        <div
-          style={{
-            borderBottom: '1px solid black',
-            padding: '1rem',
-            margin: '1rem 0',
-          }}
-        >
-          <h1>{data?.title}</h1>
-          <p>Created:{data?.createdAt}</p>
-          <p>Updated:{data?.updatedAt}</p>
-          <p>{!draft ? 'Published!' : 'Draft'}</p>
-        </div>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <PostFields
-            register={register}
-            post={data}
-            control={control}
-            getValues={getValues}
-            setValue={setValue}
-          />
-          <input type='submit' value='Publish' />
-        </form>
-      </div>
+    <Layout activeDocument={id}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <PostFields
+          register={register}
+          post={data}
+          control={control}
+          getValues={getValues}
+          setValue={setValue}
+        />
+        <input type='submit' value='Publish' />
+      </form>
     </Layout>
   );
 };
 
-export default EditorNode;
+export default DocumentEditor;
 
 export const getServerSideProps = async ({ params }) => {
   const { type, id } = params;

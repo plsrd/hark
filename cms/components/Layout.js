@@ -4,9 +4,7 @@ import ContentContext from '../src/contentContext';
 import Nav from './Nav';
 import Drawer from './Drawer';
 
-const Layout = ({ children }) => {
-  const { activeDocument } = useContext(ContentContext);
-
+const Layout = ({ children, activeDocument }) => {
   return (
     <div className='flex flex-col w-screen h-screen'>
       <Head>
@@ -55,7 +53,7 @@ const Layout = ({ children }) => {
             Open drawer
           </label>
         </div>
-        <Drawer />
+        <Drawer activeDocument={activeDocument} />
       </div>
     </div>
   );

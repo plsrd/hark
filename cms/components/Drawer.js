@@ -12,7 +12,7 @@ const MenuListWrapper = ({ children }) => {
   );
 };
 
-const Drawer = () => {
+const Drawer = ({ activeDocument }) => {
   const {
     content: { posts, authors },
   } = useContext(ContentContext);
@@ -21,27 +21,33 @@ const Drawer = () => {
     <div className='w-80 overflow-y-auto'>
       <DrawerHeader />
       <div className='h-4'></div>
-      <MenuListWrapper className='menu menu-compact flex flex-col p-0 px-4'>
+      <MenuListWrapper>
         <MenuItemWithIcon icon={<PhotoIcon />} name='Media Library' />
         <MenuItemWithIcon icon={<UsersIcon />} name='Users' />
         <MenuItemWithIcon icon={<SettingsIcon />} name='Settings' />
       </MenuListWrapper>
       <MenuListWrapper>
         <MenuHeader type='posts' />
-        {posts.map(post => (
-          <li key={post._id}>
-            <Link href={`/content/posts/${post._id}}`}>
-              <span>{post.title}</span>
-            </Link>
-          </li>
-        ))}
+        {posts.map(post => {
+          return (
+            <li key={post._id}>
+              <Link href={`/content/posts/${post._id}`}>
+                <a className={activeDocument == post._id && 'active'}>
+                  {post.title}
+                </a>
+              </Link>
+            </li>
+          );
+        })}
       </MenuListWrapper>
-      <MenuListWrapper className='menu menu-compact flex flex-col p-0 px-4'>
+      <MenuListWrapper>
         <MenuHeader type='authors' />
         {authors.map(author => (
           <li key={author._id}>
-            <Link href={`/content/authors/${author._id}}`}>
-              <span>{author.fullName}</span>
+            <Link href={`/content/authors/${author._id}`}>
+              <a className={activeDocument == author._id && 'active'}>
+                {author.fullName}
+              </a>
             </Link>
           </li>
         ))}

@@ -3,7 +3,7 @@ import DocumentTable from '../../../components/DocumentTable';
 import Layout from '../../../components/Layout';
 import client from '../../../src/client';
 
-const ContentType = ({ type, data }) => {
+const ContentTypeBulkEditor = ({ type, data }) => {
   return (
     <Layout>
       <div className='w-9/12'>
@@ -26,11 +26,11 @@ const ContentType = ({ type, data }) => {
   );
 };
 
-export default ContentType;
+export default ContentTypeBulkEditor;
 
 export const getServerSideProps = async ({ params: { type } }) => {
   const { data } = await client.get(type);
-  console.log(data);
+
   return {
     props: {
       type,
