@@ -25,7 +25,7 @@ const PostFields = ({ register, post, control, getValues, setValue }) => {
 
       <div>
         <label htmlFor='author'>Author</label>
-        <AuthorSelect register={register} />
+        <AuthorSelect register={register} getValues={getValues} post={post} />
       </div>
       <div>
         <label htmlFor='content'>Content</label>

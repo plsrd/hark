@@ -1,6 +1,5 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import Head from 'next/head';
-import ContentContext from '../src/contentContext';
 import Nav from './Nav';
 import Drawer from './Drawer';
 

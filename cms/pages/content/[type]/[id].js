@@ -1,12 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import blockTools from '@sanity/block-tools';
 import { toHTML } from '@portabletext/to-html';
-import ContentContext from '../../../src/contentContext';
 import client from '../../../src/client';
 import { blockContentType } from '../../../src/blockTools';
 import Layout from '../../../components/Layout';
 import PostFields from '../../../components/PostFields';
+import EditorWrapper from '../../../components/EditorWrapper';
 
 const DocumentEditor = ({ type, id, data }) => {
   const [draft, setDraft] = useState(data?.isPublished);
@@ -47,16 +47,18 @@ const DocumentEditor = ({ type, id, data }) => {
 
   return (
     <Layout activeDocument={id}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <PostFields
-          register={register}
-          post={data}
-          control={control}
-          getValues={getValues}
-          setValue={setValue}
-        />
-        <input type='submit' value='Publish' />
-      </form>
+      <EditorWrapper type={type}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <PostFields
+            register={register}
+            post={data}
+            control={control}
+            getValues={getValues}
+            setValue={setValue}
+          />
+          <input type='submit' value='Publish' />
+        </form>
+      </EditorWrapper>
     </Layout>
   );
 };

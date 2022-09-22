@@ -1,9 +1,6 @@
 import React, { useContext } from 'react';
 import LogoutButton from './LogoutButton';
 import UserContext from '../src/userContext';
-import Avatar from './Avatar';
-import TypesList from './TypesList';
-import Link from 'next/link';
 import ContentContext from '../src/contentContext';
 
 const Nav = ({ children }) => {
