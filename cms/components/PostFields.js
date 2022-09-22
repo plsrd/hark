@@ -4,6 +4,10 @@ import slugify from 'slugify';
 import AuthorSelect from './AuthorSelect';
 import RichTextEditor from './RichTextEditor';
 
+const FormInputWrapper = ({ children }) => {
+  return <div className='flex flex-col gap-3'>{children}</div>;
+};
+
 const PostFields = ({ register, post, control, getValues, setValue }) => {
   const generateSlug = e => {
     e.preventDefault();
@@ -13,28 +17,48 @@ const PostFields = ({ register, post, control, getValues, setValue }) => {
 
   return (
     <>
-      <div>
-        <label htmlFor='title'>Title</label>
-        <input type='text' {...register('title')} />
-      </div>
-      <div>
-        <label htmlFor='slug'>Slug</label>
-        <input type='text' {...register('slug')} />
-        <button onClick={generateSlug}>Generate</button>
-      </div>
+      <FormInputWrapper>
+        <label htmlFor='title' className='text-lg'>
+          Title
+        </label>
+        <input
+          type='text'
+          {...register('title')}
+          className='input input-bordered'
+        />
+      </FormInputWrapper>
+      <FormInputWrapper>
+        <label htmlFor='slug' className='text-lg'>
+          Slug
+        </label>
+        <div className='input-group'>
+          <input
+            type='text'
+            {...register('slug')}
+            className='input w-full input-bordered'
+          />
+          <button onClick={generateSlug} className='btn btn-outline'>
+            Generate
+          </button>
+        </div>
+      </FormInputWrapper>
 
-      <div>
-        <label htmlFor='author'>Author</label>
+      <FormInputWrapper>
+        <label htmlFor='author' className='text-lg'>
+          Author
+        </label>
         <AuthorSelect register={register} getValues={getValues} post={post} />
-      </div>
-      <div>
-        <label htmlFor='content'>Content</label>
+      </FormInputWrapper>
+      <FormInputWrapper>
+        <label htmlFor='content' className='text-lg'>
+          Content
+        </label>
         <Controller
           name='content'
           control={control}
           render={({ field }) => <RichTextEditor {...field} />}
         />
-      </div>
+      </FormInputWrapper>
     </>
   );
 };

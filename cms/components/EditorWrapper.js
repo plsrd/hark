@@ -1,10 +1,12 @@
 import React from 'react';
 
-const EditorWrapper = ({ children, type }) => {
+const EditorWrapper = ({ children, type, header }) => {
   return (
     <div className='w-9/12'>
       <div className='tab tab-lifted bg-base-200 border-b-0 text-base-content'>
-        {`All ${type.slice(0, 1).toUpperCase() + type.slice(1)}`}
+        {header
+          ? header
+          : `All ${type.slice(0, 1).toUpperCase() + type.slice(1)}`}
       </div>
       <div
         className='preview bg-base-200 rounded-b-box rounded-tr-box flex flex-wrap items-center justify-center gap-2 overflow-x-hidden bg-cover bg-top p-4'

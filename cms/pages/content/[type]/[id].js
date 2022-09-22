@@ -10,7 +10,6 @@ import EditorWrapper from '../../../components/EditorWrapper';
 
 const DocumentEditor = ({ type, id, data }) => {
   const [draft, setDraft] = useState(data?.isPublished);
-  console.log(data);
   const {
     register,
     handleSubmit,
@@ -47,7 +46,7 @@ const DocumentEditor = ({ type, id, data }) => {
 
   return (
     <Layout activeDocument={id}>
-      <EditorWrapper type={type}>
+      <EditorWrapper header='Post Editor'>
         <form
           onSubmit={handleSubmit(onSubmit)}
           className='bg-base-200 rounded-box flex flex-col flex-wrap  justify-center gap-5  my-5 w-9/12 p-10'
@@ -59,7 +58,16 @@ const DocumentEditor = ({ type, id, data }) => {
             getValues={getValues}
             setValue={setValue}
           />
-          <input type='submit' value='Publish' />
+          <div className='flex justify-between items-center mt-10'>
+            <div className='h-full self-end'>
+              <div className='badge badge-success h-fit'>Published</div>
+            </div>
+            <input
+              className='btn btn-primary w-fit'
+              type='submit'
+              value='Publish'
+            />
+          </div>
         </form>
       </EditorWrapper>
     </Layout>
