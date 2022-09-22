@@ -1,5 +1,13 @@
 import Link from 'next/link';
 import React, { useContext } from 'react';
+import {
+  EditIcon,
+  OptionsIcon,
+  PhotoIcon,
+  PlusIcon,
+  SettingsIcon,
+  UsersIcon,
+} from '../icons';
 import ContentContext from '../src/contentContext';
 
 const Drawer = () => {
@@ -32,24 +40,7 @@ const Drawer = () => {
         <li>
           <a href='/docs/config' id='' className='flex gap-4   '>
             <span className='flex-none'>
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                className='icon icon-tabler icon-tabler-photo'
-                width='24'
-                height='24'
-                viewBox='0 0 24 24'
-                strokeWidth='2'
-                stroke='currentColor'
-                fill='none'
-                strokeLinecap='round'
-                strokeLinejoin='round'
-              >
-                <path stroke='none' d='M0 0h24v24H0z' fill='none'></path>
-                <line x1='15' y1='8' x2='15.01' y2='8'></line>
-                <rect x='4' y='4' width='16' height='16' rx='3'></rect>
-                <path d='M4 15l4 -4a3 5 0 0 1 3 0l5 5'></path>
-                <path d='M14 14l1 -1a3 5 0 0 1 3 0l2 2'></path>
-              </svg>
+              <PhotoIcon />
             </span>{' '}
             <span className='flex-1'>Media Library</span>{' '}
           </a>
@@ -57,24 +48,7 @@ const Drawer = () => {
         <li>
           <a href='/docs/config' id='' className='flex gap-4   '>
             <span className='flex-none'>
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                className='icon icon-tabler icon-tabler-users'
-                width='24'
-                height='24'
-                viewBox='0 0 24 24'
-                strokeWidth='2'
-                stroke='currentColor'
-                fill='none'
-                strokeLinecap='round'
-                strokeLinejoin='round'
-              >
-                <path stroke='none' d='M0 0h24v24H0z' fill='none'></path>
-                <circle cx='9' cy='7' r='4'></circle>
-                <path d='M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2'></path>
-                <path d='M16 3.13a4 4 0 0 1 0 7.75'></path>
-                <path d='M21 21v-2a4 4 0 0 0 -3 -3.85'></path>
-              </svg>
+              <UsersIcon />
             </span>{' '}
             <span className='flex-1'>Users</span>{' '}
           </a>
@@ -82,22 +56,7 @@ const Drawer = () => {
         <li>
           <a href='/docs/config' id='' className='flex gap-4   '>
             <span className='flex-none'>
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                className='icon icon-tabler icon-tabler-settings'
-                width='24'
-                height='24'
-                viewBox='0 0 24 24'
-                strokeWidth='2'
-                stroke='currentColor'
-                fill='none'
-                strokeLinecap='round'
-                strokeLinejoin='round'
-              >
-                <path stroke='none' d='M0 0h24v24H0z' fill='none'></path>
-                <path d='M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z'></path>
-                <circle cx='12' cy='12' r='3'></circle>
-              </svg>
+              <SettingsIcon />
             </span>{' '}
             <span className='flex-1'>Site Settings</span>{' '}
           </a>
@@ -105,8 +64,38 @@ const Drawer = () => {
       </ul>
       <ul className='menu menu-compact flex flex-col p-0 px-4'>
         <li></li>
-        <li className='menu-title'>
-          <span>Posts</span>
+        <li className='menu-title flex flex-row justify-between items-center'>
+          <span className='text-sm uppercase'>Posts</span>
+          <div className='dropdown dropdown-end'>
+            <label tabIndex={0} className='btn btn-xs'>
+              <OptionsIcon size={16} />
+            </label>
+            <ul
+              className='dropdown-content menu p-2 shadow bg-base-100 rounded-box w-48'
+              tabIndex={0}
+            >
+              <li>
+                <Link href='/content/posts'>
+                  <a>
+                    <EditIcon size={16} />
+                    <span className='font-normal text-neutral-content'>
+                      Bulk Edit
+                    </span>
+                  </a>
+                </Link>
+              </li>
+              <li>
+                <Link href='/content/posts/new'>
+                  <a>
+                    <PlusIcon size={16} />
+                    <span className='font-normal text-neutral-content'>
+                      Create New
+                    </span>
+                  </a>
+                </Link>
+              </li>
+            </ul>
+          </div>
         </li>
         {content.posts.map(post => (
           <li key={post._id}>
