@@ -48,7 +48,10 @@ const DocumentEditor = ({ type, id, data }) => {
   return (
     <Layout activeDocument={id}>
       <EditorWrapper type={type}>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className='bg-base-200 rounded-box flex flex-col flex-wrap  justify-center gap-5  my-5 w-9/12 p-10'
+        >
           <PostFields
             register={register}
             post={data}
