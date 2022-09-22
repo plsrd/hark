@@ -1,15 +1,15 @@
 import Link from 'next/link';
 import React from 'react';
 
-const Avatar = ({ user }) => {
+const Avatar = ({ image }) => {
   return (
-    <div>
-      <Link href='/profile'>
-        <a onClick={() => setActiveDocument()}>{`${user.firstName?.slice(
-          0,
-          1
-        )} ${user.lastName?.slice(0, 1)}`}</a>
-      </Link>
+    <div className='avatar'>
+      <div className='mask mask-squircle w-12 h-12'>
+        <img
+          src={image ? image : 'https://placeimg.com/80/80/people'}
+          alt='Avatar Tailwind CSS Component'
+        />
+      </div>
     </div>
   );
 };

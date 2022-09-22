@@ -1,6 +1,7 @@
 import React from 'react';
 import { format } from 'date-fns';
 import UserBadge from './UserBadge';
+import Avatar from './Avatar';
 
 const PostTableRow = ({ post }) => {
   const { mainImage, title, author, createdAt, isPublished } = post;
@@ -8,16 +9,7 @@ const PostTableRow = ({ post }) => {
     <>
       <td>
         <div className='flex items-center space-x-3'>
-          <div className='avatar'>
-            <div className='mask mask-squircle w-12 h-12'>
-              <img
-                src={
-                  mainImage ? mainImage : 'https://placeimg.com/80/80/people'
-                }
-                alt='Avatar Tailwind CSS Component'
-              />
-            </div>
-          </div>
+          <Avatar image={mainImage} />
           <div>
             <div className='font-bold'>{title}</div>
             <div className='text-sm opacity-50'>
