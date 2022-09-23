@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import blockTools from '@sanity/block-tools';
 import { toHTML } from '@portabletext/to-html';
+import htm from 'htm';
+import vhtml from 'vhtml';
 import client from '../../../src/client';
 import { blockContentType } from '../../../src/blockTools';
 import Layout from '../../../components/Layout';
@@ -24,12 +26,52 @@ const DocumentEditor = ({ type, id, data }) => {
     if (dirtyFields && !draft) setDraft(true);
   }, [dirtyFields]);
 
+  const html = htm.bind(vhtml);
+
+  const components = {
+    types: {
+      code: ({ value }) =>
+        html`<pre class="ql-syntax"><code>${value.text}</code></pre>`,
+    },
+  };
+
   useEffect(() => {
-    reset({ ...data, author: data.author._id, content: toHTML(data.content) });
+    reset({
+      ...data,
+      author: data.author._id,
+      content: toHTML(data.content, { components }),
+    });
   }, [id]);
 
   const onSubmit = async fields => {
-    const blocks = blockTools.htmlToBlocks(fields.content, blockContentType);
+    const blocks = blockTools.htmlToBlocks(fields.content, blockContentType, {
+      rules: [
+        // Special rule for code blocks
+        {
+          deserialize(el, next, block) {
+            if (el.tagName.toLowerCase() != 'pre') {
+              return undefined;
+            }
+            console.log(el);
+            const code = el.children[0];
+            const childNodes =
+              code && code.tagName.toLowerCase() === 'code'
+                ? code.childNodes
+                : el.childNodes;
+            let text = '';
+            childNodes.forEach(node => {
+              text += node.textContent;
+            });
+            // Return this as an own block (via block helper function), instead of appending it to a default block's children
+            return block({
+              _type: 'code',
+              language: 'javascript',
+              text: text,
+            });
+          },
+        },
+      ],
+    });
 
     const document = {
       ...fields,

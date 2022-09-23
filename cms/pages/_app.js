@@ -3,7 +3,7 @@ import { UserProvider } from '../src/userContext';
 import client from '../src/client';
 import decode from 'jwt-decode';
 import { ContentProvider } from '../src/contentContext';
-import 'tailwindcss/tailwind.css';
+import '../styles/globals.css';
 
 const App = ({ Component, pageProps, existingUser, posts, authors }) => {
   const [user, setUser] = useState(existingUser);
