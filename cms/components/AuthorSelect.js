@@ -7,7 +7,11 @@ const AuthorSelect = ({ register, post }) => {
   } = useContext(ContentContext);
 
   return (
-    <select {...register('author')} className='input input-bordered text-white'>
+    <select
+      {...register('author')}
+      className='select select-bordered text-white'
+    >
+      <option></option>
       {authors.map(author => (
         <option key={author._id} value={author._id}>
           {author.fullName}
