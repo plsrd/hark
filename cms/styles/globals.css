@@ -964,3 +964,7 @@ body {
 blockquote {
   border-left: 2px solid white;
 }
+
+.ql-editor {
+  color: white;
+}

@@ -24,7 +24,7 @@ const PostFields = ({ register, post, control, getValues, setValue }) => {
         <input
           type='text'
           {...register('title')}
-          className='input input-bordered'
+          className='input input-bordered text-white'
         />
       </FormInputWrapper>
       <FormInputWrapper>
@@ -35,9 +35,9 @@ const PostFields = ({ register, post, control, getValues, setValue }) => {
           <input
             type='text'
             {...register('slug')}
-            className='input w-full input-bordered'
+            className='input w-full input-bordered text-white'
           />
-          <button onClick={generateSlug} className='btn btn-outline'>
+          <button onClick={generateSlug} className='btn btn-primary'>
             Generate
           </button>
         </div>
