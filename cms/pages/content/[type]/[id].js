@@ -8,27 +8,43 @@ import PostFields from '../../../components/PostFields';
 import EditorWrapper from '../../../components/EditorWrapper';
 
 const DocumentEditor = ({ type, id, data }) => {
-  const [draft, setDraft] = useState(data?.isPublished);
+  const [draft, setDraft] = useState(!data?.isPublished);
+  const [contentHasChanged, setContentHasChanged] = useState(false);
   const {
     register,
     handleSubmit,
     control,
-    formState: { dirtyFields },
+    formState,
     getValues,
     setValue,
     reset,
   } = useForm();
 
-  useEffect(() => {
-    if (dirtyFields && !draft) setDraft(true);
-  }, [dirtyFields]);
+  const { dirtyFields, touchedFields } = formState;
 
-  useEffect(() => {
+  const resetForm = () => {
     reset({
       ...data,
       author: data.author._id,
       content: generateHTML(data.content),
     });
+
+    setContentHasChanged(false);
+    setDraft(!data.isPublished);
+  };
+
+  useEffect(() => {
+    if (!contentHasChanged) {
+      delete dirtyFields.content;
+    }
+
+    if ((Object.keys(dirtyFields).length || contentHasChanged) && !draft) {
+      setDraft(true);
+    }
+  }, [contentHasChanged, formState]);
+
+  useEffect(() => {
+    resetForm();
   }, [id]);
 
   const onSubmit = async fields => {
@@ -44,7 +60,7 @@ const DocumentEditor = ({ type, id, data }) => {
       ? await client.post(type, document)
       : await client.put(type, id, document);
 
-    setDraft(false);
+    resetForm();
   };
 
   return (
@@ -55,15 +71,22 @@ const DocumentEditor = ({ type, id, data }) => {
           className='bg-base-200 rounded-box flex flex-col flex-wrap  justify-center gap-5  my-5 w-9/12 p-10 '
         >
           <PostFields
-            register={register}
             post={data}
-            control={control}
-            getValues={getValues}
-            setValue={setValue}
+            {...{
+              register,
+              control,
+              getValues,
+              setValue,
+              setContentHasChanged,
+            }}
           />
           <div className='flex justify-between items-center mt-10'>
             <div className='h-full self-end'>
-              <div className='badge badge-success h-fit'>Published</div>
+              {draft ? (
+                <div className='badge badge-success h-fit'>Draft</div>
+              ) : (
+                <div className='badge badge-success h-fit'>Published</div>
+              )}
             </div>
             <input
               className='btn btn-primary w-fit'

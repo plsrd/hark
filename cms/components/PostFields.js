@@ -8,7 +8,14 @@ const FormInputWrapper = ({ children }) => {
   return <div className='flex flex-col gap-3'>{children}</div>;
 };
 
-const PostFields = ({ register, post, control, getValues, setValue }) => {
+const PostFields = ({
+  register,
+  post,
+  control,
+  getValues,
+  setValue,
+  setContentHasChanged,
+}) => {
   const generateSlug = e => {
     e.preventDefault();
     const { title } = getValues();
@@ -56,7 +63,12 @@ const PostFields = ({ register, post, control, getValues, setValue }) => {
         <Controller
           name='content'
           control={control}
-          render={({ field }) => <RichTextEditor {...field} />}
+          render={({ field }) => (
+            <RichTextEditor
+              {...field}
+              setContentHasChanged={setContentHasChanged}
+            />
+          )}
         />
       </FormInputWrapper>
     </>
