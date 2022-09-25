@@ -8,6 +8,7 @@ import PostFields from '../../../components/PostFields';
 import EditorWrapper from '../../../components/EditorWrapper';
 
 const DocumentEditor = ({ type, id, data }) => {
+  const [document, setDocument] = useState(data);
   const [draft, setDraft] = useState(!data?.isPublished);
   const [contentHasChanged, setContentHasChanged] = useState(false);
   const {
@@ -22,15 +23,15 @@ const DocumentEditor = ({ type, id, data }) => {
 
   const { dirtyFields, touchedFields } = formState;
 
-  const resetForm = () => {
+  const resetForm = document => {
     reset({
-      ...data,
-      author: data.author._id,
-      content: generateHTML(data.content),
+      ...document,
+      author: document.author._id,
+      content: generateHTML(document.content),
     });
 
     setContentHasChanged(false);
-    setDraft(!data.isPublished);
+    setDraft(!document.isPublished);
   };
 
   useEffect(() => {
@@ -44,7 +45,7 @@ const DocumentEditor = ({ type, id, data }) => {
   }, [contentHasChanged, formState]);
 
   useEffect(() => {
-    resetForm();
+    resetForm(document);
   }, [id]);
 
   const onSubmit = async fields => {
@@ -56,11 +57,16 @@ const DocumentEditor = ({ type, id, data }) => {
       isPublished: true,
     };
 
-    id == 'new'
-      ? await client.post(type, document)
-      : await client.put(type, id, document);
+    const {
+      data: { updatedPost },
+    } =
+      id == 'new'
+        ? await client.post(type, document)
+        : await client.put(type, id, document);
 
-    resetForm();
+    setDocument(updatedPost);
+
+    resetForm(updatedPost);
   };
 
   return (
