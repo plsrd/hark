@@ -7,10 +7,12 @@ import Layout from '../../../components/Layout';
 import PostFields from '../../../components/PostFields';
 import EditorWrapper from '../../../components/EditorWrapper';
 import FormInputWrapper from '../../../components/FormInputWrapper';
+import { DeleteIcon, DuplicateIcon, OptionsIcon } from '../../../icons';
 
 const DocumentEditor = ({ type, id, data }) => {
   const [draft, setDraft] = useState();
   const [contentHasChanged, setContentHasChanged] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -21,7 +23,7 @@ const DocumentEditor = ({ type, id, data }) => {
     reset,
   } = useForm();
 
-  const { dirtyFields, touchedFields } = formState;
+  const { dirtyFields } = formState;
 
   const resetForm = document => {
     reset({
@@ -31,6 +33,12 @@ const DocumentEditor = ({ type, id, data }) => {
     });
 
     setContentHasChanged(false);
+  };
+
+  const handleClick = e => {
+    e.preventDefault();
+
+    console.log('bunts');
   };
 
   useEffect(() => {
@@ -102,11 +110,39 @@ const DocumentEditor = ({ type, id, data }) => {
                 <div className='badge badge-success h-fit'>Saved!</div>
               )}
             </div>
-            <input
-              className='btn btn-primary w-fit'
-              type='submit'
-              value='Save'
-            />
+            <div className='flex gap-4'>
+              <button
+                className='btn btn-primary w-24'
+                type='submit'
+                disabled={!draft}
+              >
+                Save
+              </button>
+              <div className='dropdown dropdown-top' onClick={handleClick}>
+                <label tabIndex='0' class='btn btn-outline btn-primary'>
+                  <div class='indicator'>
+                    <OptionsIcon />
+                  </div>
+                </label>
+                <ul
+                  tabIndex='0'
+                  class='dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52'
+                >
+                  <li>
+                    <button className='btn btn-ghost justify-start'>
+                      <DuplicateIcon />
+                      Duplicate
+                    </button>
+                  </li>
+                  <li>
+                    <button className='btn btn-ghost justify-start text-error'>
+                      <DeleteIcon />
+                      Delete
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
         </form>
       </EditorWrapper>
