@@ -9,8 +9,7 @@ import EditorWrapper from '../../../components/EditorWrapper';
 import FormInputWrapper from '../../../components/FormInputWrapper';
 
 const DocumentEditor = ({ type, id, data }) => {
-  const [document, setDocument] = useState(data);
-  const [draft, setDraft] = useState(!data?.isPublished);
+  const [draft, setDraft] = useState();
   const [contentHasChanged, setContentHasChanged] = useState(false);
   const {
     register,
@@ -32,7 +31,6 @@ const DocumentEditor = ({ type, id, data }) => {
     });
 
     setContentHasChanged(false);
-    setDraft(!document.isPublished);
   };
 
   useEffect(() => {
@@ -47,10 +45,10 @@ const DocumentEditor = ({ type, id, data }) => {
 
   useEffect(() => {
     resetForm(data);
+    setDraft();
   }, [id]);
 
   const onSubmit = async fields => {
-    console.log(fields);
     const blocks = generateBlocks(fields.content);
 
     const document = {
@@ -65,11 +63,8 @@ const DocumentEditor = ({ type, id, data }) => {
         ? await client.post(type, document)
         : await client.put(type, id, document);
 
-    setDocument(updatedPost);
-
-    console.log(updatedPost);
-
     resetForm(updatedPost);
+    setDraft(false);
   };
 
   return (
@@ -91,7 +86,7 @@ const DocumentEditor = ({ type, id, data }) => {
           />
           <FormInputWrapper>
             <label className='label cursor-pointer'>
-              <span className='label-text'>Published</span>
+              <span className='label-text'>Published?</span>
               <input
                 {...register('isPublished')}
                 type='checkbox'
@@ -101,16 +96,16 @@ const DocumentEditor = ({ type, id, data }) => {
           </FormInputWrapper>
           <div className='flex justify-between items-center mt-10'>
             <div className='h-full self-end'>
-              {draft ? (
-                <div className='badge badge-success h-fit'>Draft</div>
+              {draft == undefined ? null : draft ? (
+                <div className='badge badge-accent h-fit'>Unsaved</div>
               ) : (
-                <div className='badge badge-success h-fit'>Published</div>
+                <div className='badge badge-success h-fit'>Saved!</div>
               )}
             </div>
             <input
               className='btn btn-primary w-fit'
               type='submit'
-              value='Publish'
+              value='Save'
             />
           </div>
         </form>
