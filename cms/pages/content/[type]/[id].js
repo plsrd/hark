@@ -6,6 +6,7 @@ import client from '../../../src/client';
 import Layout from '../../../components/Layout';
 import PostFields from '../../../components/PostFields';
 import EditorWrapper from '../../../components/EditorWrapper';
+import FormInputWrapper from '../../../components/FormInputWrapper';
 
 const DocumentEditor = ({ type, id, data }) => {
   const [document, setDocument] = useState(data);
@@ -45,16 +46,16 @@ const DocumentEditor = ({ type, id, data }) => {
   }, [contentHasChanged, formState]);
 
   useEffect(() => {
-    resetForm(document);
+    resetForm(data);
   }, [id]);
 
   const onSubmit = async fields => {
+    console.log(fields);
     const blocks = generateBlocks(fields.content);
 
     const document = {
       ...fields,
       content: blocks,
-      isPublished: true,
     };
 
     const {
@@ -65,6 +66,8 @@ const DocumentEditor = ({ type, id, data }) => {
         : await client.put(type, id, document);
 
     setDocument(updatedPost);
+
+    console.log(updatedPost);
 
     resetForm(updatedPost);
   };
@@ -86,6 +89,16 @@ const DocumentEditor = ({ type, id, data }) => {
               setContentHasChanged,
             }}
           />
+          <FormInputWrapper>
+            <label className='label cursor-pointer'>
+              <span className='label-text'>Published</span>
+              <input
+                {...register('isPublished')}
+                type='checkbox'
+                className='toggle toggle-primary'
+              />
+            </label>
+          </FormInputWrapper>
           <div className='flex justify-between items-center mt-10'>
             <div className='h-full self-end'>
               {draft ? (

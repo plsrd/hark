@@ -3,10 +3,7 @@ import { Controller } from 'react-hook-form';
 import slugify from 'slugify';
 import AuthorSelect from './AuthorSelect';
 import RichTextEditor from './RichTextEditor';
-
-const FormInputWrapper = ({ children }) => {
-  return <div className='flex flex-col gap-3'>{children}</div>;
-};
+import FormInputWrapper from './FormInputWrapper';
 
 const PostFields = ({
   register,

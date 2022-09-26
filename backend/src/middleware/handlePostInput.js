@@ -14,6 +14,8 @@ const handlePostInput = (req, res, next) => {
     slug,
   };
 
+  console.log(postFields);
+
   const createNewPost = () => {
     const newPost = new Post(postFields);
     if (role == 'viewer')
@@ -29,9 +31,9 @@ const handlePostInput = (req, res, next) => {
   };
 
   const updatePost = () => {
-    Object.keys(postFields).forEach(key =>
-      !postFields[key] || postFields[key] == '' ? delete postFields[key] : {}
-    );
+    Object.keys(postFields).forEach(key => {
+      postFields[key] === '' ? delete postFields[key] : {};
+    });
 
     if (role == 'viewer') {
       return res.status(401).send({ message: 'Viewers may not edit posts' });
