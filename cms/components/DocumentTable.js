@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
-import { EditIcon } from '../icons';
+import { EditIcon } from '../components/icons';
 import PostTableRow from './PostTableRow';
 
 const DocumentTable = ({ type, data }) => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { EditIcon, OptionsIcon, PlusIcon } from '../icons';
+import { EditIcon, OptionsIcon, PlusIcon } from './icons';
 
 const MenuHeader = ({ type }) => {
   return (

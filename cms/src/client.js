@@ -48,5 +48,12 @@ export default {
       method: 'post',
       url: `/${type}`,
       data,
-    }),
+    }).catch(err => console.log(err)),
+
+  delete: async (type, id) =>
+    await instance({
+      headers: { 'Content-Type': 'application/json' },
+      method: 'delete',
+      url: `/${type}/${id}`,
+    }).catch(err => console.log(err)),
 };

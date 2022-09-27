@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import React, { useContext } from 'react';
-import { PhotoIcon, SettingsIcon, UsersIcon } from '../icons';
+import { PhotoIcon, SettingsIcon, UsersIcon } from './icons';
 import ContentContext from '../src/contentContext';
 import DrawerHeader from './DrawerHeader';
 import MenuHeader from './MenuHeader';

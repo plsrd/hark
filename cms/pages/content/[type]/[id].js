@@ -7,10 +7,15 @@ import Layout from '../../../components/Layout';
 import PostFields from '../../../components/PostFields';
 import EditorWrapper from '../../../components/EditorWrapper';
 import FormInputWrapper from '../../../components/FormInputWrapper';
-import { DeleteIcon, DuplicateIcon, OptionsIcon } from '../../../icons';
+
+import DeleteModal from '../../../components/DeleteModal';
+import DocumentOptionsMenu from '../../../components/DocumentOptionsMenu';
+import DocumentStatusBadge from '../../../components/DocumentStatusBadge';
+import RevertModal from '../../../components/RevertModal';
 
 const DocumentEditor = ({ type, id, data }) => {
   const [draft, setDraft] = useState();
+  const [publishedDocument, setPublishedDocument] = useState(data);
   const [contentHasChanged, setContentHasChanged] = useState(false);
 
   const {
@@ -35,10 +40,9 @@ const DocumentEditor = ({ type, id, data }) => {
     setContentHasChanged(false);
   };
 
-  const handleClick = e => {
-    e.preventDefault();
-
-    console.log('bunts');
+  const revertChanges = () => {
+    resetForm(publishedDocument);
+    setDraft();
   };
 
   useEffect(() => {
@@ -47,6 +51,7 @@ const DocumentEditor = ({ type, id, data }) => {
     }
 
     if ((Object.keys(dirtyFields).length || contentHasChanged) && !draft) {
+      console.log('running');
       setDraft(true);
     }
   }, [contentHasChanged, formState]);
@@ -72,6 +77,7 @@ const DocumentEditor = ({ type, id, data }) => {
         : await client.put(type, id, document);
 
     resetForm(updatedPost);
+    setPublishedDocument(updatedPost);
     setDraft(false);
   };
 
@@ -103,13 +109,7 @@ const DocumentEditor = ({ type, id, data }) => {
             </label>
           </FormInputWrapper>
           <div className='flex justify-between items-center mt-10'>
-            <div className='h-full self-end'>
-              {draft == undefined ? null : draft ? (
-                <div className='badge badge-accent h-fit'>Unsaved</div>
-              ) : (
-                <div className='badge badge-success h-fit'>Saved!</div>
-              )}
-            </div>
+            <DocumentStatusBadge draft={draft} />
             <div className='flex gap-4'>
               <button
                 className='btn btn-primary w-24'
@@ -118,30 +118,9 @@ const DocumentEditor = ({ type, id, data }) => {
               >
                 Save
               </button>
-              <div className='dropdown dropdown-top' onClick={handleClick}>
-                <label tabIndex='0' class='btn btn-outline btn-primary'>
-                  <div class='indicator'>
-                    <OptionsIcon />
-                  </div>
-                </label>
-                <ul
-                  tabIndex='0'
-                  class='dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52'
-                >
-                  <li>
-                    <button className='btn btn-ghost justify-start'>
-                      <DuplicateIcon />
-                      Duplicate
-                    </button>
-                  </li>
-                  <li>
-                    <button className='btn btn-ghost justify-start text-error'>
-                      <DeleteIcon />
-                      Delete
-                    </button>
-                  </li>
-                </ul>
-              </div>
+              <DocumentOptionsMenu />
+              <RevertModal revertChanges={revertChanges} />
+              <DeleteModal {...{ type, id }} />
             </div>
           </div>
         </form>
