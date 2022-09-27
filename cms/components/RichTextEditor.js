@@ -25,6 +25,11 @@ const RichTextEditor = React.forwardRef(
       setContentHasChanged(true);
     };
 
+    const handleChange = (content, delta, source) => {
+      if (source == 'user') setContentHasChanged(true);
+      onChange(content);
+    };
+
     const formats = [
       'header',
       'bold',
@@ -45,7 +50,7 @@ const RichTextEditor = React.forwardRef(
         modules={modules}
         formats={formats}
         value={value}
-        onChange={onChange}
+        onChange={handleChange}
         onKeyPress={handleKeyPress}
         ref={ref}
         className='bg-base-100 input input-bordered h-96 font-sans'

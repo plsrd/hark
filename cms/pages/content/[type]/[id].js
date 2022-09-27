@@ -51,7 +51,6 @@ const DocumentEditor = ({ type, id, data }) => {
     }
 
     if ((Object.keys(dirtyFields).length || contentHasChanged) && !draft) {
-      console.log('running');
       setDraft(true);
     }
   }, [contentHasChanged, formState]);
