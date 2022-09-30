@@ -5,6 +5,8 @@ import AuthorSelect from './AuthorSelect';
 import RichTextEditor from './RichTextEditor';
 import FormInputWrapper from './FormInputWrapper';
 import SlugInput from './SlugInput';
+import StringInput from './StringInput';
+import RichTextInput from './RichTextInput';
 
 const PostFields = ({
   register,
@@ -14,46 +16,15 @@ const PostFields = ({
   setValue,
   setContentHasChanged,
 }) => {
-  const generateSlug = e => {
-    e.preventDefault();
-    const { title } = getValues();
-    setValue('slug', slugify(title, { lower: true }));
-  };
-
   return (
     <>
-      <FormInputWrapper>
-        <label htmlFor='title' className='text-lg'>
-          Title
-        </label>
-        <input
-          type='text'
-          {...register('title')}
-          className='input input-bordered text-white'
-        />
-      </FormInputWrapper>
+      <StringInput name='title' register={register} />
       <SlugInput {...{ register, getValues, setValue }} />
-      <FormInputWrapper>
-        <label htmlFor='author' className='text-lg'>
-          Author
-        </label>
-        <AuthorSelect register={register} getValues={getValues} post={post} />
-      </FormInputWrapper>
-      <FormInputWrapper>
-        <label htmlFor='content' className='text-lg'>
-          Content
-        </label>
-        <Controller
-          name='content'
-          control={control}
-          render={({ field }) => (
-            <RichTextEditor
-              {...field}
-              setContentHasChanged={setContentHasChanged}
-            />
-          )}
-        />
-      </FormInputWrapper>
+      <AuthorSelect register={register} getValues={getValues} />
+      <RichTextInput
+        control={control}
+        setContentHasChanged={setContentHasChanged}
+      />
     </>
   );
 };
