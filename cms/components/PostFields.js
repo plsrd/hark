@@ -4,6 +4,7 @@ import slugify from 'slugify';
 import AuthorSelect from './AuthorSelect';
 import RichTextEditor from './RichTextEditor';
 import FormInputWrapper from './FormInputWrapper';
+import SlugInput from './SlugInput';
 
 const PostFields = ({
   register,
@@ -31,22 +32,7 @@ const PostFields = ({
           className='input input-bordered text-white'
         />
       </FormInputWrapper>
-      <FormInputWrapper>
-        <label htmlFor='slug' className='text-lg'>
-          Slug
-        </label>
-        <div className='input-group'>
-          <input
-            type='text'
-            {...register('slug')}
-            className='input w-full input-bordered text-white'
-          />
-          <button onClick={generateSlug} className='btn btn-primary'>
-            Generate
-          </button>
-        </div>
-      </FormInputWrapper>
-
+      <SlugInput {...{ register, getValues, setValue }} />
       <FormInputWrapper>
         <label htmlFor='author' className='text-lg'>
           Author

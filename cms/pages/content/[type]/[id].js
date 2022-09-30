@@ -31,11 +31,19 @@ const DocumentEditor = ({ type, id, data }) => {
   const { dirtyFields } = formState;
 
   const resetForm = document => {
-    reset({
-      ...document,
-      author: document.author._id,
-      content: generateHTML(document.content),
-    });
+    document
+      ? reset({
+          ...document,
+          author: document.author._id,
+          content: generateHTML(document.content),
+        })
+      : reset({
+          title: '',
+          slug: '',
+          author: '',
+          content: '',
+          isPublished: false,
+        });
 
     setContentHasChanged(false);
   };
@@ -57,6 +65,7 @@ const DocumentEditor = ({ type, id, data }) => {
 
   useEffect(() => {
     resetForm(data);
+    setPublishedDocument();
     setDraft();
   }, [id]);
 

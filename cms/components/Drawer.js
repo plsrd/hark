@@ -33,7 +33,9 @@ const Drawer = ({ activeDocument }) => {
             <li key={post._id}>
               <Link href={`/content/posts/${post._id}`}>
                 <a className={activeDocument == post._id ? 'active' : ''}>
-                  {post.title}
+                  {post.title.length > 30
+                    ? post.title.slice(0, 29) + '...'
+                    : post.title}
                 </a>
               </Link>
             </li>

@@ -26,7 +26,7 @@ const MenuHeader = ({ type }) => {
                 </a>
               </Link>
             </li>
-            <li>
+            <li tabIndex={0}>
               <Link href={`/content/${type}/new`}>
                 <a>
                   <PlusIcon size={16} />
