@@ -28,31 +28,33 @@ const Drawer = ({ activeDocument }) => {
       </MenuListWrapper>
       <MenuListWrapper>
         <MenuHeader type='posts' />
-        {posts.map(post => {
-          return (
-            <li key={post._id}>
-              <Link href={`/content/posts/${post._id}`}>
-                <a className={activeDocument == post._id ? 'active' : ''}>
-                  {post.title.length > 30
-                    ? post.title.slice(0, 29) + '...'
-                    : post.title}
-                </a>
-              </Link>
-            </li>
-          );
-        })}
+        {posts &&
+          posts.map(post => {
+            return (
+              <li key={post._id}>
+                <Link href={`/content/posts/${post._id}`}>
+                  <a className={activeDocument == post._id ? 'active' : ''}>
+                    {post.title.length > 30
+                      ? post.title.slice(0, 29) + '...'
+                      : post.title}
+                  </a>
+                </Link>
+              </li>
+            );
+          })}
       </MenuListWrapper>
       <MenuListWrapper>
         <MenuHeader type='authors' />
-        {authors.map(author => (
-          <li key={author._id}>
-            <Link href={`/content/authors/${author._id}`}>
-              <a className={activeDocument == author._id ? 'active' : ''}>
-                {author.fullName}
-              </a>
-            </Link>
-          </li>
-        ))}
+        {authors &&
+          authors.map(author => (
+            <li key={author._id}>
+              <Link href={`/content/authors/${author._id}`}>
+                <a className={activeDocument == author._id ? 'active' : ''}>
+                  {author.fullName}
+                </a>
+              </Link>
+            </li>
+          ))}
       </MenuListWrapper>
     </div>
   );

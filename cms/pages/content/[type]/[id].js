@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { generateBlocks, generateHTML } from '../../../src/blockTools';
-
 import client from '../../../src/client';
 import Layout from '../../../components/Layout';
 import PostFields from '../../../components/PostFields';
 import EditorWrapper from '../../../components/EditorWrapper';
 import FormInputWrapper from '../../../components/FormInputWrapper';
-
 import DeleteModal from '../../../components/DeleteModal';
 import DocumentOptionsMenu from '../../../components/DocumentOptionsMenu';
 import DocumentStatusBadge from '../../../components/DocumentStatusBadge';
 import RevertModal from '../../../components/RevertModal';
+import contentContext from '../../../src/contentContext';
 
 const DocumentEditor = ({ type, id, data }) => {
   const [draft, setDraft] = useState();
+  const { content, setContent } = useContext(contentContext);
   const [publishedDocument, setPublishedDocument] = useState(data);
   const [contentHasChanged, setContentHasChanged] = useState(false);
 
@@ -69,6 +69,8 @@ const DocumentEditor = ({ type, id, data }) => {
     setDraft();
   }, [id]);
 
+  console.log(content.posts[0].title);
+
   const onSubmit = async fields => {
     const blocks = generateBlocks(fields.content);
 
@@ -83,6 +85,14 @@ const DocumentEditor = ({ type, id, data }) => {
       id == 'new'
         ? await client.post(type, document)
         : await client.put(type, id, document);
+
+    await client
+      .get()
+      .then(({ data }) => ({
+        ...data,
+        authors: data.users.filter(user => user.role != 'viewer'),
+      }))
+      .then(setContent);
 
     resetForm(updatedPost);
     setPublishedDocument(updatedPost);
