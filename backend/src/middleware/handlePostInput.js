@@ -23,10 +23,7 @@ const handlePostInput = (req, res, next) => {
 
     newPost.save((err, createdPost) => {
       if (err) return next(err);
-      res.json({
-        message: 'Post created',
-        createdPost,
-      });
+      res.json(createdPost);
     });
   };
 
@@ -47,10 +44,7 @@ const handlePostInput = (req, res, next) => {
       (err, updatedPost) => {
         if (err) return next(err);
 
-        res.json({
-          message: 'Post updated',
-          updatedPost,
-        });
+        res.json(updatedPost);
       }
     );
   };

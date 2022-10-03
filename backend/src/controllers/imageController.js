@@ -24,7 +24,7 @@ exports.images_post = [
       ...(caption && { caption }),
     }).save((err, image) => {
       if (err) return next(err);
-      res.json({ message: 'Image created', image });
+      res.json(image);
     });
   },
 ];
@@ -50,7 +50,7 @@ exports.image_put = async (req, res, next) => {
   await Image.findByIdAndUpdate(req.params.imageid, imageFields, {
     new: true,
   })
-    .then(image => res.json({ message: 'Image updated', image }))
+    .then(image => res.json(image))
     .catch(err => next(err));
 };
 
@@ -59,6 +59,8 @@ exports.image_delete = async (req, res, next) => {
   await cloudinary
     .destroy(image.filename)
     .then(() => image.delete())
-    .then(deletedImage => res.json({ message: 'Image deleted', deletedImage }))
+    .then(deletedImage =>
+      res.json({ message: `Image ${deletedImage._id} deleted` })
+    )
     .catch(err => next(err));
 };

@@ -11,10 +11,12 @@ import DocumentOptionsMenu from '../../../components/DocumentOptionsMenu';
 import DocumentStatusBadge from '../../../components/DocumentStatusBadge';
 import RevertModal from '../../../components/RevertModal';
 import contentContext from '../../../src/contentContext';
+import DuplicateModal from '../../../components/DuplicateModal';
+import updateContent from '../../../src/updateContent';
 
 const DocumentEditor = ({ type, id, data }) => {
   const [draft, setDraft] = useState();
-  const { content, setContent } = useContext(contentContext);
+  const { setContent } = useContext(contentContext);
   const [publishedDocument, setPublishedDocument] = useState(data);
   const [contentHasChanged, setContentHasChanged] = useState(false);
 
@@ -69,7 +71,9 @@ const DocumentEditor = ({ type, id, data }) => {
     setDraft();
   }, [id]);
 
-  console.log(content.posts[0].title);
+  const updateSidebar = async () => {
+    updateContent(setContent);
+  };
 
   const onSubmit = async fields => {
     const blocks = generateBlocks(fields.content);
@@ -86,13 +90,7 @@ const DocumentEditor = ({ type, id, data }) => {
         ? await client.post(type, document)
         : await client.put(type, id, document);
 
-    await client
-      .get()
-      .then(({ data }) => ({
-        ...data,
-        authors: data.users.filter(user => user.role != 'viewer'),
-      }))
-      .then(setContent);
+    await updateSidebar();
 
     resetForm(updatedPost);
     setPublishedDocument(updatedPost);
@@ -138,7 +136,8 @@ const DocumentEditor = ({ type, id, data }) => {
               </button>
               <DocumentOptionsMenu />
               <RevertModal revertChanges={revertChanges} />
-              <DeleteModal {...{ type, id }} />
+              <DeleteModal {...{ type, id, updateSidebar }} />
+              <DuplicateModal {...{ type, id, data, updateSidebar }} />
             </div>
           </div>
         </form>

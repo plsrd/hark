@@ -63,7 +63,7 @@ describe('POST new user', () => {
       .set({ Cookie: cookie })
       .send(testUser);
 
-    id = response.body.newUser._id.toString();
+    id = response.body._id.toString();
 
     const newUser = await User.findById(id);
 

@@ -2,10 +2,15 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import client from '../src/client';
 
-const DeteleModal = ({ type, id }) => {
+const DeteleModal = ({ type, id, updateSidebar }) => {
   const router = useRouter();
   const handleDeleteClick = async () => {
-    await client.delete(type, id).then(() => router.push(`/${type}/new`));
+    await client
+      .delete(type, id)
+      .then(async () => await updateSidebar)
+      .then(() =>
+        router.push({ pathname: '/content/[type]/[id]', query: { type, id } })
+      );
   };
 
   return (

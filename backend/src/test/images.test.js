@@ -47,11 +47,11 @@ describe('POST a new image', () => {
       .set('content-type', 'multipart/form-data')
       .attach('image', testImage);
 
-    id = response.body.image._id;
+    id = response.body._id;
 
     const uploadedImage = await Image.findById(id);
 
-    expect(response.body.image.filename).toBe(uploadedImage.filename);
+    expect(response.body.filename).toBe(uploadedImage.filename);
   });
 });
 
@@ -79,7 +79,7 @@ describe('PUT an edit to an image', () => {
 
     const updatedImage = await Image.findById(id);
 
-    expect(response.body.image.alt).toEqual(updatedImage.alt);
+    expect(response.body.alt).toEqual(updatedImage.alt);
   });
 });
 
@@ -91,7 +91,7 @@ describe('DELETE an image', () => {
 
     const deletedImage = await Image.findById(id);
 
-    expect(response.body.message).toEqual('Image deleted');
+    expect(response.body.message).toEqual(`Image ${id} deleted`);
     expect(deletedImage).toBe(null);
   });
 });

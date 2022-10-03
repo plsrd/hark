@@ -19,10 +19,7 @@ const handleUserInput = async (req, res, next) => {
     new User(userFields).save((err, newUser) => {
       if (err) return next(err);
 
-      res.json({
-        message: 'User created',
-        newUser,
-      });
+      res.json(newUser);
     });
   };
 
@@ -42,7 +39,7 @@ const handleUserInput = async (req, res, next) => {
       .select('_id name email role')
       .exec((err, updatedUser) => {
         if (err) return next(err);
-        res.json({ message: 'User updated', updatedUser });
+        res.json(updatedUser);
       });
   };
 

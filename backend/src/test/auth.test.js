@@ -61,7 +61,7 @@ describe('GET current user', () => {
 
     expect(response.body.user).toEqual({
       _id: '62f2ffe5a247e46e3885a500',
-      fullName: 'An Admin',
+      fullName: 'Guy Buttersnips',
       email: 'admin@rd.com',
       role: 'admin',
     });

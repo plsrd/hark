@@ -19,10 +19,13 @@ const DocumentOptionsMenu = () => {
           </label>
         </li>
         <li>
-          <button className='btn btn-ghost justify-start'>
+          <label
+            htmlFor='duplicateModal'
+            className='btn btn-ghost justify-start'
+          >
             <DuplicateIcon />
             Duplicate
-          </button>
+          </label>
         </li>
         <li>
           <label
