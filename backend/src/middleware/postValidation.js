@@ -4,13 +4,11 @@ const User = require('../models/user');
 const postValidation = [
   body('title')
     .trim()
-    .escape()
     .custom(async (title, { req }) => {
       if (req.method != 'PUT' && !title.length)
         throw new Error('A title is required');
     }),
   body('author')
-    .escape()
     .trim()
     .custom(async (authorId, { req }) => {
       if (req.method != 'PUT') {
@@ -35,7 +33,6 @@ const postValidation = [
   }),
   body('slug')
     .trim()
-    .escape()
     .custom(async (slug, { req }) => {
       if (req.method != 'PUT') {
         if (!slug.length >= 1) throw new Error('Slug is required');

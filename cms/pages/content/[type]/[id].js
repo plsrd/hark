@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
+import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import { generateBlocks, generateHTML } from '../../../src/blockTools';
 import client from '../../../src/client';
@@ -20,6 +21,7 @@ const DocumentEditor = ({ type, id, data }) => {
   const [publishedDocument, setPublishedDocument] = useState(data);
   const [contentHasChanged, setContentHasChanged] = useState(false);
   const [openModal, setOpenModal] = useState(null);
+  const router = useRouter();
 
   const {
     register,
@@ -61,9 +63,7 @@ const DocumentEditor = ({ type, id, data }) => {
     setDraft();
   };
 
-  const updateSidebar = async () => {
-    updateContent(setContent);
-  };
+  const updateSidebar = async () => await updateContent(setContent);
 
   const onSubmit = async fields => {
     const blocks = generateBlocks(fields.content);
@@ -73,18 +73,22 @@ const DocumentEditor = ({ type, id, data }) => {
       content: blocks,
     };
 
-    const {
-      data: { updatedPost },
-    } =
+    const { data } =
       id == 'new'
         ? await client.post(type, document)
         : await client.put(type, id, document);
 
     await updateSidebar();
 
-    resetForm(updatedPost);
-    setPublishedDocument(updatedPost);
+    resetForm(data);
+    setPublishedDocument(data);
     setDraft(false);
+
+    if (id == 'new')
+      router.push({
+        pathname: '/content/[type]/[id]',
+        query: { type, id: data._id },
+      });
   };
 
   useEffect(() => {
@@ -168,6 +172,8 @@ export default DocumentEditor;
 
 export const getServerSideProps = async ({ params }) => {
   const { type, id } = params;
+
+  console.log(type, id);
 
   if (id !== 'new') {
     const response = await client.get(type, id);

@@ -2,7 +2,7 @@ import client from './client';
 
 const updateContent = async setContent => {
   await client
-    .get()
+    .get('*')
     .then(({ data }) => ({
       ...data,
       authors: data.users.filter(user => user.role != 'viewer'),

@@ -35,6 +35,7 @@ const ConfirmModal = ({
 
   const handleDuplicate = async e => {
     const title = 'Copy of ' + data.title;
+
     const document = {
       title,
       author: data.author._id,
