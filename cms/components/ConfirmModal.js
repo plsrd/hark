@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import React, { useContext } from 'react';
 import client from '../src/client';
 import ContentContext from '../src/contentContext';
+import slugify from 'slugify';
 
 const ConfirmModal = ({
   type,
@@ -12,7 +13,6 @@ const ConfirmModal = ({
   revertChanges,
   changeModal,
 }) => {
-  const { setContext } = useContext(ContentContext);
   const router = useRouter();
 
   const handleClose = e => {
@@ -34,11 +34,12 @@ const ConfirmModal = ({
   };
 
   const handleDuplicate = async e => {
+    const title = 'Copy of ' + data.title;
     const document = {
-      title: 'Copy of ' + data.title,
+      title,
       author: data.author._id,
       isPublished: data.isPublished,
-      slug: data.slug,
+      slug: slugify(title),
       content: data.content,
     };
 

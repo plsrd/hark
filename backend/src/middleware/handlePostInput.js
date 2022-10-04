@@ -14,8 +14,6 @@ const handlePostInput = (req, res, next) => {
     slug,
   };
 
-  console.log(postFields);
-
   const createNewPost = () => {
     const newPost = new Post(postFields);
     if (role == 'viewer')

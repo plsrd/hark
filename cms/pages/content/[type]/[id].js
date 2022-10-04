@@ -2,15 +2,17 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { generateBlocks, generateHTML } from '../../../src/blockTools';
 import client from '../../../src/client';
-import Layout from '../../../components/Layout';
-import PostFields from '../../../components/PostFields';
-import EditorWrapper from '../../../components/EditorWrapper';
-import FormInputWrapper from '../../../components/FormInputWrapper';
-import DocumentOptionsMenu from '../../../components/DocumentOptionsMenu';
-import DocumentStatusBadge from '../../../components/DocumentStatusBadge';
 import contentContext from '../../../src/contentContext';
-import ConfirmModal from '../../../components/ConfirmModal';
 import updateContent from '../../../src/updateContent';
+import {
+  Layout,
+  EditorWrapper,
+  FormInputWrapper,
+  DocumentOptionsMenu,
+  DocumentStatusBadge,
+  ConfirmModal,
+  PostFields,
+} from '../../../components';
 
 const DocumentEditor = ({ type, id, data }) => {
   const [draft, setDraft] = useState();
@@ -59,26 +61,6 @@ const DocumentEditor = ({ type, id, data }) => {
     setDraft();
   };
 
-  useEffect(() => {
-    if (!contentHasChanged) {
-      delete dirtyFields.content;
-    }
-
-    if ((Object.keys(dirtyFields).length || contentHasChanged) && !draft) {
-      setDraft(true);
-    }
-  }, [contentHasChanged, formState]);
-
-  useEffect(() => {
-    resetForm(data);
-    setPublishedDocument();
-    setDraft();
-  }, [id]);
-
-  useEffect(() => {
-    setPublishedDocument(data);
-  }, [data]);
-
   const updateSidebar = async () => {
     updateContent(setContent);
   };
@@ -104,6 +86,26 @@ const DocumentEditor = ({ type, id, data }) => {
     setPublishedDocument(updatedPost);
     setDraft(false);
   };
+
+  useEffect(() => {
+    if (!contentHasChanged) {
+      delete dirtyFields.content;
+    }
+
+    if ((Object.keys(dirtyFields).length || contentHasChanged) && !draft) {
+      setDraft(true);
+    }
+  }, [contentHasChanged, formState]);
+
+  useEffect(() => {
+    resetForm(data);
+    setPublishedDocument();
+    setDraft();
+  }, [id]);
+
+  useEffect(() => {
+    setPublishedDocument(data);
+  }, [data]);
 
   return (
     <Layout activeDocument={id}>
