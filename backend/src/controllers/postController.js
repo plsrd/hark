@@ -30,6 +30,7 @@ exports.post_put = [...postValidation, handlePostInput];
 
 exports.post_delete = [
   async (req, res, next) => {
+    console.log('deleting');
     await Post.findByIdAndDelete(req.params.postid)
       .then(deletedPost =>
         res.json({ message: `Post ${deletedPost._id} deleted` })

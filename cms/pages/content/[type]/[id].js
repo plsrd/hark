@@ -6,12 +6,10 @@ import Layout from '../../../components/Layout';
 import PostFields from '../../../components/PostFields';
 import EditorWrapper from '../../../components/EditorWrapper';
 import FormInputWrapper from '../../../components/FormInputWrapper';
-import DeleteModal from '../../../components/DeleteModal';
 import DocumentOptionsMenu from '../../../components/DocumentOptionsMenu';
 import DocumentStatusBadge from '../../../components/DocumentStatusBadge';
-import RevertModal from '../../../components/RevertModal';
 import contentContext from '../../../src/contentContext';
-import DuplicateModal from '../../../components/DuplicateModal';
+import ConfirmModal from '../../../components/ConfirmModal';
 import updateContent from '../../../src/updateContent';
 
 const DocumentEditor = ({ type, id, data }) => {
@@ -19,6 +17,7 @@ const DocumentEditor = ({ type, id, data }) => {
   const { setContent } = useContext(contentContext);
   const [publishedDocument, setPublishedDocument] = useState(data);
   const [contentHasChanged, setContentHasChanged] = useState(false);
+  const [openModal, setOpenModal] = useState(null);
 
   const {
     register,
@@ -50,7 +49,12 @@ const DocumentEditor = ({ type, id, data }) => {
     setContentHasChanged(false);
   };
 
+  const changeModal = name => {
+    name == openModal ? setOpenModal(null) : setOpenModal(name);
+  };
+
   const revertChanges = () => {
+    setOpenModal(null);
     resetForm(publishedDocument);
     setDraft();
   };
@@ -70,6 +74,10 @@ const DocumentEditor = ({ type, id, data }) => {
     setPublishedDocument();
     setDraft();
   }, [id]);
+
+  useEffect(() => {
+    setPublishedDocument(data);
+  }, [data]);
 
   const updateSidebar = async () => {
     updateContent(setContent);
@@ -134,10 +142,18 @@ const DocumentEditor = ({ type, id, data }) => {
               >
                 Save
               </button>
-              <DocumentOptionsMenu />
-              <RevertModal revertChanges={revertChanges} />
-              <DeleteModal {...{ type, id, updateSidebar }} />
-              <DuplicateModal {...{ type, id, data, updateSidebar }} />
+              <DocumentOptionsMenu changeModal={changeModal} />
+              <ConfirmModal
+                {...{
+                  type,
+                  id,
+                  data,
+                  updateSidebar,
+                  openModal,
+                  revertChanges,
+                  changeModal,
+                }}
+              />
             </div>
           </div>
         </form>
