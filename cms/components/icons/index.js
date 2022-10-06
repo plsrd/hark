@@ -7,6 +7,8 @@ import { UsersIcon } from './UsersIcon';
 import { DuplicateIcon } from './DuplicateIcon';
 import { DeleteIcon } from './DeleteIcon';
 import { RevertIcon } from './RevertIcon';
+import { UploadIcon } from './UploadIcon';
+import { SearchIcon } from './SearchIcon';
 
 export {
   EditIcon,
@@ -18,4 +20,6 @@ export {
   DuplicateIcon,
   DeleteIcon,
   RevertIcon,
+  UploadIcon,
+  SearchIcon,
 };

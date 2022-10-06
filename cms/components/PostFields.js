@@ -7,6 +7,7 @@ import FormInputWrapper from './FormInputWrapper';
 import SlugInput from './SlugInput';
 import StringInput from './StringInput';
 import RichTextInput from './RichTextInput';
+import ImageInput from './ImageInput';
 
 const PostFields = ({
   register,
@@ -21,6 +22,7 @@ const PostFields = ({
       <StringInput name='title' register={register} />
       <SlugInput {...{ register, getValues, setValue }} />
       <AuthorSelect register={register} getValues={getValues} />
+      <ImageInput register={register} name='mainImage' />
       <RichTextInput
         control={control}
         setContentHasChanged={setContentHasChanged}

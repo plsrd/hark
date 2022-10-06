@@ -173,15 +173,13 @@ export default DocumentEditor;
 export const getServerSideProps = async ({ params }) => {
   const { type, id } = params;
 
-  console.log(type, id);
-
   if (id !== 'new') {
-    const response = await client.get(type, id);
+    const { data } = await client.get(type, id);
     return {
       props: {
         type,
         id,
-        ...(response?.data ? { data: response.data } : {}),
+        ...(data ? { data } : {}),
       },
     };
   } else {

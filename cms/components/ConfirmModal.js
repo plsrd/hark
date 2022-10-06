@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router';
-import React, { useContext } from 'react';
+import React from 'react';
 import client from '../src/client';
-import ContentContext from '../src/contentContext';
 import slugify from 'slugify';
 
 const ConfirmModal = ({
