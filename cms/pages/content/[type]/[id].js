@@ -66,29 +66,38 @@ const DocumentEditor = ({ type, id, data }) => {
   const updateSidebar = async () => await updateContent(setContent);
 
   const onSubmit = async fields => {
-    const blocks = generateBlocks(fields.content);
+    console.log(fields.image_upload[0]);
 
-    const document = {
-      ...fields,
-      content: blocks,
-    };
+    const formData = new FormData();
 
-    const { data } =
-      id == 'new'
-        ? await client.post(type, document)
-        : await client.put(type, id, document);
+    formData.append('image', fields.image_upload[0]);
 
-    await updateSidebar();
+    const image = await client.uploadImage(formData);
 
-    resetForm(data);
-    setPublishedDocument(data);
-    setDraft(false);
+    console.log(image);
+    // const blocks = generateBlocks(fields.content);
 
-    if (id == 'new')
-      router.push({
-        pathname: '/content/[type]/[id]',
-        query: { type, id: data._id },
-      });
+    // const document = {
+    //   ...fields,
+    //   content: blocks,
+    // };
+
+    // const { data } =
+    //   id == 'new'
+    //     ? await client.post(type, document)
+    //     : await client.put(type, id, document);
+
+    // await updateSidebar();
+
+    // resetForm(data);
+    // setPublishedDocument(data);
+    // setDraft(false);
+
+    // if (id == 'new')
+    //   router.push({
+    //     pathname: '/content/[type]/[id]',
+    //     query: { type, id: data._id },
+    //   });
   };
 
   useEffect(() => {

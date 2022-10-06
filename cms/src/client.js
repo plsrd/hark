@@ -56,4 +56,12 @@ export default {
       method: 'delete',
       url: `/${type}/${id}`,
     }).catch(err => console.log(err)),
+
+  uploadImage: async data =>
+    await instance({
+      headers: { 'Content-Type': 'multipart/form-data' },
+      method: 'post',
+      url: '/images',
+      data,
+    }),
 };

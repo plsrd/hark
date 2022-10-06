@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@cloudinary/react": "^1.5.0",
+    "@cloudinary/url-gen": "^1.8.6",
     "@portabletext/to-html": "^1.0.3",
     "@sanity/block-tools": "^2.31.0",
     "@sanity/schema": "^2.31.0",
