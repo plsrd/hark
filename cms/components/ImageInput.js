@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
 import FormInputWrapper from './FormInputWrapper';
-import ImageSelectModal from './ImageSelectModal';
+import ImageModal from './ImageModal';
 import { SearchIcon, UploadIcon } from './icons';
 
 const ImageInput = ({ name, register, setValue }) => {
-  const [openModal, setOpenModal] = useState(false);
+  const [openModal, setOpenModal] = useState(null);
 
-  const handleClick = e => {
+  const handleToggle = e => {
+    const {
+      target: { name },
+    } = e;
     e.preventDefault();
-    openModal ? setOpenModal(false) : setOpenModal(true);
-  };
-
-  const handleImageSelection = id => {
-    setValue('mainImage/select', id);
+    openModal == name ? setOpenModal(null) : setOpenModal(name);
   };
 
   return (
     <FormInputWrapper>
+      <input type='text' className='hidden' {...register(name)} />
       <label htmlFor={name} className='text-lg'>
         {name.replace(/([A-Z])/g, ' $1').replace(/^./, function (str) {
           return str.toUpperCase();
@@ -27,30 +27,25 @@ const ImageInput = ({ name, register, setValue }) => {
           Select an existing image or upload a new one...
         </span>
         <div>
-          <input
-            type='text'
-            className='hidden'
-            {...register(name + '/select')}
-          />
-          <button className='btn btn-primary gap-2' onClick={handleClick}>
+          <button
+            className='btn btn-primary gap-2'
+            onClick={handleToggle}
+            name='select'
+          >
             {' '}
             <SearchIcon /> Select
           </button>
-          <label>
-            <span className='btn btn-primary mx-3 gap-2'>
-              {' '}
-              <UploadIcon /> Upload
-            </span>
-            <input
-              className='hidden'
-              type='file'
-              accept='image/*'
-              {...register(name + '_upload')}
-            />
-          </label>
+          <button
+            className='btn btn-primary mx-3 gap-2'
+            name='upload'
+            onClick={handleToggle}
+          >
+            {' '}
+            <UploadIcon /> Upload
+          </button>
         </div>
       </div>
-      <ImageSelectModal {...{ openModal, handleImageSelection, handleClick }} />
+      <ImageModal {...{ openModal, handleToggle, setValue }} />
     </FormInputWrapper>
   );
 };

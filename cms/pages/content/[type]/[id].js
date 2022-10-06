@@ -31,6 +31,7 @@ const DocumentEditor = ({ type, id, data }) => {
     getValues,
     setValue,
     reset,
+    watch,
   } = useForm();
 
   const { dirtyFields } = formState;
@@ -63,36 +64,29 @@ const DocumentEditor = ({ type, id, data }) => {
     setDraft();
   };
 
+  console.log(watch('image'));
+
   const updateSidebar = async () => await updateContent(setContent);
 
   const onSubmit = async fields => {
-    console.log(fields.image_upload[0]);
-
-    const formData = new FormData();
-
-    formData.append('image', fields.image_upload[0]);
-
-    const image = await client.uploadImage(formData);
-
-    console.log(image);
+    // console.log(fields.image_upload[0]);
+    // const formData = new FormData();
+    // formData.append('image', fields.image_upload[0]);
+    // const image = await client.uploadImage(formData);
+    // console.log(image);
     // const blocks = generateBlocks(fields.content);
-
     // const document = {
     //   ...fields,
     //   content: blocks,
     // };
-
     // const { data } =
     //   id == 'new'
     //     ? await client.post(type, document)
     //     : await client.put(type, id, document);
-
     // await updateSidebar();
-
     // resetForm(data);
     // setPublishedDocument(data);
     // setDraft(false);
-
     // if (id == 'new')
     //   router.push({
     //     pathname: '/content/[type]/[id]',
