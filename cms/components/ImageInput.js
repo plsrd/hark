@@ -5,7 +5,7 @@ import { EditIcon, SearchIcon, UploadIcon } from './icons';
 import { Cloudinary } from '@cloudinary/url-gen';
 import client from '../src/client';
 
-const ImageInput = ({ name, register, setValue }) => {
+const ImageInput = ({ name, register, setValue, getValues }) => {
   const [existingImages, setExistingImages] = useState([]);
   const [previewImage, setPreviewImage] = useState();
   const [openModal, setOpenModal] = useState(null);
@@ -59,10 +59,14 @@ const ImageInput = ({ name, register, setValue }) => {
                 <button onClick={handleRemoveImage}>Remove image</button>
               </li>
               <li>
-                <button>Select New</button>
+                <button name='select' onClick={handleToggle}>
+                  Select New
+                </button>
               </li>
               <li>
-                <button>Upload New</button>
+                <button name='upload' onClick={handleToggle}>
+                  Upload New
+                </button>
               </li>
             </ul>
           </div>
@@ -104,6 +108,7 @@ const ImageInput = ({ name, register, setValue }) => {
           existingImages,
           previewImage,
           setPreviewImage,
+          getValues,
         }}
       />
     </FormInputWrapper>

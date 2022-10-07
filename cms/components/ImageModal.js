@@ -12,8 +12,9 @@ const ImageModal = ({
   existingImages,
   previewImage,
   setPreviewImage,
+  getValues,
 }) => {
-  const { register, reset, watch, getValues } = useForm();
+  const { register, reset, watch, getValues: getUpload } = useForm();
 
   const imageFieldValue = watch('upload');
 
@@ -24,15 +25,14 @@ const ImageModal = ({
 
   const handleClose = e => {
     e.preventDefault();
-    setPreviewImage();
+    if (getValues('image') == '') setPreviewImage();
     handleToggle(e);
   };
 
   const handleSave = async e => {
     e.preventDefault();
     const formData = new FormData();
-
-    formData.append('image', getValues('upload')[0]);
+    formData.append('image', getUpload('upload')[0]);
 
     await client
       .uploadImage(formData)

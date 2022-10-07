@@ -22,7 +22,7 @@ const PostFields = ({
       <StringInput name='title' register={register} />
       <SlugInput {...{ register, getValues, setValue }} />
       <AuthorSelect register={register} getValues={getValues} />
-      <ImageInput name='image' register={register} setValue={setValue} />
+      <ImageInput name='image' {...{ register, getValues, setValue }} />
       <RichTextInput
         control={control}
         setContentHasChanged={setContentHasChanged}

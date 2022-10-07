@@ -68,7 +68,7 @@ const DocumentEditor = ({ type, id, data }) => {
   const updateSidebar = async () => await updateContent(setContent);
 
   const onSubmit = async fields => {
-    // console.log(fields.image_upload[0]);
+    console.log(fields);
     // const formData = new FormData();
     // formData.append('image', fields.image_upload[0]);
     // const image = await client.uploadImage(formData);
