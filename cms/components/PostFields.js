@@ -11,18 +11,22 @@ import ImageInput from './ImageInput';
 
 const PostFields = ({
   register,
-  post,
+  data,
   control,
   getValues,
   setValue,
   setContentHasChanged,
+  id,
 }) => {
   return (
     <>
       <StringInput name='title' register={register} />
       <SlugInput {...{ register, getValues, setValue }} />
       <AuthorSelect register={register} getValues={getValues} />
-      <ImageInput name='image' {...{ register, getValues, setValue }} />
+      <ImageInput
+        name='image'
+        {...{ register, getValues, setValue, data, id }}
+      />
       <RichTextInput
         control={control}
         setContentHasChanged={setContentHasChanged}

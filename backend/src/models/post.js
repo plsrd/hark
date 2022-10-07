@@ -9,7 +9,7 @@ const PostSchema = new Schema(
     author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     isPublished: { type: Boolean, required: true },
     slug: { type: String, required: true },
-    mainImage: { type: Schema.Types.ObjectId, ref: 'Image' },
+    image: { type: Schema.Types.ObjectId, ref: 'Image' },
     content: [Object],
   },
   { timestamps: true }

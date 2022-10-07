@@ -3,7 +3,7 @@ const Post = require('../models/post');
 
 const handlePostInput = (req, res, next) => {
   const errors = validationResult(req);
-  const { title, author, content, isPublished, slug } = req.body;
+  const { title, author, content, isPublished, slug, image } = req.body;
   const { role, _id } = req.user;
 
   const postFields = {
@@ -12,6 +12,7 @@ const handlePostInput = (req, res, next) => {
     content,
     isPublished,
     slug,
+    image,
   };
 
   const createNewPost = () => {

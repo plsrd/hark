@@ -22,8 +22,6 @@ const DocumentEditor = ({ type, id, data }) => {
   const [contentHasChanged, setContentHasChanged] = useState(false);
   const [openModal, setOpenModal] = useState(null);
 
-  const router = useRouter();
-
   const {
     register,
     handleSubmit,
@@ -35,7 +33,7 @@ const DocumentEditor = ({ type, id, data }) => {
     watch,
   } = useForm();
 
-  const { dirtyFields } = formState;
+  const { dirtyFields, touchedFields } = formState;
 
   const resetForm = document => {
     document
@@ -65,32 +63,29 @@ const DocumentEditor = ({ type, id, data }) => {
     setDraft();
   };
 
+  console.log(data);
+
   const updateSidebar = async () => await updateContent(setContent);
 
   const onSubmit = async fields => {
-    console.log(fields);
-    // const formData = new FormData();
-    // formData.append('image', fields.image_upload[0]);
-    // const image = await client.uploadImage(formData);
-    // console.log(image);
-    // const blocks = generateBlocks(fields.content);
-    // const document = {
-    //   ...fields,
-    //   content: blocks,
-    // };
-    // const { data } =
-    //   id == 'new'
-    //     ? await client.post(type, document)
-    //     : await client.put(type, id, document);
-    // await updateSidebar();
-    // resetForm(data);
-    // setPublishedDocument(data);
-    // setDraft(false);
-    // if (id == 'new')
-    //   router.push({
-    //     pathname: '/content/[type]/[id]',
-    //     query: { type, id: data._id },
-    //   });
+    const blocks = generateBlocks(fields.content);
+    const document = {
+      ...fields,
+      content: blocks,
+    };
+    const { data } =
+      id == 'new'
+        ? await client.post(type, document)
+        : await client.put(type, id, document);
+    await updateSidebar();
+    resetForm(data);
+    setPublishedDocument(data);
+    setDraft(false);
+    if (id == 'new')
+      router.push({
+        pathname: '/content/[type]/[id]',
+        query: { type, id: data._id },
+      });
   };
 
   useEffect(() => {
@@ -121,13 +116,14 @@ const DocumentEditor = ({ type, id, data }) => {
           className='bg-base-200 rounded-box flex flex-col flex-wrap  justify-center gap-5  my-5 w-9/12 p-10 '
         >
           <PostFields
-            post={data}
             {...{
               register,
               control,
               getValues,
               setValue,
               setContentHasChanged,
+              data,
+              id,
             }}
           />
           <FormInputWrapper>

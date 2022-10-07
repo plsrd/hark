@@ -22,6 +22,7 @@ exports.posts_post = [...postValidation, handlePostInput];
 exports.post_get = async (req, res, next) => {
   await Post.findById(req.params.postid)
     .populate('author', 'firstName lastName fullName email role')
+    .populate('image')
     .then(post => res.json(post))
     .catch(err => next(err));
 };

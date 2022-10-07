@@ -14,38 +14,42 @@ const ImageModal = ({
   setPreviewImage,
   getValues,
 }) => {
-  const { register, reset, watch, getValues: getUpload } = useForm();
+  const { register, watch, getValues: getUpload } = useForm();
 
   const imageFieldValue = watch('upload');
+
+  const handleImageSelection = image => {
+    setPreviewImage(image.url);
+    setValue('image', image._id, { shouldDirty: true });
+  };
+
+  const handleClose = e => {
+    if (getValues('image') == '') setPreviewImage();
+    handleToggle(e);
+  };
+
+  const handleUpload = async e => {
+    const formData = new FormData();
+    formData.append('image', getUpload('upload')[0]);
+
+    await client
+      .uploadImage(formData)
+      .then(({ data }) => setValue('image', data._id, { shouldDirty: true }));
+
+    handleToggle(e);
+  };
 
   useEffect(() => {
     if (!imageFieldValue || !imageFieldValue[0]) return;
     setPreviewImage(URL.createObjectURL(imageFieldValue[0]));
   }, [imageFieldValue]);
 
-  const handleClose = e => {
-    e.preventDefault();
-    if (getValues('image') == '') setPreviewImage();
-    handleToggle(e);
-  };
-
-  const handleSave = async e => {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append('image', getUpload('upload')[0]);
-
-    await client
-      .uploadImage(formData)
-      .then(({ data }) => setValue('image', data._id));
-
-    handleToggle(e);
-  };
-
   return (
     <div className={`modal ${openModal ? 'modal-open' : ''}`}>
       <div className='modal-box relative flex flex-col'>
         {' '}
         <button
+          type='button'
           onClick={handleClose}
           className='btn btn-sm btn-circle absolute right-4 top-4'
         >
@@ -59,10 +63,11 @@ const ImageModal = ({
               img.resize(fill().width(100).height(100));
               return (
                 <button
+                  type='button'
                   key={image._id}
                   onClick={e => {
-                    e.preventDefault();
-                    handleImageSelection(image._id);
+                    handleToggle(e);
+                    handleImageSelection(image);
                   }}
                 >
                   <AdvancedImage cldImg={img} />
@@ -85,7 +90,9 @@ const ImageModal = ({
               accept='image/*'
               {...register('upload')}
             />
-            <button onClick={handleSave}>Upload</button>
+            <button type='button' onClick={handleUpload}>
+              Upload
+            </button>
           </div>
         )}
       </div>

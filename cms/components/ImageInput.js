@@ -5,7 +5,7 @@ import { EditIcon, SearchIcon, UploadIcon } from './icons';
 import { Cloudinary } from '@cloudinary/url-gen';
 import client from '../src/client';
 
-const ImageInput = ({ name, register, setValue, getValues }) => {
+const ImageInput = ({ name, register, setValue, getValues, data, id }) => {
   const [existingImages, setExistingImages] = useState([]);
   const [previewImage, setPreviewImage] = useState();
   const [openModal, setOpenModal] = useState(null);
@@ -20,12 +20,10 @@ const ImageInput = ({ name, register, setValue, getValues }) => {
     const {
       target: { name },
     } = e;
-    e.preventDefault();
     openModal == name ? setOpenModal(null) : setOpenModal(name);
   };
 
-  const handleRemoveImage = e => {
-    e.preventDefault();
+  const handleRemoveImage = () => {
     setValue('image', '');
     setPreviewImage();
   };
@@ -35,7 +33,13 @@ const ImageInput = ({ name, register, setValue, getValues }) => {
       await client.get('images').then(({ data }) => setExistingImages(data));
 
     getImages();
+
+    data.image && setPreviewImage(data.image.url);
   }, []);
+
+  useEffect(() => {
+    data.image ? setPreviewImage(data.image.url) : setPreviewImage();
+  }, [id]);
 
   return (
     <FormInputWrapper>
@@ -56,15 +60,17 @@ const ImageInput = ({ name, register, setValue, getValues }) => {
               className='menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52'
             >
               <li>
-                <button onClick={handleRemoveImage}>Remove image</button>
+                <button type='button' onClick={handleRemoveImage}>
+                  Remove image
+                </button>
               </li>
               <li>
-                <button name='select' onClick={handleToggle}>
+                <button type='button' name='select' onClick={handleToggle}>
                   Select New
                 </button>
               </li>
               <li>
-                <button name='upload' onClick={handleToggle}>
+                <button type='button' name='upload' onClick={handleToggle}>
                   Upload New
                 </button>
               </li>
@@ -80,6 +86,7 @@ const ImageInput = ({ name, register, setValue, getValues }) => {
           </span>
           <div>
             <button
+              type='button'
               className='btn btn-primary btn-sm gap-2'
               onClick={handleToggle}
               name='select'
@@ -88,6 +95,7 @@ const ImageInput = ({ name, register, setValue, getValues }) => {
               <SearchIcon /> Select
             </button>
             <button
+              type='button'
               className='btn btn-primary btn-sm mx-3 gap-2'
               name='upload'
               onClick={handleToggle}
