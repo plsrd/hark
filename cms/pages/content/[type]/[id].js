@@ -21,6 +21,7 @@ const DocumentEditor = ({ type, id, data }) => {
   const [publishedDocument, setPublishedDocument] = useState(data);
   const [contentHasChanged, setContentHasChanged] = useState(false);
   const [openModal, setOpenModal] = useState(null);
+
   const router = useRouter();
 
   const {
@@ -63,8 +64,6 @@ const DocumentEditor = ({ type, id, data }) => {
     resetForm(publishedDocument);
     setDraft();
   };
-
-  console.log(watch('image'));
 
   const updateSidebar = async () => await updateContent(setContent);
 

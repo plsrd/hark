@@ -63,5 +63,5 @@ export default {
       method: 'post',
       url: '/images',
       data,
-    }),
+    }).catch(err => console.log(err)),
 };

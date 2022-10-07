@@ -1,35 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { AdvancedImage } from '@cloudinary/react';
-import { Cloudinary } from '@cloudinary/url-gen';
 import { fill } from '@cloudinary/url-gen/actions/resize';
 import client from '../src/client';
 import { useForm } from 'react-hook-form';
-import { UploadIcon } from './icons';
 
-const ImageModal = ({ openModal, handleToggle, setValue }) => {
-  const [existingImages, setExistingImages] = useState([]);
+const ImageModal = ({
+  openModal,
+  handleToggle,
+  setValue,
+  cld,
+  existingImages,
+  previewImage,
+  setPreviewImage,
+}) => {
   const { register, reset, watch, getValues } = useForm();
-  const [imagePreview, setImagePreview] = useState();
-
-  const cld = new Cloudinary({
-    cloud: {
-      cloudName: 'dt3e5brus',
-    },
-  });
 
   const imageFieldValue = watch('upload');
 
   useEffect(() => {
     if (!imageFieldValue) return;
-    setImagePreview(imageFieldValue[0]);
+    setPreviewImage(URL.createObjectURL(imageFieldValue[0]));
   }, [imageFieldValue]);
-
-  useEffect(() => {
-    const getImages = async () =>
-      await client.get('images').then(({ data }) => setExistingImages(data));
-
-    getImages();
-  }, []);
 
   const handleSave = async e => {
     e.preventDefault();
@@ -76,7 +67,7 @@ const ImageModal = ({ openModal, handleToggle, setValue }) => {
         )}
         {openModal == 'upload' && (
           <div className='flex flex-col gap-2 mt-8'>
-            {imagePreview && <img src={URL.createObjectURL(imagePreview)} />}
+            {previewImage && <img src={previewImage} />}
             <label className='btn btn-primary btn-sm gap-2' htmlFor='file'>
               {' '}
               Browse...
