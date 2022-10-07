@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { AdvancedImage } from '@cloudinary/react';
 import { fill } from '@cloudinary/url-gen/actions/resize';
 import client from '../src/client';
@@ -18,9 +18,15 @@ const ImageModal = ({
   const imageFieldValue = watch('upload');
 
   useEffect(() => {
-    if (!imageFieldValue) return;
+    if (!imageFieldValue || !imageFieldValue[0]) return;
     setPreviewImage(URL.createObjectURL(imageFieldValue[0]));
   }, [imageFieldValue]);
+
+  const handleClose = e => {
+    e.preventDefault();
+    setPreviewImage();
+    handleToggle(e);
+  };
 
   const handleSave = async e => {
     e.preventDefault();
@@ -40,7 +46,7 @@ const ImageModal = ({
       <div className='modal-box relative flex flex-col'>
         {' '}
         <button
-          onClick={handleToggle}
+          onClick={handleClose}
           className='btn btn-sm btn-circle absolute right-4 top-4'
         >
           ✕

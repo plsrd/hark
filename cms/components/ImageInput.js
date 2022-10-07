@@ -59,7 +59,10 @@ const ImageInput = ({ name, register, setValue }) => {
                 <button onClick={handleRemoveImage}>Remove image</button>
               </li>
               <li>
-                <button>Edit Image</button>
+                <button>Select New</button>
+              </li>
+              <li>
+                <button>Upload New</button>
               </li>
             </ul>
           </div>
