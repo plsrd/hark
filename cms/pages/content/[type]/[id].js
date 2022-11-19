@@ -73,6 +73,7 @@ const DocumentEditor = ({ type, id, data }) => {
       ...fields,
       content: blocks,
     };
+    
     const { data } =
       id == 'new'
         ? await client.post(type, document)

@@ -25,7 +25,7 @@ const PostFields = ({
       <AuthorSelect register={register} getValues={getValues} />
       <ImageInput
         name='image'
-        {...{ register, getValues, setValue, data, id }}
+        {...{ register, getValues, setValue, data, id, setContentHasChanged }}
       />
       <RichTextInput
         control={control}

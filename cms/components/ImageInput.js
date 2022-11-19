@@ -5,7 +5,15 @@ import { EditIcon, SearchIcon, UploadIcon } from './icons';
 import { Cloudinary } from '@cloudinary/url-gen';
 import client from '../src/client';
 
-const ImageInput = ({ name, register, setValue, getValues, data, id }) => {
+const ImageInput = ({
+  name,
+  register,
+  setValue,
+  getValues,
+  data,
+  id,
+  setContentHasChanged,
+}) => {
   const [existingImages, setExistingImages] = useState([]);
   const [previewImage, setPreviewImage] = useState();
   const [openModal, setOpenModal] = useState(null);
@@ -26,6 +34,7 @@ const ImageInput = ({ name, register, setValue, getValues, data, id }) => {
   const handleRemoveImage = () => {
     setValue('image', '');
     setPreviewImage();
+    setContentHasChanged(true);
   };
 
   useEffect(() => {

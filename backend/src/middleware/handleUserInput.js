@@ -28,8 +28,6 @@ const handleUserInput = async (req, res, next) => {
       userFields[key] === '' ? delete userFields[key] : {}
     );
 
-    console.log(userFields);
-
     if (currentUserRole !== 'admin' && _id.toString() !== req.params.userid) {
       return res
         .status(401)
