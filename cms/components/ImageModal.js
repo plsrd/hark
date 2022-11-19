@@ -57,10 +57,10 @@ const ImageModal = ({
         </button>
         <h3 className='text-lg font-bold'>Select Image</h3>
         {openModal == 'select' && (
-          <div className='flex flex-row gap-2 my-8 bg-neutral'>
+          <div className='flex flex-row flex-wrap gap-2 my-8 bg-neutral justify-center'>
             {existingImages.map(image => {
               const img = cld.image(image.filename + '.png');
-              img.resize(fill().width(100).height(100));
+              img.resize(fill().width(200));
               return (
                 <button
                   type='button'
