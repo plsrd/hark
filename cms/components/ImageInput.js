@@ -43,11 +43,11 @@ const ImageInput = ({
 
     getImages();
 
-    data.image && setPreviewImage(data.image.url);
+    data?.image && setPreviewImage(data.image.url);
   }, []);
 
   useEffect(() => {
-    data.image ? setPreviewImage(data.image.url) : setPreviewImage();
+    data?.image ? setPreviewImage(data.image.url) : setPreviewImage();
   }, [id]);
 
   return (

@@ -39,8 +39,8 @@ const DocumentEditor = ({ type, id, data }) => {
     document
       ? reset({
           ...document,
-          author: document.author._id,
-          content: generateHTML(document.content),
+          author: document?.author?._id,
+          content: generateHTML(document?.content),
         })
       : reset({
           title: '',
@@ -66,7 +66,6 @@ const DocumentEditor = ({ type, id, data }) => {
   const updateSidebar = async () => await updateContent(setContent);
 
   const onSubmit = async fields => {
-    console.log(fields);
     const blocks = generateBlocks(fields.content);
     const document = {
       ...fields,
