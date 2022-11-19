@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import { generateBlocks, generateHTML } from '../../../src/blockTools';
 import client from '../../../src/client';
@@ -30,10 +29,9 @@ const DocumentEditor = ({ type, id, data }) => {
     getValues,
     setValue,
     reset,
-    watch,
   } = useForm();
 
-  const { dirtyFields, touchedFields } = formState;
+  const { dirtyFields } = formState;
 
   const resetForm = document => {
     document
@@ -123,6 +121,7 @@ const DocumentEditor = ({ type, id, data }) => {
               setContentHasChanged,
               data,
               id,
+              reset,
             }}
           />
           <FormInputWrapper>

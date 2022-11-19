@@ -6,7 +6,6 @@ const DocumentOptionsMenu = ({ changeModal, id, contentHasChanged }) => {
     changeModal(e.target.name);
   };
 
-  console.log(changeModal, id, contentHasChanged);
   return (
     <div className='dropdown dropdown-top'>
       <label tabIndex='0' className='btn btn-outline btn-primary'>

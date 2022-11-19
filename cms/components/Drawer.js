@@ -43,19 +43,6 @@ const Drawer = ({ activeDocument }) => {
             );
           })}
       </MenuListWrapper>
-      <MenuListWrapper>
-        <MenuHeader type='authors' />
-        {authors &&
-          authors.map(author => (
-            <li key={author._id}>
-              <Link href={`/content/authors/${author._id}`}>
-                <a className={activeDocument == author._id ? 'active' : ''}>
-                  {author.fullName}
-                </a>
-              </Link>
-            </li>
-          ))}
-      </MenuListWrapper>
     </div>
   );
 };
