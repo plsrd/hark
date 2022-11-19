@@ -1,21 +1,31 @@
-import Link from 'next/link';
-import React from 'react';
-import { EditIcon } from '../components/icons';
+import React, { useState, useContext } from 'react';
+import contentContext from '../src/contentContext';
+import updateContent from '../src/updateContent';
+
+import DocumentOptionsMenu from './DocumentOptionsMenu';
 import PostTableRow from './PostTableRow';
+import ConfirmModal from './ConfirmModal';
 
 const DocumentTable = ({ type, data }) => {
+  const [openModal, setOpenModal] = useState(null);
+  const [id, setId] = useState();
+  const { setContent } = useContext(contentContext);
+
+  const changeModal = (name, id) => {
+    name == openModal ? setOpenModal(null) : setOpenModal(name);
+    id ? setId(id) : null;
+  };
+
+  const updateSidebar = async () => await updateContent(setContent);
+
   const postHeaders = ['title', 'author', 'published'].map(header => (
     <th>{header}</th>
   ));
+
   return (
     <table className='table w-full'>
       <thead>
         <tr>
-          <th>
-            <label>
-              <input type='checkbox' className='checkbox' />
-            </label>
-          </th>
           {(() => {
             switch (type) {
               case 'posts':
@@ -29,11 +39,6 @@ const DocumentTable = ({ type, data }) => {
         {data &&
           data.map(document => (
             <tr key={document._id}>
-              <th>
-                <label>
-                  <input type='checkbox' className='checkbox' />
-                </label>
-              </th>
               {(() => {
                 switch (type) {
                   case 'posts':
@@ -41,13 +46,20 @@ const DocumentTable = ({ type, data }) => {
                 }
               })()}
               <th>
-                <Link href='/'>
-                  <a>
-                    <button className='btn btn-secondary'>
-                      <EditIcon />
-                    </button>
-                  </a>
-                </Link>
+                <DocumentOptionsMenu
+                  changeModal={changeModal}
+                  id={document._id}
+                  hideRevert
+                />
+                <ConfirmModal
+                  type='posts'
+                  id={id}
+                  {...{
+                    updateSidebar,
+                    openModal,
+                    changeModal,
+                  }}
+                />
               </th>
             </tr>
           ))}

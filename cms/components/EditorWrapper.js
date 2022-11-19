@@ -9,7 +9,7 @@ const EditorWrapper = ({ children, type, header }) => {
           : `All ${type.slice(0, 1).toUpperCase() + type.slice(1)}`}
       </div>
       <div
-        className='preview bg-base-200 rounded-b-box rounded-tr-box flex flex-wrap items-center justify-center gap-2 overflow-x-hidden bg-cover bg-top p-4'
+        className='preview bg-base-200 rounded-b-box rounded-tr-box flex flex-wrap items-center justify-center gap-2 bg-cover bg-top p-4'
         style={{
           backgroundImage:
             'radial-gradient(hsla(37 67% 58%/.2) 1px, hsla(270 4% 9%) 1px)',

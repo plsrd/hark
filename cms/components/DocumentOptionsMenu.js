@@ -1,9 +1,14 @@
 import { DeleteIcon, DuplicateIcon, OptionsIcon, RevertIcon } from './icons';
 
-const DocumentOptionsMenu = ({ changeModal, id, contentHasChanged }) => {
+const DocumentOptionsMenu = ({
+  changeModal,
+  id,
+  contentHasChanged,
+  hideRevert,
+}) => {
   const handleClick = e => {
     e.preventDefault();
-    changeModal(e.target.name);
+    changeModal(e.target.name, id);
   };
 
   return (
@@ -15,19 +20,21 @@ const DocumentOptionsMenu = ({ changeModal, id, contentHasChanged }) => {
       </label>
       <ul
         tabIndex='0'
-        className='dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52'
+        className='dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 z-50'
       >
-        <li>
-          <button
-            onClick={handleClick}
-            name='revert'
-            className='btn btn-ghost justify-start'
-            disabled={!contentHasChanged}
-          >
-            <RevertIcon />
-            Revert
-          </button>
-        </li>
+        {!hideRevert && (
+          <li>
+            <button
+              onClick={handleClick}
+              name='revert'
+              className='btn btn-ghost justify-start'
+              disabled={!contentHasChanged}
+            >
+              <RevertIcon />
+              Revert
+            </button>
+          </li>
+        )}
         <li>
           <button
             onClick={handleClick}

@@ -16,7 +16,7 @@ const ConfirmModal = ({
 
   const handleClose = e => {
     e.preventDefault();
-    changeModal(e.target.name);
+    changeModal(e.target.name, null);
   };
 
   const handleDelete = async () => {
@@ -24,7 +24,7 @@ const ConfirmModal = ({
       .delete(type, id)
       .then(async () => await updateSidebar())
       .then(() => {
-        changeModal('delete');
+        changeModal('delete', null);
         router.push({
           pathname: '/content/[type]/[id]',
           query: { type, id: 'new' },
@@ -33,27 +33,46 @@ const ConfirmModal = ({
   };
 
   const handleDuplicate = async e => {
-    const title = 'Copy of ' + data.title;
+    if (data) {
+      const title = 'Copy of ' + data.title;
 
-    const document = {
-      title,
-      author: data.author._id,
-      isPublished: data.isPublished,
-      slug: slugify(title),
-      content: data.content,
-    };
+      const document = {
+        title,
+        author: data.author._id,
+        isPublished: data.isPublished,
+        slug: slugify(title),
+        content: data.content,
+      };
 
-    await client.post(type, document).then(async res => {
-      await updateSidebar();
-      changeModal(e.target.name);
-      router.push(
-        {
-          pathname: '/content/[type]/[id]',
-          query: { type, id: res.data._id },
-        },
-        `/content/${type}/${res.data._id}`
-      );
-    });
+      await client.post(type, document).then(async res => {
+        await updateSidebar();
+        changeModal(e.target.name, null);
+        router.push(
+          {
+            pathname: '/content/[type]/[id]',
+            query: { type, id: res.data._id },
+          },
+          `/content/${type}/${res.data._id}`
+        );
+      });
+    } else {
+      const { data } = await client.get(type, id);
+
+      const title = 'Copy of ' + data.title;
+      const document = {
+        title,
+        author: data.author._id,
+        isPublished: data.isPublished,
+        slug: slugify(title),
+        content: data.content,
+      };
+
+      await client.post(type, document).then(async res => {
+        await updateSidebar();
+        changeModal(e.target.name, null);
+        router.push('/content/posts');
+      });
+    }
   };
 
   const handleClick = async e => {
