@@ -1,9 +1,5 @@
 import React from 'react';
-import { Controller } from 'react-hook-form';
-import slugify from 'slugify';
 import AuthorSelect from './AuthorSelect';
-import RichTextEditor from './RichTextEditor';
-import FormInputWrapper from './FormInputWrapper';
 import SlugInput from './SlugInput';
 import StringInput from './StringInput';
 import RichTextInput from './RichTextInput';

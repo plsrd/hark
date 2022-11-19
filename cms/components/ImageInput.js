@@ -32,7 +32,7 @@ const ImageInput = ({
   };
 
   const handleRemoveImage = () => {
-    setValue('image', '');
+    setValue('image', null);
     setPreviewImage();
     setContentHasChanged(true);
   };

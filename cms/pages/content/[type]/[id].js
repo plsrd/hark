@@ -63,17 +63,16 @@ const DocumentEditor = ({ type, id, data }) => {
     setDraft();
   };
 
-  console.log(data);
-
   const updateSidebar = async () => await updateContent(setContent);
 
   const onSubmit = async fields => {
+    console.log(fields);
     const blocks = generateBlocks(fields.content);
     const document = {
       ...fields,
       content: blocks,
     };
-    
+
     const { data } =
       id == 'new'
         ? await client.post(type, document)
