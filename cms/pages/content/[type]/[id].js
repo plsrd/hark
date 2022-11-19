@@ -145,7 +145,9 @@ const DocumentEditor = ({ type, id, data }) => {
               >
                 Save
               </button>
-              <DocumentOptionsMenu changeModal={changeModal} />
+              <DocumentOptionsMenu
+                {...{ changeModal, id, contentHasChanged }}
+              />
               <ConfirmModal
                 {...{
                   type,
