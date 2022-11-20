@@ -1,10 +1,18 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import { format } from 'date-fns';
+import client from '../src/client';
 import UserBadge from './UserBadge';
 import Avatar from './Avatar';
 
 const PostTableRow = ({ post }) => {
+  const router = useRouter();
   const { image, title, author, createdAt, isPublished } = post;
+
+  const handleClick = async () => {
+    await client.put('posts', post._id, { isPublished: !post.isPublished });
+    router.push('/content/posts');
+  };
 
   return (
     <>
@@ -25,7 +33,12 @@ const PostTableRow = ({ post }) => {
         <UserBadge role={author.role} />
       </td>
       <td>
-        <input type='checkbox' className='toggle' checked={isPublished} />
+        <input
+          type='checkbox'
+          className={`toggle `}
+          checked={isPublished}
+          onClick={handleClick}
+        />
       </td>
     </>
   );

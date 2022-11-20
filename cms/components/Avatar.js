@@ -6,7 +6,7 @@ const Avatar = ({ image }) => {
     <div className='avatar'>
       <div className='mask mask-squircle w-12 h-12'>
         <img
-          src={image ? image : 'https://placeimg.com/80/80/people'}
+          src={image ? image : '/postIcon.png'}
           alt='Avatar Tailwind CSS Component'
         />
       </div>

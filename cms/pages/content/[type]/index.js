@@ -8,7 +8,7 @@ const ContentTypeBulkEditor = ({ type, data }) => {
   return (
     <Layout>
       <EditorWrapper type={type}>
-        <DocumentTable data={data} type={type} />
+        <DocumentTable data={data} />
       </EditorWrapper>
     </Layout>
   );

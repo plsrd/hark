@@ -6,7 +6,7 @@ import DocumentOptionsMenu from './DocumentOptionsMenu';
 import PostTableRow from './PostTableRow';
 import ConfirmModal from './ConfirmModal';
 
-const DocumentTable = ({ type, data }) => {
+const DocumentTable = ({ data }) => {
   const [openModal, setOpenModal] = useState(null);
   const [id, setId] = useState();
   const { setContent } = useContext(contentContext);
