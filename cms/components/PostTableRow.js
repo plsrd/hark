@@ -4,10 +4,11 @@ import { format } from 'date-fns';
 import client from '../src/client';
 import UserBadge from './UserBadge';
 import Avatar from './Avatar';
+import Link from 'next/link';
 
 const PostTableRow = ({ post }) => {
   const router = useRouter();
-  const { image, title, author, createdAt, isPublished } = post;
+  const { _id, image, title, author, createdAt, isPublished } = post;
 
   const handleClick = async () => {
     await client.put('posts', post._id, { isPublished: !post.isPublished });
@@ -17,15 +18,19 @@ const PostTableRow = ({ post }) => {
   return (
     <>
       <td>
-        <div className='flex items-center space-x-3'>
-          <Avatar image={image?.url} />
-          <div>
-            <div className='font-bold'>{title}</div>
-            <div className='text-sm opacity-50'>
-              {format(new Date(createdAt), 'MMMM d yyyy')}
+        <Link href={`/content/posts/${_id}`}>
+          <a>
+            <div className='flex items-center space-x-3'>
+              <Avatar image={image?.url} />
+              <div>
+                <div className='font-bold'>{title}</div>
+                <div className='text-sm opacity-50'>
+                  {format(new Date(createdAt), 'MMMM d yyyy')}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          </a>
+        </Link>
       </td>
       <td>
         {author.fullName}
@@ -36,8 +41,8 @@ const PostTableRow = ({ post }) => {
         <input
           type='checkbox'
           className={`toggle `}
-          checked={isPublished}
-          onClick={handleClick}
+          defaultChecked={isPublished}
+          onChange={handleClick}
         />
       </td>
     </>
