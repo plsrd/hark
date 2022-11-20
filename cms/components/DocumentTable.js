@@ -18,53 +18,43 @@ const DocumentTable = ({ type, data }) => {
 
   const updateSidebar = async () => await updateContent(setContent);
 
-  const postHeaders = ['title', 'author', 'published'].map(header => (
-    <th>{header}</th>
-  ));
-
   return (
-    <table className='table w-full'>
-      <thead>
-        <tr>
-          {(() => {
-            switch (type) {
-              case 'posts':
-                return postHeaders;
-            }
-          })()}
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {data &&
-          data.map(document => (
-            <tr key={document._id}>
-              {(() => {
-                switch (type) {
-                  case 'posts':
-                    return <PostTableRow post={document} />;
-                }
-              })()}
-              <th>
-                <DocumentOptionsMenu
-                  changeModal={changeModal}
-                  id={document._id}
-                  hideRevert
-                />
-              </th>
-            </tr>
-          ))}
-        <ConfirmModal
-          type='posts'
-          id={id}
-          {...{
-            updateSidebar,
-            openModal,
-            changeModal,
-          }}
-        />
-      </tbody>
-    </table>
+    <>
+      <table className='table w-full'>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Published</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data &&
+            data.map(document => (
+              <tr key={document._id}>
+                <PostTableRow post={document} />
+                <th>
+                  <DocumentOptionsMenu
+                    changeModal={changeModal}
+                    id={document._id}
+                    hideRevert
+                  />
+                </th>
+              </tr>
+            ))}
+        </tbody>
+      </table>
+      <ConfirmModal
+        type='posts'
+        id={id}
+        {...{
+          updateSidebar,
+          openModal,
+          changeModal,
+        }}
+      />
+    </>
   );
 };
 

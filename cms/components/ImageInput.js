@@ -31,6 +31,8 @@ const ImageInput = ({
     openModal == name ? setOpenModal(null) : setOpenModal(name);
   };
 
+  console.log(data);
+
   const handleRemoveImage = () => {
     setValue('image', null);
     setPreviewImage();

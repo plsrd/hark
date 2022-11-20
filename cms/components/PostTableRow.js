@@ -4,12 +4,13 @@ import UserBadge from './UserBadge';
 import Avatar from './Avatar';
 
 const PostTableRow = ({ post }) => {
-  const { mainImage, title, author, createdAt, isPublished } = post;
+  const { image, title, author, createdAt, isPublished } = post;
+
   return (
     <>
       <td>
         <div className='flex items-center space-x-3'>
-          <Avatar image={mainImage} />
+          <Avatar image={image?.url} />
           <div>
             <div className='font-bold'>{title}</div>
             <div className='text-sm opacity-50'>

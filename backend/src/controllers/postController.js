@@ -10,6 +10,7 @@ const getFilter = require('../middleware/getFilter');
 exports.posts_get = async (req, res, next) => {
   await Post.find(getFilter(req.query))
     .populate('author', 'firstName lastName fullName email role')
+    .populate('image')
     .sort(getSort(req.query.sort))
     .limit(req.query.limit)
     .skip(req.query.skip)
