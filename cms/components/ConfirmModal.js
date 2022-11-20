@@ -25,54 +25,46 @@ const ConfirmModal = ({
       .then(async () => await updateSidebar())
       .then(() => {
         changeModal('delete', null);
-        router.push({
-          pathname: '/content/[type]/[id]',
-          query: { type, id: 'new' },
-        });
+        data
+          ? router.push({
+              pathname: '/content/[type]/[id]',
+              query: { type, id: 'new' },
+            })
+          : router.push('/content/posts');
       });
   };
 
   const handleDuplicate = async e => {
-    if (data) {
-      const title = 'Copy of ' + data.title;
+    let originalDocument = data;
 
-      const document = {
-        title,
-        author: data.author._id,
-        isPublished: data.isPublished,
-        slug: slugify(title),
-        content: data.content,
-      };
+    if (!data)
+      await client.get(type, id).then(({ data }) => (originalDocument = data));
 
-      await client.post(type, document).then(async res => {
-        await updateSidebar();
-        changeModal(e.target.name, null);
-        router.push(
-          {
-            pathname: '/content/[type]/[id]',
-            query: { type, id: res.data._id },
-          },
-          `/content/${type}/${res.data._id}`
-        );
-      });
-    } else {
-      const { data } = await client.get(type, id);
+    const title = 'Copy of ' + originalDocument.title;
 
-      const title = 'Copy of ' + data.title;
-      const document = {
-        title,
-        author: data.author._id,
-        isPublished: data.isPublished,
-        slug: slugify(title),
-        content: data.content,
-      };
+    const document = {
+      title,
+      author: originalDocument.author._id,
+      isPublished: originalDocument.isPublished,
+      slug: slugify(title),
+      content: originalDocument.content,
+      image: originalDocument.image,
+    };
 
-      await client.post(type, document).then(async res => {
-        await updateSidebar();
-        changeModal(e.target.name, null);
-        router.push('/content/posts');
-      });
-    }
+    client.post(type, document).then(async res => {
+      updateSidebar();
+      changeModal(e.target.name, null);
+
+      data
+        ? router.push(
+            {
+              pathname: '/content/[type]/[id]',
+              query: { type, id: res.data._id },
+            },
+            `/content/${type}/${res.data._id}`
+          )
+        : router.push('/content/posts');
+    });
   };
 
   const handleClick = async e => {

@@ -51,18 +51,18 @@ const DocumentTable = ({ type, data }) => {
                   id={document._id}
                   hideRevert
                 />
-                <ConfirmModal
-                  type='posts'
-                  id={id}
-                  {...{
-                    updateSidebar,
-                    openModal,
-                    changeModal,
-                  }}
-                />
               </th>
             </tr>
           ))}
+        <ConfirmModal
+          type='posts'
+          id={id}
+          {...{
+            updateSidebar,
+            openModal,
+            changeModal,
+          }}
+        />
       </tbody>
     </table>
   );
