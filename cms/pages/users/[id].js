@@ -2,7 +2,7 @@ import React from 'react';
 import Layout from '../../components/Layout';
 import client from '../../src/client';
 
-const User = () => {
+const User = ({ user }) => {
   return <Layout></Layout>;
 };
 
@@ -11,9 +11,7 @@ export default User;
 export const getServerSideProps = async ({ req, params: { id } }) => {
   const cookie = req?.headers?.cookie;
 
-  const { data } = await client.get('users', id);
-
-  console.log(data);
+  const { data: user } = await client.get('users', id);
 
   if (!cookie) {
     return {
@@ -23,7 +21,7 @@ export const getServerSideProps = async ({ req, params: { id } }) => {
     };
   } else {
     return {
-      props: {},
+      props: { user },
     };
   }
 };

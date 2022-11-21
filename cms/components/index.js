@@ -21,6 +21,7 @@ import RichTextInput from './RichTextInput';
 import SlugInput from './SlugInput';
 import StringInput from './StringInput';
 import UserBadge from './UserBadge';
+import UserDeleteModal from './UserDeleteModal';
 
 export {
   AuthorSelect,
@@ -46,4 +47,5 @@ export {
   SlugInput,
   StringInput,
   UserBadge,
+  UserDeleteModal,
 };
