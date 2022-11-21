@@ -13,7 +13,10 @@ const DocumentOptionsMenu = ({
 
   return (
     <div className='dropdown dropdown-top'>
-      <label tabIndex='0' className='btn btn-outline btn-primary'>
+      <label
+        tabIndex='0'
+        className={`btn btn-outline btn-primary ${hideRevert ? 'btn-sm' : ''}`}
+      >
         <div className='indicator'>
           <OptionsIcon />
         </div>

@@ -14,7 +14,7 @@ const MenuListWrapper = ({ children }) => {
 
 const Drawer = ({ activeDocument }) => {
   const {
-    content: { posts, authors },
+    content: { posts },
   } = useContext(ContentContext);
 
   return (
@@ -22,9 +22,21 @@ const Drawer = ({ activeDocument }) => {
       <DrawerHeader />
       <div className='h-4'></div>
       <MenuListWrapper>
-        <MenuItemWithIcon icon={<PhotoIcon />} name='Media Library' />
-        <MenuItemWithIcon icon={<UsersIcon />} name='Users' />
-        <MenuItemWithIcon icon={<SettingsIcon />} name='Settings' />
+        <MenuItemWithIcon
+          icon={<PhotoIcon />}
+          name='Media Library'
+          activeDocument={activeDocument}
+        />
+        <MenuItemWithIcon
+          icon={<UsersIcon />}
+          name='Users'
+          activeDocument={activeDocument}
+        />
+        <MenuItemWithIcon
+          icon={<SettingsIcon />}
+          name='Settings'
+          activeDocument={activeDocument}
+        />
       </MenuListWrapper>
       <MenuListWrapper>
         <MenuHeader type='posts' />
@@ -35,7 +47,7 @@ const Drawer = ({ activeDocument }) => {
                 <Link href={`/content/posts/${post._id}`}>
                   <a className={activeDocument == post._id ? 'active' : ''}>
                     {post.title.length > 30
-                      ? post.title.slice(0, 29) + '...'
+                      ? post.title.slice(0, 32) + '...'
                       : post.title}
                   </a>
                 </Link>
