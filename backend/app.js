@@ -47,6 +47,6 @@ app.use('/api/comments', commentsRouter);
 
 app.use('/api/auth', authRouter);
 
-app.use('/api/*', getAllContent);
+// app.use('/api/*', getAllContent);
 
 module.exports = app;

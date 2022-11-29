@@ -20,7 +20,7 @@ const DocumentTable = ({ data }) => {
 
   return (
     <>
-      <table className='table w-full'>
+      <table className='table table-zebra w-full'>
         <thead>
           <tr>
             <th>Title</th>

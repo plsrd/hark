@@ -2,7 +2,7 @@ const { validationResult } = require('express-validator');
 const User = require('../models/user');
 
 const handleUserInput = async (req, res, next) => {
-  const { firstName, lastName, email, password, role } = req.body;
+  const { firstName, lastName, email, password, role, image } = req.body;
   const { role: currentUserRole, _id } = req.user;
 
   const errors = validationResult(req);
@@ -13,6 +13,7 @@ const handleUserInput = async (req, res, next) => {
     email,
     password,
     role,
+    image,
   };
 
   const createNewUser = () => {
@@ -34,7 +35,7 @@ const handleUserInput = async (req, res, next) => {
         .send({ message: 'Users may only edit their own profile' });
     }
     User.findByIdAndUpdate(req.params.userid, userFields, { new: true })
-      .select('_id name email role')
+      .select('_id name email role image')
       .exec((err, updatedUser) => {
         if (err) return next(err);
         res.json(updatedUser);
@@ -44,7 +45,7 @@ const handleUserInput = async (req, res, next) => {
   if (!errors.isEmpty()) {
     res.status(422).send({
       errors: errors.array(),
-      fields: { firstName, lastName, email, password, role },
+      fields: { firstName, lastName, email, password, role, image },
     });
   } else {
     req.method == 'POST' ? createNewUser() : updateUser();

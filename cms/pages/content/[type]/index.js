@@ -17,7 +17,7 @@ const ContentTypeBulkEditor = ({ type, data }) => {
 export default ContentTypeBulkEditor;
 
 export const getServerSideProps = async ({ params: { type } }) => {
-  const { data } = await client.get(type);
+  const { data } = await client.get({ type });
 
   return {
     props: {

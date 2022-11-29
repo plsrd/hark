@@ -1,8 +1,12 @@
 import React from 'react';
-import { EditorWrapper, Layout, UserDeleteModal } from '../../components';
+import {
+  EditorWrapper,
+  Layout,
+  UserDeleteModal,
+  UserTableRow,
+} from '../../components';
 import { useRouter } from 'next/router';
 import client from '../../src/client';
-import UserTableRow from '../../components/UserTableRow';
 import { PlusIcon } from '../../components/icons';
 
 const Users = ({ users }) => {
@@ -20,8 +24,8 @@ const Users = ({ users }) => {
 
   return (
     <Layout activeDocument='Users'>
-      <EditorWrapper type='Users'>
-        <table className='table w-full'>
+      <EditorWrapper type='users'>
+        <table className='table table-zebra w-full'>
           <thead>
             <th>Name</th>
             <th>Email</th>
@@ -60,7 +64,10 @@ export const getServerSideProps = async ctx => {
       },
     };
   } else {
-    const { data: users } = await client.get('users');
+    const { data: users } = await client.get({
+      type: 'users',
+      sort: 'lastName:asc',
+    });
     return {
       props: {
         users,

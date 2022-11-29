@@ -9,6 +9,7 @@ const UserSchema = new Schema({
   email: { type: String, required: true },
   password: { type: String, required: true },
   role: { type: String, enum: ['admin', 'editor', 'viewer'] },
+  image: String,
 });
 
 UserSchema.set('toObject', { virtuals: true });

@@ -172,7 +172,7 @@ export const getServerSideProps = async ({ params }) => {
   const { type, id } = params;
 
   if (id !== 'new') {
-    const { data } = await client.get(type, id);
+    const { data } = await client.get({ type, id });
     return {
       props: {
         type,

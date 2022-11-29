@@ -5,13 +5,13 @@ const UserBadge = ({ role }) => {
 
   switch (role) {
     case 'admin':
-      badgeColor = 'accent';
+      badgeColor = 'success';
       break;
     case 'editor':
-      badgeColor = 'secondary';
+      badgeColor = 'accent';
       break;
     default:
-      badgeColor = 'ghost';
+      badgeColor = 'neutral';
       break;
   }
 

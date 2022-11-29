@@ -22,6 +22,7 @@ import SlugInput from './SlugInput';
 import StringInput from './StringInput';
 import UserBadge from './UserBadge';
 import UserDeleteModal from './UserDeleteModal';
+import UserTableRow from './UserTableRow';
 
 export {
   AuthorSelect,
@@ -48,4 +49,5 @@ export {
   StringInput,
   UserBadge,
   UserDeleteModal,
+  UserTableRow,
 };

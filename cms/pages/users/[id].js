@@ -11,7 +11,7 @@ export default User;
 export const getServerSideProps = async ({ req, params: { id } }) => {
   const cookie = req?.headers?.cookie;
 
-  const { data: user } = await client.get('users', id);
+  const { data: user } = await client.get({ type: 'users', id });
 
   if (!cookie) {
     return {

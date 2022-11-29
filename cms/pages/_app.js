@@ -33,8 +33,8 @@ App.getInitialProps = async ({ ctx }) => {
   } else {
     client.setCookie(cookie);
 
-    const { data: posts } = await client.get('posts');
-    const { data: users } = await client.get('users');
+    const { data: posts } = await client.get({ type: 'posts' });
+    const { data: users } = await client.get({ type: 'users' });
 
     const authors = users.filter(user => user.role != 'viewer');
 

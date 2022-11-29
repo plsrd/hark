@@ -28,11 +28,13 @@ export default {
       headers: { 'Content-Type': 'application/json' },
     }),
 
-  get: async (type, id) =>
-    await instance({
+  get: async params => {
+    const { type, id, sort } = params;
+    return await instance({
       method: 'get',
-      url: `/${type}${id ? `/${id}` : ''}`,
-    }).catch(err => console.log(err)),
+      url: `/${type}${id ? `/${id}` : ''}${sort ? `?sort=${sort}` : ''}`,
+    }).catch(err => console.log(err));
+  },
 
   put: async (type, id, data) =>
     await instance({
