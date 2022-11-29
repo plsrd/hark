@@ -29,10 +29,12 @@ export default {
     }),
 
   get: async params => {
-    const { type, id, sort } = params;
+    const { type, id, sort, filter } = params;
     return await instance({
       method: 'get',
-      url: `/${type}${id ? `/${id}` : ''}${sort ? `?sort=${sort}` : ''}`,
+      url: `/${type}${id ? `/${id}` : ''}${sort || filter ? '?' : ''}${
+        sort ? `sort=${sort}` : ''
+      }${filter ? filter : ''}`,
     }).catch(err => console.log(err));
   },
 

@@ -7,7 +7,7 @@ const User = require('../models/user');
 const Post = require('../models/post');
 
 exports.users_get = async (req, res, next) => {
-  await User.find()
+  await User.find(getFilter(req.query))
     .select('firstName lastName fullName email role')
     .sort(getSort(req.query.sort))
     .limit(req.query.limit)

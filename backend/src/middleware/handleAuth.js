@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken');
 const login = (req, res, next) => {
   passport.authenticate('local', { session: false }, (err, user, info) => {
     if (err) return next(err);
-    console.log('logging in');
 
     const { _id, email, firstName, lastName, role } = user;
 
